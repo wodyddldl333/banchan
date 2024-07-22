@@ -5,10 +5,11 @@ import com.__105.Banchan.auth.handler.MyAuthenticationSuccessHandler;
 import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.auth.jwt.JwtExceptionFilter;
 import com.__105.Banchan.auth.service.CustomOAuth2UserService;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
+
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -42,6 +43,7 @@ public class SecurityConfig {
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.addAllowedMethod("*"); // 모든 메소드 허용
 
+        // 모든 URL 패턴에 대해 위의 CORS 설정을 적용
         source.registerCorsConfiguration("/**", config);
         return source;
     }
@@ -54,6 +56,7 @@ public class SecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable) // form 로그인 비활성화
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 관리 정책을 STATELESS로 설정
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers("/api_test").permitAll()
                         .requestMatchers("/token/refresh").hasRole("USER") // USER 권한이 필요한 상황을 먼저 설정
                         .requestMatchers("/token/**", "/loginSuccess", "/signup").permitAll() // 나머지 /token/** 경로와 /loginSuccess 경로는 모두 허용
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll() // 기타 경로는 모두 허용
@@ -72,4 +75,6 @@ public class SecurityConfig {
                 .addFilterBefore(jwtExceptionFilter, JwtAuthFilter.class)
                 .build();
     }
+
+
 }

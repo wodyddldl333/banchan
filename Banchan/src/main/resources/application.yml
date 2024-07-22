@@ -4,9 +4,9 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql-db:3306/banchan?serverTimezone=Asia/Seoul
+    url: jdbc:mysql://mysql-db:3305/banchan?serverTimezone=Asia/Seoul
     username: root
-    password: 1111
+    password: 1234
 
   jpa:
     properties:

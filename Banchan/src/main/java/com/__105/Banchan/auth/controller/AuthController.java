@@ -14,6 +14,10 @@ import com.__105.Banchan.user.service.dto.SignupRequestDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -97,6 +101,7 @@ public class AuthController {
                     .role(Role.USER)
                     .createdAt(LocalDateTime.now())
                     .isActive(true)
+                    .attributeKey(signupRequest.getAttributeKey()) // attributeKey 저장
                     .build();
 
             userRepository.save(user);
@@ -110,4 +115,10 @@ public class AuthController {
         }
         return ResponseEntity.badRequest().build();
     }
+
+//    @GetMapping("/api_test")
+//    public String apiTestPage() {
+//        return "api_test"; // api_test.html 파일을 제공
+//    }
+
 }

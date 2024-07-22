@@ -8,6 +8,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.nio.charset.StandardCharsets;
@@ -17,6 +19,8 @@ import java.util.Date;
 @Service
 @RequiredArgsConstructor
 public class JwtUtil {
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
 
     private final JwtProperties jwtProperties;
     private final RefreshTokenService refreshTokenService;
@@ -30,7 +34,12 @@ public class JwtUtil {
     public GeneratedToken generateToken(String email, Role role) {
         String refreshToken = generateRefreshToken(email, role);
         String accessToken = generateAccessToken(email, role);
-        refreshTokenService.saveTokenInfo(email, refreshToken, accessToken);
+        refreshTokenService.saveTokenInfo(email, refreshToken, accessToken) ;
+
+        // 토큰 생성 후 로그 출력
+        log.info("Generated Access Token: {}", accessToken);
+        log.info("Generated Refresh Token: {}", refreshToken);
+
         return new GeneratedToken(accessToken, refreshToken);
     }
 
