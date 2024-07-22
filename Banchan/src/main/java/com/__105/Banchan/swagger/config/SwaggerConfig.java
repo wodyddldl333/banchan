@@ -4,14 +4,13 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.info.License;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.info.License;
 
 @Configuration
 @OpenAPIDefinition(
@@ -21,8 +20,10 @@ import io.swagger.v3.oas.models.info.License;
                 description = "Banchan Application API",
                 contact = @Contact(name = "201105", email = "your.email@example.com")
         ),
-        servers = @Server(url = "http://localhost:8080"),
-        security = @SecurityRequirement(name = "Bearer Authentication")
+        servers = @Server(
+                url = "http://localhost:8080", // 실제 배포된 URL로 변경 필요
+                description = "Default Server URL"
+        )
 )
 @SecurityScheme(
         name = "Bearer Authentication",

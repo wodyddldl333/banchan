@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class SignupRequestDto {
     private String realname;
     private String phone;
+    private String attributeKey;
 }
