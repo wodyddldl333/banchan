@@ -20,7 +20,7 @@ services:
 
   banchan-app:
     build:
-      context: ../../../
+      context: ./Banchan
       dockerfile: Dockerfile
     depends_on:
       - mysql-db
