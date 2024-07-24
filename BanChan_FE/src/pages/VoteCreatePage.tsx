@@ -6,8 +6,10 @@ const VoteCreatePage: React.FC = () => {
 
     const Contents = () =>  {
         return (
-            <form>
-                {/* 제목 */}
+            // 백엔드로 POST 요청 보내는 로직 필요
+            // 37~54번줄 - 투표 생성 버튼 누를 시 투표 생성 구현 필요
+        <form>
+        {/* 제목 */}
             <div>
 
             <h2 className='text-base m-2 text-customTextColor'>제목</h2>
@@ -20,7 +22,7 @@ const VoteCreatePage: React.FC = () => {
                 required
                 />
             </div>
-{/* 내용 */}
+        {/* 내용 */}
             <div>
             <h2 className='text-base m-2 text-customTextColor'>내용</h2>
             <textarea
