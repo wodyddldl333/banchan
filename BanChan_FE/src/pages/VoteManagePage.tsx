@@ -1,5 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
+import { Link } from "react-router-dom";
+
 const VoteManagePage: React.FC = () => {
     const [activeTab, setActiveTab] = useState('진행중인 투표');
 
@@ -77,7 +79,7 @@ const VoteManagePage: React.FC = () => {
 ]
   return (
       <div className="p-8">
-      <div className="h-screen   bg-slate-200/30 p-6 rounded shadow">
+      <div className="">
       <nav className="flex space-x-10 ">
           <a
             href="#"
@@ -95,9 +97,13 @@ const VoteManagePage: React.FC = () => {
           </a>
         </nav>
         <div className="flex justify-end p-5">
-            <button className="mt-4  bg-blue-600/70 text-white py-2 px-4 rounded-full">투표 생성하기</button>
+            <button className="mt-4  bg-blue-600/70 text-white py-2 px-4 rounded-full">
+            <Link to='/vote/create'>
+            투표 생성하기
+            </Link>
+            </button>
         </div>
-        <table className="w-full table-auto bg-white">
+        <table className="min-w-full bg-white border table-fixed rounded-[20px] overflow-hidden">
           <thead>
             <tr className=" text-slate-400">
               <th className="px-4 py-2">번호</th>
@@ -109,12 +115,12 @@ const VoteManagePage: React.FC = () => {
           </thead>
           <tbody>
             {vote.map((item) => (
-                <tr className=' text-center'>
-                    <td className="border px-4 py-2">{item.id}</td>
-                    <td className="border px-4 py-2">{item.title}</td>
-                    <td className="border px-4 py-2">{item.writer}</td>
-                    <td className="border px-4 py-2">{item.date}</td>
-                    <td className="border px-4 py-2">{item.vote_rate}</td>
+                <tr className=' text-center w-full border-b'>
+                    <td className="p-4">{item.id}</td>
+                    <td className="p-4">{item.title}</td>
+                    <td className="p-4">{item.writer}</td>
+                    <td className="p-4">{item.date}</td>
+                    <td className="p-4">{item.vote_rate}</td>
                 </tr>
             ))}
             

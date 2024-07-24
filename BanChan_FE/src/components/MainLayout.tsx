@@ -6,13 +6,11 @@ interface MainLayoutProps {
 }
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
   return (
-    <div className="flex">
+    <div className="flex h-screen bg-gray-100">
         <MainSideBar/>
-    <div className="flex-1 p-6">
+    <div className="flex-1 bg-customBackgroundColor">
       <div>
       <MainHeader></MainHeader>
-      </div>
-      <div>
       { children }
       </div>
     </div>
