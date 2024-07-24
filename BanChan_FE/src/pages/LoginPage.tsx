@@ -74,7 +74,7 @@ const LoginPage = () => {
         </div>
         <div className="relative mb-6">
           <button
-            className="w-full h-14 bg-gray-800 text-white rounded-lg transition-transform transform hover:bg-black hover:scale-105"
+            className="w-full h-14 bg-customBlue text-white rounded-lg transition-transform transform hover:bg-customBlue hover:scale-105"
             id="submit"
             onClick={validate}
           >

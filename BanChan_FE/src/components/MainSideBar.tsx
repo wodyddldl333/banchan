@@ -13,61 +13,92 @@ const MainSideBar = () => {
         />
         <nav className="space-y-12 text-center mt-12">
           <div className="flex items-center w-full text-blue-500">
-            <a href="#" className=" pl-6">
-              <span className="material-symbols-outlined">home</span>
-              <span className="ml-2 text-[18px]">메인페이지</span>
+            <a href="#" className=" pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
+                home
+              </span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">메인페이지</span>
+              </div>
             </a>
           </div>
 
-          <div className="flex items-centerx w-full text-gray-600">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined ">Person</span>
-              <span className="ml-2 text-[18px]">마이페이지</span>
+          <div className="flex items-center w-full text-gray-600">
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
+                Person
+              </span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">마이페이지</span>
+              </div>
             </a>
           </div>
 
           <div className="flex items-center  w-full text-gray-600 ">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined">Chat</span>
-              <span className="ml-2 text-[18px]">커뮤니티</span>
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
+                Chat
+              </span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">커뮤니티</span>
+              </div>
             </a>
           </div>
 
-          <div className="flex items-centerx w-full text-gray-600">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined ">
+          <div className="flex items-center w-full text-gray-600">
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
                 manage_accounts
               </span>
-              <span className="ml-2 text-[18px]">이용자 관리</span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">이용자 관리</span>
+              </div>
             </a>
           </div>
 
-          <div className="flex items-centerx w-full text-gray-600">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined ">
+          <div className="flex items-center w-full text-gray-600">
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
+                how_to_vote
+              </span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">투표 관리</span>
+              </div>
+            </a>
+          </div>
+
+          <div className="flex items-center w-full text-gray-600">
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
                 video_camera_front
               </span>
-              <span className="ml-2 text-[18px]">투표 관리</span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">회의 관리</span>
+              </div>
             </a>
           </div>
 
-          <div className="flex items-centerx w-full text-gray-600">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined ">
-                video_camera_front
+          <div className="flex items-center w-full text-gray-600">
+            <a href="#" className="pl-10 flex">
+              <span className="material-symbols-outlined text-[30px]">
+                HandyMan
               </span>
-              <span className="ml-2 text-[18px]">회의 관리</span>
-            </a>
-          </div>
-
-          <div className="flex items-centerx w-full text-gray-600">
-            <a href="#" className="pl-6">
-              <span className="material-symbols-outlined ">HandyMan</span>
-              <span className="ml-2 text-[18px]">기타 관리</span>
+              <div className="mt-[2.8px] ml-2">
+                <span className="ml-2 text-[18px]">기타 관리</span>
+              </div>
             </a>
           </div>
         </nav>
-        <button className=" text-gray-600 mt-[200px]">로그아웃</button>
+        <div className="flex items-centerx w-full text-gray-600">
+          <div className="pl-10 flex mt-[200px]">
+            <span className="material-symbols-outlined text-[30px]">
+              logout
+            </span>
+            <div className="mt-[2.8px] ml-2">
+              <button className=" ml-2 text-[18px] ">로그아웃</button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

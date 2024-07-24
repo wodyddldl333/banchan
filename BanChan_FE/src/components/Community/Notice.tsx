@@ -195,7 +195,7 @@ const Notice = () => {
             ))}
           </tbody>
         </table>
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center mt-6">
           <button className="px-3 py-1 border rounded-l bg-gray-200">
             이전
           </button>
