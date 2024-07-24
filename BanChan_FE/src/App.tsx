@@ -8,6 +8,7 @@ import Ask from "./components/Community/Ask";
 import VoteManagePage from "./pages/VoteManagePage";
 import MainLayout from "./components/MainLayout";
 import VoteCreatePage from "./pages/VoteCreatePage";
+import VoteDetail from "./pages/VoteDetail";
 function App() {
   return (
     <BrowserRouter>
@@ -20,6 +21,8 @@ function App() {
         <Route path="/community/ask" element={<Ask />} />
         <Route path="/vote" element={<MainLayout><VoteManagePage /></MainLayout>} />
         <Route path="/vote/create" element={<MainLayout><VoteCreatePage /></MainLayout>} />
+        <Route path="/vote/detail" element={<MainLayout><VoteDetail /></MainLayout>} />
+
       </Routes>
     </BrowserRouter>
   );
