@@ -5,7 +5,8 @@ import LoginPage from "./pages/LoginPage";
 import Notice from "./components/Community/Notice";
 import Board from "./components/Community/Board";
 import Ask from "./components/Community/Ask";
-
+import VoteManagePage from "./pages/VoteManagePage";
+import MainLayout from "./components/MainLayout";
 function App() {
   return (
     <BrowserRouter>
@@ -16,6 +17,7 @@ function App() {
         <Route path="/community/notice" element={<Notice />} />
         <Route path="/community/board" element={<Board />} />
         <Route path="/community/ask" element={<Ask />} />
+        <Route path="/vote" element={<MainLayout><VoteManagePage /></MainLayout>} />
       </Routes>
     </BrowserRouter>
   );
