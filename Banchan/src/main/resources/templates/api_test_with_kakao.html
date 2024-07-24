@@ -73,7 +73,7 @@
 <script>
     const KAKAO_LOGIN_URL = 'https://kauth.kakao.com/oauth/authorize';
     const KAKAO_CLIENT_ID = 'YOUR_KAKAO_CLIENT_ID'; // 카카오 앱의 Client ID
-    const REDIRECT_URI = 'http://localhost:8080/loginSuccess'; // 리디렉션 URI
+    const REDIRECT_URI = 'http://localhost/loginSuccess'; // 리디렉션 URI
 
     function kakaoLogin() {
         const loginUrl = `${KAKAO_LOGIN_URL}?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&response_type=code`;
@@ -83,7 +83,7 @@
     async function testLoginSuccess() {
         const accessToken = document.getElementById('loginAccessToken').value;
         try {
-            const response = await fetch(`http://localhost:8080/loginSuccess?accessToken=${encodeURIComponent(accessToken)}`);
+            const response = await fetch(`http://localhost/loginSuccess?accessToken=${encodeURIComponent(accessToken)}`);
             const result = await response.text();
             document.getElementById('loginSuccessResponse').innerHTML = `<pre>${result}</pre>`;
         } catch (error) {
@@ -94,7 +94,7 @@
     async function testSignup() {
         const signupToken = document.getElementById('signupToken').value;
         try {
-            const response = await fetch(`http://localhost:8080/signup?signupToken=${encodeURIComponent(signupToken)}`);
+            const response = await fetch(`http://localhost/signup?signupToken=${encodeURIComponent(signupToken)}`);
             const result = await response.json();
             document.getElementById('signupResponse').innerHTML = `<pre>${JSON.stringify(result, null, 2)}</pre>`;
         } catch (error) {
@@ -109,7 +109,7 @@
         const attributeKey = document.getElementById('attributeKey').value;
 
         try {
-            const response = await fetch('http://localhost:8080/signup', {
+            const response = await fetch('http://localhost/signup', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -132,7 +132,7 @@
     async function testTokenRefresh() {
         const accessToken = document.getElementById('refreshToken').value;
         try {
-            const response = await fetch('http://localhost:8080/token/refresh', {
+            const response = await fetch('http://localhost/token/refresh', {
                 method: 'POST',
                 headers: {
                     'Authorization': accessToken
