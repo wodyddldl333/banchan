@@ -62,9 +62,9 @@ public class SecurityConfig{
                 .formLogin(AbstractHttpConfigurer::disable) // form 로그인 비활성화
                 .sessionManagement(configure -> configure.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세션 관리 정책을 STATELESS로 설정
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api_test").permitAll()
-                        .requestMatchers("/token/refresh").hasRole("USER") // USER 권한이 필요한 상황을 먼저 설정
-                        .requestMatchers("/token/**", "/loginSuccess", "/signup").permitAll() // 나머지 /token/** 경로와 /loginSuccess 경로는 모두 허용
+                        .requestMatchers("/api/auth/token/refresh").hasRole("USER") // USER 권한이 필요한 상황을 먼저 설정
+                        .requestMatchers("/api/auth/**").permitAll() // 나머지 /token/** 경로와 /loginSuccess 경로는 모두 허용
+                        .requestMatchers("/api/v1/**").authenticated()
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll() // 기타 경로는 모두 허용
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger 관련 경로 모두 허용
                         .anyRequest().authenticated() // 그 외의 모든 요청은 인증이 필요함
