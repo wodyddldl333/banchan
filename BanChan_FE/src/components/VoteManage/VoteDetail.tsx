@@ -1,7 +1,6 @@
 import React from 'react';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 const VoteDetail: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('진행중인 투표');
 
 
     const Contents = () =>  {
@@ -63,7 +62,9 @@ const VoteDetail: React.FC = () => {
 {/* 투표 버튼 */}
             <div className='pt-2 flex justify-center'>
             
-          <button className=" w-32 h-10 bg-customBlue text-white p-2 rounded-full">투표 하기</button>
+            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 정지</button>
+            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 수정</button>
+            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 알람 전송</button>
 
             </div>
         </form>
@@ -73,23 +74,8 @@ const VoteDetail: React.FC = () => {
   return (
       <div className="p-8">
       <div className="">
-      <nav className="flex space-x-10  ">
-          <a
-            href="#"
-            className={`flex items-center ${activeTab === '진행중인 투표' ? 'text-blue-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('진행중인 투표')}
-            >
-            <span className="ml-2">진행중인 투표</span>
-          </a>
-          <a
-            href="#"
-            className={`flex items-center ${activeTab === '완료된 투표' ? 'text-blue-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('완료된 투표')}
-            >
-            <span className="ml-2">완료된 투표</span>
-          </a>
-        </nav>
         <div className="flex justify-start p-5">
+            <Link to='/vote/finish' className='text-3xl	font-semibold'> ← </Link>
             <h3 className='text-3xl	font-semibold'>투표 상세</h3>
         </div>
 
