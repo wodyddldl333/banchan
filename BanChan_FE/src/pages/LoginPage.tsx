@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const LoginPage = () => {
@@ -8,7 +8,7 @@ const LoginPage = () => {
   });
   const [rememberMe, setRememberMe] = useState(false);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setUser({
       ...user,

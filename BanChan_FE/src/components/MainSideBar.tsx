@@ -1,9 +1,35 @@
-import React from "react";
+// import React from "react";
+import { NavLink } from "react-router-dom";
 
-const MainSideBar = () => {
+interface SidebarItemProps {
+  icon: string;
+  text: string;
+  to: string;
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `flex items-center w-full text-customSideBarTextColor focus:text-customBlue hover:text-customBlue hover:border-l-4 hover:border-customBlue ${
+          isActive ? "border-l-4 border-customBlue text-customBlue" : ""
+        }`
+      }
+    >
+      <span className="material-symbols-outlined text-[30px] pl-10">
+        {icon}
+      </span>
+      <div className="mt-[2.8px] ml-2">
+        <span className="ml-2 text-[18px]">{text}</span>
+      </div>
+    </NavLink>
+  );
+};
+
+const MainSideBar: React.FC = () => {
   return (
     <div className="w-64 bg-white shadow-lg border-r border-solid">
-      {/* <div className="p-6"> */}
       <div className="">
         {/* 이미지는 절대 경로로 !!  */}
         <img
@@ -11,94 +37,34 @@ const MainSideBar = () => {
           alt="반찬 로고"
           className="h-[100px] w-[160px] ml-6 my-6"
         />
-        <nav className="space-y-12 text-center mt-12">
-          <div className="flex items-center w-full text-blue-500">
-            <a href="#" className=" pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                home
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">메인페이지</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center w-full text-gray-600">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                Person
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">마이페이지</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center  w-full text-gray-600 ">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                Chat
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">커뮤니티</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center w-full text-gray-600">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                manage_accounts
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">이용자 관리</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center w-full text-gray-600">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                how_to_vote
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">투표 관리</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center w-full text-gray-600">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                video_camera_front
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">회의 관리</span>
-              </div>
-            </a>
-          </div>
-
-          <div className="flex items-center w-full text-gray-600">
-            <a href="#" className="pl-10 flex">
-              <span className="material-symbols-outlined text-[30px]">
-                HandyMan
-              </span>
-              <div className="mt-[2.8px] ml-2">
-                <span className="ml-2 text-[18px]">기타 관리</span>
-              </div>
-            </a>
-          </div>
+        <nav className="space-y-12 text-center mt-20">
+          <SidebarItem icon="home" text="메인페이지" to="/home" />
+          <SidebarItem icon="Person" text="마이페이지" to="/community/notice" />
+          <SidebarItem icon="Chat" text="커뮤니티" to="/community/notice" />
+          <SidebarItem
+            icon="manage_accounts"
+            text="이용자관리"
+            to="/userManage/approval"
+          />
+          <SidebarItem
+            icon="how_to_vote"
+            text="투표 관리"
+            to="/community/notice"
+          />
+          <SidebarItem
+            icon="video_camera_front"
+            text="회의 관리"
+            to="/meeting/reservedMeeting"
+          />
+          <SidebarItem
+            icon="HandyMan"
+            text="기타 관리"
+            to="/community/notice"
+          />
         </nav>
-        <div className="flex items-centerx w-full text-gray-600">
-          <div className="pl-10 flex mt-[200px]">
-            <span className="material-symbols-outlined text-[30px]">
-              logout
-            </span>
-            <div className="mt-[2.8px] ml-2">
-              <button className=" ml-2 text-[18px] ">로그아웃</button>
-            </div>
-          </div>
-        </div>
+
+        <div className="mt-[220px]"></div>
+        <SidebarItem icon="logout" text="로그아웃" to="" />
       </div>
     </div>
   );

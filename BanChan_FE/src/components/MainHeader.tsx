@@ -1,4 +1,4 @@
-import React from "react";
+// import React from "react";
 
 const MainHeader = () => {
   return (
@@ -6,8 +6,8 @@ const MainHeader = () => {
       <div className="pt-6">
         <header className="flex items-center justify-end mb-6 ">
           <div className="flex items-center space-x-4 mr-6  ">
-            <span className="text-gray-500 mr-6">
-              현재: 부산 모라 LH 행복주택
+            <span className="text-gray-500 mr-6 font-semibold text-[18px]">
+              주소: 광주전남 공동혁신도시 빛가람 대방엘리움로얄카운티1차
             </span>
 
             <img

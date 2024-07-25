@@ -1,6 +1,13 @@
-import React from "react";
+// import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const SocialLoginPage = () => {
+  const navigate = useNavigate();
+
+  const handleLogin = () => {
+    navigate("/login");
+  };
+
   return (
     <div className="flex items-center justify-center h-screen bg-white">
       <div className="bg-white rounded-xl shadow-lg p-32 text-center border-solid border-2">
@@ -12,7 +19,7 @@ const SocialLoginPage = () => {
           </div>
         </div>
         <div className="flex flex-col items-center space-y-4">
-          <button className="bg-yellow-400 text-black py-3.5 px-20 rounded-2xl flex items-center justify-center mb-4">
+          <button className="bg-yellow-400 text-black py-3.5 px-20 rounded-2xl flex items-center justify-center mx-4">
             <div className="w-[200px] flex items-center justify-center">
               <img
                 src="src/assets/kakao_logo.png"
@@ -23,7 +30,7 @@ const SocialLoginPage = () => {
             </div>
           </button>
 
-          <button className="bg-white text-black border border-gray-300 py-3.5 px-20 rounded-2xl flex items-center justify-center">
+          <button className="bg-white text-black border border-gray-300 py-3.5 px-20 rounded-2xl flex items-center justify-center mx-4">
             <div className="w-[200px] flex items-center justify-center">
               <img
                 src="src/assets/google_logo.png"
@@ -32,6 +39,15 @@ const SocialLoginPage = () => {
               />
 
               <span className="text-center">구글로 계속하기</span>
+            </div>
+          </button>
+
+          <button
+            onClick={handleLogin}
+            className="bg-customBlue text-white border border-gray-300  py-3.5 px-20 rounded-2xl flex items-center justify-center "
+          >
+            <div className="w-[200px] flex items-center justify-center">
+              <span className="text-center">관리자로 로그인 하기</span>
             </div>
           </button>
         </div>
