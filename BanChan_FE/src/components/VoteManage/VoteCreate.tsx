@@ -1,13 +1,11 @@
 import React from 'react';
-import { useState } from 'react';
+import { Link } from 'react-router-dom';
 const VoteCreatePage: React.FC = () => {
-    const [activeTab, setActiveTab] = useState('진행중인 투표');
-
 
     const Contents = () =>  {
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
-            // 37~54번줄 - 투표 생성 버튼 누를 시 투표 생성 구현 필요
+            //투표 생성 버튼 누를 시 투표 생성 구현 필요
         <form>
         {/* 제목 */}
             <div>
@@ -107,23 +105,9 @@ const VoteCreatePage: React.FC = () => {
   return (
       <div className="p-8">
       <div className="">
-      <nav className="flex space-x-10  ">
-          <a
-            href="#"
-            className={`flex items-center ${activeTab === '진행중인 투표' ? 'text-blue-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('진행중인 투표')}
-            >
-            <span className="ml-2">진행중인 투표</span>
-          </a>
-          <a
-            href="#"
-            className={`flex items-center ${activeTab === '완료된 투표' ? 'text-blue-500' : 'text-gray-600'}`}
-            onClick={() => setActiveTab('완료된 투표')}
-            >
-            <span className="ml-2">완료된 투표</span>
-          </a>
-        </nav>
         <div className="flex justify-start p-5">
+            <Link to='/vote/active' className='text-3xl	font-semibold'> ← </Link>
+
             <h3 className='text-3xl	font-semibold'>투표 생성</h3>
         </div>
 
