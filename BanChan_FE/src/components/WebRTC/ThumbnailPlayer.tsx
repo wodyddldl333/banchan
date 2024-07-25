@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 
 interface ThumbnailPlayerProps {
   stream: MediaStream | null;
+  className?: string;
 }
 
 const ThumbnailPlayer: React.FC<ThumbnailPlayerProps> = ({ stream }) => {
@@ -16,7 +17,7 @@ const ThumbnailPlayer: React.FC<ThumbnailPlayerProps> = ({ stream }) => {
   return (
     <video
       ref={videoRef}
-      className="w-1/6 bg-black m-2 rounded-lg"
+      className={`w-1/6 bg-black m-2 rounded-lg`}
       autoPlay
       playsInline
       muted
