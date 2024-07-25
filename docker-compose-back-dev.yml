@@ -63,8 +63,8 @@ services:
       - "6379:6379"
     <<: *default
     volumes:
-      - ./Banchan/src/main/resources/data/refresh-token-data:/data
-      - ./Banchan/src/main/resources/data/refresh-token-data/redis.conf:/usr/local/etc/redis/redis.conf
+      - ./Banchan/redis_data:/data
+      - ./Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - mynetwork
     healthcheck:
@@ -84,7 +84,7 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ./Banchan/src/main/resources/data/refresh-token-data
+      device: ./Banchan/redis_data
       o: bind
 
 networks:
