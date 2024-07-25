@@ -14,7 +14,7 @@ const SocialLoginPage = () => {
         <div className="mb-8">
           <div className="relative">
             <div>
-              <img src="src/assets/logo.png" alt="logo" />
+              <img src="/assets/logo.png" alt="logo" />
             </div>
           </div>
         </div>
@@ -22,7 +22,7 @@ const SocialLoginPage = () => {
           <button className="bg-yellow-400 text-black py-3.5 px-20 rounded-2xl flex items-center justify-center mx-4">
             <div className="w-[200px] flex items-center justify-center">
               <img
-                src="src/assets/kakao_logo.png"
+                src="/assets/kakao_logo.png"
                 alt="KakaoTalk"
                 className="w-6 h-6 mr-2"
               />
@@ -33,7 +33,7 @@ const SocialLoginPage = () => {
           <button className="bg-white text-black border border-gray-300 py-3.5 px-20 rounded-2xl flex items-center justify-center mx-4">
             <div className="w-[200px] flex items-center justify-center">
               <img
-                src="src/assets/google_logo.png"
+                src="/assets/google_logo.png"
                 alt="Google"
                 className="w-6 h-6 mr-2"
               />
