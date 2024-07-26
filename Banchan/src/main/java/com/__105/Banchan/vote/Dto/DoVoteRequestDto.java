@@ -11,7 +11,6 @@ import java.util.List;
 @ToString
 public class DoVoteRequestDto {
 
-    private Long userId;
     private Long voteId;
     private List<ResponseDto> responses;
 

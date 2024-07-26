@@ -1,10 +1,11 @@
 package com.__105.Banchan.vote.controller;
 
-
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.service.VoteService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,9 +17,10 @@ public class VoteController {
 
     private final VoteService voteService;
 
-    @PostMapping("/create/{userId}")
-    public ResponseEntity<?> create(@RequestBody VoteRequestDto voteRequestDto, @PathVariable Long userId) {
-        voteService.createVote(voteRequestDto, userId);
+    @PostMapping("/regist")
+    public ResponseEntity<?> registVote(@RequestBody VoteRequestDto voteRequestDto,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+        voteService.createVote(voteRequestDto, userDetails.getUsername());
         return ResponseEntity.ok().build();
     }
 
@@ -30,16 +32,16 @@ public class VoteController {
     }
 
     // 현재 진행 중인 투표 목록 조회
-    @GetMapping("/list/current/{userId}")
-    public ResponseEntity<?> listCurrent(@PathVariable Long userId) {
-        List<VoteListResponseDto> votes = voteService.getCurrentVoteList(userId);
+    @GetMapping("/list/current")
+    public ResponseEntity<?> listCurrent(@AuthenticationPrincipal UserDetails userDetails) {
+        List<VoteListResponseDto> votes = voteService.getCurrentVoteList(userDetails.getUsername());
         return ResponseEntity.ok().body(votes);
     }
 
     // 투표 완료된 투표 목록 조회
-    @GetMapping("/list/finished/{userId}")
-    public ResponseEntity<?> listFinished(@PathVariable Long userId) {
-        List<VoteListResponseDto> votes = voteService.getlistFinished(userId);
+    @GetMapping("/list/finished")
+    public ResponseEntity<?> listFinished(@AuthenticationPrincipal UserDetails userDetails) {
+        List<VoteListResponseDto> votes = voteService.getlistFinished(userDetails.getUsername());
         return ResponseEntity.ok().body(votes);
     }
 
@@ -52,8 +54,9 @@ public class VoteController {
 
     // 투표 하기
     @PostMapping("/vote")
-    public ResponseEntity<?> vote(@RequestBody DoVoteRequestDto voteRequestDto) {
-        voteService.vote(voteRequestDto);
+    public ResponseEntity<?> vote(@RequestBody DoVoteRequestDto voteRequestDto,
+                                  @AuthenticationPrincipal UserDetails userDetails) {
+        voteService.vote(voteRequestDto, userDetails.getUsername());
         return ResponseEntity.ok().build();
     }
 }

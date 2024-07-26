@@ -18,26 +18,29 @@ public class Vote {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vote_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "created_user")
+    @JoinColumn(name = "created_user", nullable = false)
     private User createdUser;
 
+    @Column(name = "title", nullable = false)
     private String title;
 
+    @Column(name = "content", nullable = false)
     private String content;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
-    @Column(name = "created_at")
+    @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "isActive")

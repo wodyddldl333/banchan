@@ -16,6 +16,7 @@ public class VoteOption {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vote_option_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

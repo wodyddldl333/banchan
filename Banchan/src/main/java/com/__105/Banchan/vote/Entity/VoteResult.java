@@ -13,11 +13,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "vote_result")
+@Table(name = "vote_res")
 public class VoteResult {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "vote_res_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,6 +37,7 @@ public class VoteResult {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Column(name = "vote_date")
     private LocalDateTime voteDate;
 
     @PrePersist

@@ -1,5 +1,6 @@
 package com.__105.Banchan.vote.Entity;
 
+import jakarta.persistence.Embeddable;
 import lombok.*;
 
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Getter
 @Builder
+@Embeddable
 public class VoteParticipantId implements Serializable {
 
     @EqualsAndHashCode.Include

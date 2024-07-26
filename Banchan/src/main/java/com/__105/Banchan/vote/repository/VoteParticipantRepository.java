@@ -12,6 +12,8 @@ import java.util.List;
 
 public interface VoteParticipantRepository extends JpaRepository<VoteParticipant, VoteParticipantId> {
 
+    boolean existsById(VoteParticipantId id);
+
     @Query("select vp.vote from VoteParticipant vp " +
             "where vp.user.id = :userId " +
             "and :currentDate between vp.vote.startDate and vp.vote.endDate " +

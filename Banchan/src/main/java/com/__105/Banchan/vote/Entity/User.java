@@ -7,30 +7,36 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_id")
     private Long id;
 
+    @Column(name = "email")
     private String email;
 
     @Column(name = "password_hash")
-    private String passwordHash;
+    private String password;
 
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
 
+    @Column(name = "nickname")
     private String nickname;
 
     private String role;
 
-    @Column(name = "phone_number")
+    @Column(name = "phone")
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
@@ -42,6 +48,9 @@ public class User {
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    private List<UserApartment> userApartments;
 
     @PrePersist
     protected void onCreate() {

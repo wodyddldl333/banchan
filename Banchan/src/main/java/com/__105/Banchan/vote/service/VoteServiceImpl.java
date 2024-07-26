@@ -31,12 +31,11 @@ public class VoteServiceImpl implements VoteService {
     * */
     @Transactional
     @Override
-    public void createVote(VoteRequestDto voteRequestDto, Long userId) {
+    public void createVote(VoteRequestDto voteRequestDto, String username) {
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Invalid user ID"));
+        User user = findUserByUsername(username);
 
-        if (!user.getRole().equals("ADMIN")) {
+        if (!user.getRole().equals("ROLE_ADMIN")) {
             throw new RuntimeException("Only ADMIN users can regist");
         }
 
@@ -68,7 +67,7 @@ public class VoteServiceImpl implements VoteService {
             }
         }
 
-        List<User> users = userRepository.findUsersInSameApartment(userId);
+        List<User> users = userRepository.findUsersInSameApartment(user.getId());
 
         for (User user1 : users) {
             VoteParticipant voteParticipant = VoteParticipant.builder()
@@ -96,18 +95,23 @@ public class VoteServiceImpl implements VoteService {
      * LAZY를 이용하여 한 번 select 쿼리 실행됨.
      * */
     @Override
-    public List<VoteListResponseDto> getCurrentVoteList(Long userId) {
+    public List<VoteListResponseDto> getCurrentVoteList(String username) {
+
+        User user = findUserByUsername(username);
         LocalDateTime currentDate = LocalDateTime.now();
-        List<Vote> votes = voteParticipantRepository.findVotesByUserId(userId, currentDate);
+        List<Vote> votes = voteParticipantRepository.findVotesByUserId(user.getId(), currentDate);
+
         return votes.stream()
                 .map(VoteListResponseDto::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public List<VoteListResponseDto> getlistFinished(Long userId) {
+    public List<VoteListResponseDto> getlistFinished(String username) {
+
+        User user = findUserByUsername(username);
         LocalDateTime currentDate = LocalDateTime.now();
-        List<Vote> votes = voteParticipantRepository.findDoneVotesByUserId(userId, currentDate);
+        List<Vote> votes = voteParticipantRepository.findDoneVotesByUserId(user.getId(), currentDate);
         return votes.stream()
                 .map(VoteListResponseDto::new)
                 .collect(Collectors.toList());
@@ -122,15 +126,22 @@ public class VoteServiceImpl implements VoteService {
      * */
     @Transactional
     @Override
-    public void vote(DoVoteRequestDto doVoteRequestDto) {
-        System.out.println(doVoteRequestDto);
-        Long userId = doVoteRequestDto.getUserId();
+    public void vote(DoVoteRequestDto doVoteRequestDto, String username) {
+
+        User user = findUserByUsername(username);
+
         Long voteId = doVoteRequestDto.getVoteId();
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("Invalid user ID")); // TODO : 투표 범위 테이블에서 찾아서 권한이 있는 회원인지로 변경하기!
+        System.out.println(voteId);
+
         Vote vote = voteRepository.findById(voteId)
                 .orElseThrow(() -> new RuntimeException("Invalid vote ID"));
+
+        VoteParticipantId vpId = new VoteParticipantId(vote.getId(), user.getId());
+
+        if (!voteParticipantRepository.existsById(vpId)) {
+            throw new RuntimeException("Vote participant does not exist");
+        }
 
         List<DoVoteRequestDto.ResponseDto> responseDtos = doVoteRequestDto.getResponses();
 
@@ -188,4 +199,12 @@ public class VoteServiceImpl implements VoteService {
         return new VoteResultDto(vote.getId(), questionResults);
     }
 
+    private User findUserByUsername(String username) {
+
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        return user;
+    }
 }

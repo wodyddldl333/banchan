@@ -8,20 +8,22 @@ import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "vote_participant")
-@IdClass(VoteParticipantId.class)
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
 public class VoteParticipant {
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @EmbeddedId
+    private VoteParticipantId id;
+
+    @ManyToOne
+    @MapsId("vote")
     @JoinColumn(name = "vote_id")
     private Vote vote;
 
-    @Id
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
+    @MapsId("user")
     @JoinColumn(name = "user_id")
     private User user;
 }

@@ -6,15 +6,15 @@ import java.util.List;
 
 public interface VoteService {
 
-    void createVote(VoteRequestDto voteRequestDto, Long userId);
+    void createVote(VoteRequestDto voteRequestDto, String username);
 
     VoteResponseDto getVoteWithDetails(Long voteId);
 
-    List<VoteListResponseDto> getCurrentVoteList(Long userId);
+    List<VoteListResponseDto> getCurrentVoteList(String username);
 
-    List<VoteListResponseDto> getlistFinished(Long userId);
+    List<VoteListResponseDto> getlistFinished(String username);
 
-    void vote(DoVoteRequestDto doVoteRequestDto);
+    void vote(DoVoteRequestDto doVoteRequestDto, String username);
 
     VoteResultDto getResult(Long voteId);
 }

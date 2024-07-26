@@ -1,6 +1,5 @@
 package com.__105.Banchan.vote.Dto;
 
-
 import com.__105.Banchan.vote.Entity.Vote;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
