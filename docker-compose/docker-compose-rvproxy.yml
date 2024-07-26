@@ -3,7 +3,7 @@ services:
   nginx:
     container_name: reverse
     build:
-      context: ./nginx
+      context: ../nginx
       dockerfile: Dockerfile
     ports:
       - "80:80"
