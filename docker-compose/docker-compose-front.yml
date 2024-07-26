@@ -1,6 +1,6 @@
 services:
   front_dt:
-    container_name: front_dt
+    container_name: banchan_front
     build:
       context: ../BanChan_FE
       dockerfile: Dockerfile
