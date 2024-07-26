@@ -33,7 +33,7 @@ const MainSideBar: React.FC = () => {
       <div className="">
         {/* 이미지는 절대 경로로 !!  */}
         <img
-          src="/src/assets/logo.png"
+          src="/assets/logo.png"
           alt="반찬 로고"
           className="h-[100px] w-[160px] ml-6 my-6"
         />

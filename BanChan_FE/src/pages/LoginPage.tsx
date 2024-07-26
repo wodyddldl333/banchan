@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+// import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   const [user, setUser] = useState({
@@ -57,7 +57,7 @@ const LoginPage = () => {
             onChange={handleInputChange}
           />
         </div>
-        <div className="flex justify-between items-center mb-10">
+        <div className="flex justify-between items-center mb-14">
           <label className="flex items-center text-sm text-gray-600">
             <input
               type="checkbox"
@@ -72,7 +72,7 @@ const LoginPage = () => {
             비밀번호 찾기
           </a>
         </div>
-        <div className="relative mb-6">
+        <div className="relative">
           <button
             className="w-full h-14 bg-customBlue text-white rounded-lg transition-transform transform hover:bg-customBlue hover:scale-105"
             id="submit"
@@ -81,7 +81,7 @@ const LoginPage = () => {
             로그인
           </button>
         </div>
-        <div className="text-center text-sm">
+        {/* <div className="text-center text-sm">
           <p>
             아이디가 존재하지 않습니까?{" "}
             <Link
@@ -91,7 +91,7 @@ const LoginPage = () => {
               회원가입
             </Link>
           </p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

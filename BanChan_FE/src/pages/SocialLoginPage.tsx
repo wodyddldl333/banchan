@@ -9,8 +9,8 @@ const SocialLoginPage = () => {
   };
 
   return (
-    <div className="flex items-center justify-center h-screen bg-white">
-      <div className="bg-white rounded-xl shadow-lg p-32 text-center border-solid border-2">
+    <div className="flex items-center justify-center bg-cover bg-center h-screen bg-custom-background bg-white">
+      <div className="bg-white rounded-xl shadow-lg p-32 text-center border-solid border-2 bg-opacity-90 ">
         <div className="mb-8">
           <div className="relative">
             <div>

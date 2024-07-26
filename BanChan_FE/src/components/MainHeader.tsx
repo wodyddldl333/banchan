@@ -11,7 +11,7 @@ const MainHeader = () => {
             </span>
 
             <img
-              src="/src/assets/logo.png"
+              src="/assets/logo.png"
               alt="프로필"
               className="h-10 w-10 rounded-full"
             />

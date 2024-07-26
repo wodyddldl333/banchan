@@ -14,6 +14,7 @@ import Write from "./components/CRUD/Write";
 import Detail from "./components/CRUD/Detail";
 import Update from "./components/CRUD/Update";
 import MeetingPage from "./pages/MeetingPage";
+import ChatBox from "./components/WebRTC/ChatBox";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
         <Route path="/detail" element={<Detail />} />
         <Route path="/update" element={<Update />} />
         <Route path="/meetingPage" element={<MeetingPage />} />
+        <Route path="/chatBox" element={<ChatBox />} />
       </Routes>
     </BrowserRouter>
   );
