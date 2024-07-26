@@ -15,11 +15,39 @@ type IconName =
   | "chat_bubble"
   | "notifications";
 
-const ControlPanels: React.FC<{
-  onChatToggle: () => void;
-  activeIcons: Record<IconName, boolean>;
-  handleButtonClick: (icon: IconName) => void;
-}> = ({ onChatToggle, activeIcons, handleButtonClick }) => {
+const ControlPanels: React.FC<{ onChatToggle: () => void }> = ({
+  onChatToggle,
+}) => {
+  const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
+    record_voice_over: false,
+    mic_off: false,
+    videocam_off: false,
+    screen_share: false,
+    mic_off2: false,
+    exit_to_app: false,
+    book: false,
+    group: false,
+    chat_bubble: false,
+    notifications: false,
+  });
+
+  const handleButtonClick = (icon: IconName) => {
+    if (icon === "chat_bubble") {
+      onChatToggle();
+
+      setActiveIcons((prevState) => ({
+        ...prevState,
+        [icon]: !prevState[icon],
+      }));
+    } else {
+      setActiveIcons((prevState) => ({
+        ...prevState,
+
+        [icon]: !prevState[icon],
+      }));
+    }
+  };
+
   return (
     <div className="px-4 flex items-center mt-4">
       <div className="flex space-x-8 ml-[210px]">
@@ -105,9 +133,7 @@ const ControlPanels: React.FC<{
           group
         </span>
         <span
-          className={`cursor-pointer material-symbols-outlined ${
-            activeIcons.chat_bubble ? "text-blue-500" : "text-white"
-          }`}
+          className="cursor-pointer material-symbols-outlined text-white"
           onClick={() => handleButtonClick("chat_bubble")}
         >
           chat_bubble
@@ -135,18 +161,6 @@ const MeetingPage: React.FC = () => {
   ]);
   const [activeSpeaker, setActiveSpeaker] = useState<MediaStream | null>(null);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
-  const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
-    record_voice_over: false,
-    mic_off: false,
-    videocam_off: false,
-    screen_share: false,
-    mic_off2: false,
-    exit_to_app: false,
-    book: false,
-    group: false,
-    chat_bubble: false,
-    notifications: false,
-  });
 
   useEffect(() => {
     // 더미 비디오 스트림 생성
@@ -169,16 +183,6 @@ const MeetingPage: React.FC = () => {
 
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
-  };
-
-  const handleButtonClick = (icon: IconName) => {
-    if (icon === "chat_bubble") {
-      handleChatToggle();
-    }
-    setActiveIcons((prevState) => ({
-      ...prevState,
-      [icon]: icon === "chat_bubble" ? !prevState[icon] : prevState[icon],
-    }));
   };
 
   return (
@@ -204,11 +208,7 @@ const MeetingPage: React.FC = () => {
             />
           ))}
         </div>
-        <ControlPanels
-          onChatToggle={handleChatToggle}
-          activeIcons={activeIcons}
-          handleButtonClick={handleButtonClick}
-        />
+        <ControlPanels onChatToggle={handleChatToggle} />
         {isChatBoxVisible && (
           <div className="absolute top-0 right-0 h-full">
             <ChatBox />
