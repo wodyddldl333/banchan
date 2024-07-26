@@ -14,7 +14,6 @@ import Write from "./components/CRUD/Write";
 import Detail from "./components/CRUD/Detail";
 import Update from "./components/CRUD/Update";
 import MeetingPage from "./pages/MeetingPage";
-
 import VoteManagePage from "./pages/VoteManagePage";
 import MainLayout from "./components/MainLayout";
 import VoteCreatePage from "./components/VoteManage/VoteCreate";
@@ -22,7 +21,7 @@ import VoteDetail from "./components/VoteManage/VoteDetail";
 import ActiveVote from "./components/VoteManage/ActiveVote";
 import FinishedVote from "./components/VoteManage/FinishedVote";
 import SendMessage from "./components/VoteManage/SendMessage";
-import Vote from "./pages/VotePage";
+
 function App() {
   return (
     <BrowserRouter>
@@ -52,7 +51,6 @@ function App() {
             <Route path="message" element={<SendMessage />} />
           </Route>
         </Route>
-        <Route path="/temp" element={<Vote />} />
 
 
       </Routes>
