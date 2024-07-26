@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import VoteForm from './VoteForm';
 const VoteCreatePage: React.FC = () => {
 
+    // 투표관련 로직
+    const [forms, setForms] = useState<number[]>([]);
+
+    const handleAddForm = () => {
+        setForms([...forms, Date.now()]);
+      };
+    
+      const handleDeleteForm = (id: number) => {
+        setForms(forms.filter(formId => formId !== id));
+      };
+    
+
+    // 내용 로직
     const Contents = () =>  {
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
@@ -23,13 +37,18 @@ const VoteCreatePage: React.FC = () => {
         {/* 내용 */}
             <div>
             <h2 className='text-base m-2 text-customTextColor'>내용</h2>
-            <textarea
-            name="contents"
-            className="w-full h-[350px]  bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
-            placeholder="제목을 입력해 주세요"
-            autoComplete="off"
-            required
-            />
+            <div
+            className='w-full h-[350px]  overflow-y-auto bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform'
+            >
+
+                <div contentEditable='true'>
+
+                </div>
+                {/* 투표 항목 렌더링 */}
+                {forms.map(formId => (
+                <VoteForm key={formId} id={formId} onDelete={handleDeleteForm} />
+                ))}
+            </div>
             </div>
         {/* 투표버튼 및 투표 기간 */}
             <div className='flex justify-between pt-2'>
@@ -39,6 +58,7 @@ const VoteCreatePage: React.FC = () => {
                     name='addAgreeVote'
                     className="w-32 h-10 rounded-lg border-2	text-xs	 mx-4 transition-transform transform"
                     type='button'
+                    onClick={handleAddForm}
                     >
                     찬반 투표 추가
                 </button>
