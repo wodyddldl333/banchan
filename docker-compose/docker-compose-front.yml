@@ -2,7 +2,7 @@ services:
   front_dt:
     container_name: front_dt
     build:
-      context: ./BanChan_FE
+      context: ../BanChan_FE
       dockerfile: Dockerfile
     ports:
       - "5173:80"
