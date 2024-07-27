@@ -16,7 +16,7 @@ spring:
 
         provider:
           kakao:
-            authorization-uri: https://kauth.kakao.com/oauth/authorize # 카카오 인증 URI
-            token-uri: https://kauth.kakao.com/oauth/token # 카카오 토큰 URI
-            user-info-uri: https://kapi.kakao.com/v2/user/me # 카카오 사용자 정보 URI
+            authorization-uri: ${KAKAO_AUTHORIZATION_URI}
+            token-uri: ${KAKAO_TOKEN_URI}
+            user-info-uri: ${KAKAO_USER_INFO_URI}
             user-name-attribute: id # 사용자 이름 속성

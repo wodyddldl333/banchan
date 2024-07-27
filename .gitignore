@@ -1,7 +1,3 @@
 #환경변수 파일 
 docker-compose/.env
 .env
-
-#젠킨스 관련파일
-docker-compose/jenkins_home
-jenkins_home
