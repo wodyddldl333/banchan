@@ -1,5 +1,5 @@
 x-environments: &default
-  env_file: ../.env # 기본 환경 파일을 지정합니다.
+  env_file: .env # 기본 환경 파일을 지정합니다.
 
 services:
 
