@@ -4,3 +4,4 @@ docker-compose/.env
 
 #젠킨스 관련파일
 docker-compose/.jenkins
+.jenkins
