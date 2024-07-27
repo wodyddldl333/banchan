@@ -1,4 +1,4 @@
-package com.__105.Banchan.swagger.config;
+package com.__105.Banchan.common.config;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
 import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;

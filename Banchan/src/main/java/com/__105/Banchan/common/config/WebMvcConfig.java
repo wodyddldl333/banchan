@@ -1,8 +1,9 @@
-package com.__105.Banchan.swagger.config;
+package com.__105.Banchan.common.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
@@ -21,6 +22,14 @@ public class WebMvcConfig implements WebMvcConfigurer {
                         .maxAge(3600); 
             }
         };
+    }
+
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry.addResourceHandler("/css/**")
+                .addResourceLocations("classpath:/static/css/")
+                .setCachePeriod(3600) // 캐시 기간 설정 (초 단위)
+                .resourceChain(true);
     }
 
 }
