@@ -20,9 +20,11 @@ public enum ErrorCode {
     KAKAO_USER_INFO_REQUEST_FAILED(500, "K003", "카카오 사용자 정보 요청 실패"),
     KAKAO_USER_INFO_NOT_FOUND(400, "K004", "카카오 사용자 정보를 가져오는 데 실패했습니다."),
     KAKAO_USER_INFO_PARSING_FAILED(500, "K005", "카카오 사용자 정보 파싱 실패"),
-    LOGIN_OR_REGISTER_FAILED(500, "K006", "회원가입 또는 로그인 처리 중 오류 발생");
+    LOGIN_OR_REGISTER_FAILED(500, "K006", "회원가입 또는 로그인 처리 중 오류 발생"),
 
-
+    // 리프레시 토큰 관련 에러 코드
+    REDIS_REFRESH_TOKEN_NOT_FOUND(404, "R001", "해당 액세스 토큰에 대한 리프레시 토큰을 찾을 수 없습니다."),
+    REDIS_TOKEN_CREATE_FAILED(500, "R002", "Redis에 토큰 생성 중 오류 발생");
     private final int status;
     private final String code;
     private final String message;

@@ -47,12 +47,11 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
-
         config.setAllowCredentials(true);
         config.addAllowedOriginPattern("*"); // 모든 출처 허용
         config.addAllowedHeader("*"); // 모든 헤더 허용
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS")); // 모든 메소드 허용
-
+        config.setExposedHeaders(List.of("Authorization")); // 노출할 헤더 설정
         source.registerCorsConfiguration("/**", config); // 모든 URL 패턴에 대해 위의 CORS 설정을 적용
         return source;
     }
@@ -61,13 +60,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .httpBasic(AbstractHttpConfigurer::disable)
-                .csrf(CsrfConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+                .csrf(CsrfConfigurer::disable)
+                //.formLogin(AbstractHttpConfigurer::disable)
                 .formLogin(form -> form
-                        .loginPage("/api/auth/login")
+                        .loginPage("/api/auth/login").permitAll()
                         .loginProcessingUrl("/api/auth/local/login")
                         .defaultSuccessUrl("/home")
-                        .failureUrl("/api/v1/auth/login?error=true")
+                        .failureUrl("/api/auth/login?error=true")
                 )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
