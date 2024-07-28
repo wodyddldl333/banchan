@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        GIT_CREDENTIAL_ID = '201-105'
+        GIT_CREDENTIAL_ID = 'sky4tony'
     }
 
     stages {
