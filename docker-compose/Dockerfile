@@ -2,15 +2,10 @@ FROM jenkins/jenkins:lts
 
 USER root
 
-# Jenkins 홈 디렉토리 생성
-RUN mkdir -p /var/jenkins_home
-
-# 소유자 변경 (UID 1000, GID 1000)
-RUN chown -R 1000:1000 /var/jenkins_home
-
 # Docker 설치
 RUN apt-get update && \
     apt-get install -y \
+    sudo \
     apt-transport-https \
     ca-certificates \
     curl \
@@ -27,7 +22,9 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-c
     chmod +x /usr/local/bin/docker-compose
 
 # Docker 그룹에 jenkins 사용자 추가
-RUN usermod -aG docker jenkins
+# RUN groupmod -g 999 docker || groupadd -g 999 docker && usermod -aG docker jenkins
+
+RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers
 
 # 필요한 플러그인 설치 (선택 사항)
 RUN jenkins-plugin-cli --plugins "docker-plugin"
