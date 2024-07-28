@@ -2,6 +2,12 @@ FROM jenkins/jenkins:lts
 
 USER root
 
+# Jenkins 홈 디렉토리 생성
+RUN mkdir -p /var/jenkins_home
+
+# 소유자 변경 (UID 1000, GID 1000)
+RUN chown -R 1000:1000 /var/jenkins_home
+
 # Docker 설치
 RUN apt-get update && \
     apt-get install -y \
@@ -28,8 +34,4 @@ RUN jenkins-plugin-cli --plugins "docker-plugin"
 
 USER jenkins
 
-# Jenkins 홈 디렉토리 생성
-RUN mkdir -p /var/jenkins_home
 
-# 소유자 변경 (UID 1000, GID 1000)
-RUN chown -R 1000:1000 /var/jenkins_home
