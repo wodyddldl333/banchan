@@ -18,6 +18,7 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    ls -al
                     cd ~/201-105/S11P12E105/docker-compose
                     sudo docker stop -f banchan_back1
                     sudo docker stop -f banchan_back2
