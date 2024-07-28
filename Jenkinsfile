@@ -19,8 +19,6 @@ pipeline {
                 script {
                     sh '''
                     ls -al
-                    cd ~/201-105/S11P12E105/docker-compose
-                    sudo docker stop -f banchan_back1
                     sudo docker stop -f banchan_back2
                     sudo docker stop -f reverse
                     sudo docker rm -f banchan_back1
@@ -29,8 +27,8 @@ pipeline {
                     sudo docker rmi -f docker-compose-banchan_back1
                     sudo docker rmi -f docker-compose-banchan_back2
                     sudo docker rmi -f docker-compose-nginx
-                    sudo docker-compose -f docker-compose-back.yml up -d
-                    sudo docker-compose -f docker-compose-rvproxy.yml up -d
+                    sudo docker-compose -f ~/201-105/S11P12E105/docker-compose/docker-compose-back.yml up -d
+                    sudo docker-compose -f ~/201-105/S11P12E105/docker-compose/docker-compose-rvproxy.yml up -d
                     '''
                 }
             }
@@ -42,15 +40,14 @@ pipeline {
             steps {
                 script {
                     sh '''
-                    cd ~/201-105/S11P12E105/docker-compose
                     sudo docker stop -f banchan_front
                     sudo docker stop -f reverse
                     sudo docker rm -f banchan_front
                     sudo docker rm -f reverse
                     sudo docker rmi -f docker-compose-front_dt
                     sudo docker rmi -f docker-compose-nginx
-                    sudo docker-compose -f docker-compose-front.yml up -d
-                    sudo docker-compose -f docker-compose-rvproxy.yml up -d
+                    sudo docker-compose -f ~/201-105/S11P12E105/docker-compose/docker-compose-front.yml up -d
+                    sudo docker-compose -f ~/201-105/S11P12E105/docker-compose/docker-compose-rvproxy.yml up -d
                     '''
                 }
             }
