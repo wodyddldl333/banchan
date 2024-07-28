@@ -24,7 +24,7 @@ pipeline {
                     sudo docker rm banchan_back2
                     sudo docker rmi docker-compose-banchan_back1
                     sudo docker rmi docker-compose-banchan_back2
-                    sudo docker-compose /201-105/S11P12E105/docker-compose/docker-compose-back.yml up -d
+                    sudo docker-compose -f /201-105/S11P12E105/docker-compose/docker-compose-back.yml up -d
                     '''
                 }
             }
@@ -39,7 +39,7 @@ pipeline {
                     sudo docker stop banchan_front
                     sudo docker rm banchan_front
                     sudo docker rmi docker-compose-front_dt
-                    sudo docker-compose /201-105/S11P12E105/docker-compose/docker-compose-front.yml up -d
+                    sudo docker-compose -f /201-105/S11P12E105/docker-compose/docker-compose-front.yml up -d
                     '''
                 }
             }
