@@ -18,13 +18,16 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    cd /home/S11P12E105
+                    sudo git pull
+                    cd docker-compose
                     sudo docker stop banchan_back1
                     sudo docker stop banchan_back2
                     sudo docker rm banchan_back1
                     sudo docker rm banchan_back2
                     sudo docker rmi docker-compose-banchan_back1
                     sudo docker rmi docker-compose-banchan_back2
-                    sudo docker-compose -f /home/ubuntu/201-105/S11P12E105/docker-compose/docker-compose-back.yml up -d
+                    sudo docker-compose -f docker-compose-back.yml up -d
                     '''
                 }
             }
@@ -36,10 +39,13 @@ pipeline {
             steps {
                 script {
                     sh '''
+                    cd /home/S11P12E105
+                    sudo git pull
+                    cd docker-compose
                     sudo docker stop banchan_front
                     sudo docker rm banchan_front
                     sudo docker rmi docker-compose-front_dt
-                    sudo docker-compose -f /home/ubuntu/201-105/S11P12E105/docker-compose/docker-compose-front.yml up -d
+                    sudo docker-compose -f docker-compose-front.yml up -d
                     '''
                 }
             }
