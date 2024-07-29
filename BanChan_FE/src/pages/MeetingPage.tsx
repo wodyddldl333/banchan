@@ -15,39 +15,11 @@ type IconName =
   | "chat_bubble"
   | "notifications";
 
-const ControlPanels: React.FC<{ onChatToggle: () => void }> = ({
-  onChatToggle,
-}) => {
-  const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
-    record_voice_over: false,
-    mic_off: false,
-    videocam_off: false,
-    screen_share: false,
-    mic_off2: false,
-    exit_to_app: false,
-    book: false,
-    group: false,
-    chat_bubble: false,
-    notifications: false,
-  });
-
-  const handleButtonClick = (icon: IconName) => {
-    if (icon === "chat_bubble") {
-      onChatToggle();
-
-      setActiveIcons((prevState) => ({
-        ...prevState,
-        [icon]: !prevState[icon],
-      }));
-    } else {
-      setActiveIcons((prevState) => ({
-        ...prevState,
-
-        [icon]: !prevState[icon],
-      }));
-    }
-  };
-
+const ControlPanels: React.FC<{
+  onChatToggle: () => void;
+  activeIcons: Record<IconName, boolean>;
+  handleButtonClick: (icon: IconName) => void;
+}> = ({ onChatToggle, activeIcons, handleButtonClick }) => {
   return (
     <div className="px-4 flex items-center mt-4">
       <div className="flex space-x-8 ml-[210px]">
@@ -122,7 +94,7 @@ const ControlPanels: React.FC<{ onChatToggle: () => void }> = ({
         >
           <span className={`material-symbols-outlined`}>exit_to_app</span>
           <span className="ml-2">회의 나가기</span>
-        </button>
+        </button>{" "}
       </div>
 
       <div className="flex space-x-10 ml-[100px]">
@@ -133,7 +105,9 @@ const ControlPanels: React.FC<{ onChatToggle: () => void }> = ({
           group
         </span>
         <span
-          className="cursor-pointer material-symbols-outlined text-white"
+          className={`cursor-pointer material-symbols-outlined ${
+            activeIcons.chat_bubble ? "text-blue-500" : "text-white"
+          }`}
           onClick={() => handleButtonClick("chat_bubble")}
         >
           chat_bubble
@@ -161,6 +135,18 @@ const MeetingPage: React.FC = () => {
   ]);
   const [activeSpeaker, setActiveSpeaker] = useState<MediaStream | null>(null);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
+  const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
+    record_voice_over: false,
+    mic_off: false,
+    videocam_off: false,
+    screen_share: false,
+    mic_off2: false,
+    exit_to_app: false,
+    book: false,
+    group: false,
+    chat_bubble: false,
+    notifications: false,
+  });
 
   useEffect(() => {
     // 더미 비디오 스트림 생성
@@ -185,32 +171,57 @@ const MeetingPage: React.FC = () => {
     setIsChatBoxVisible((prevState) => !prevState);
   };
 
+  const handleButtonClick = (icon: IconName) => {
+    if (icon === "chat_bubble") {
+      handleChatToggle();
+      setActiveIcons((prevState) => ({
+        ...prevState,
+        [icon]: !prevState[icon],
+      }));
+    } else {
+      setActiveIcons((prevState) => ({
+        ...prevState,
+        [icon]: !prevState[icon],
+      }));
+    }
+  };
+
   return (
     <div className="h-screen flex flex-col bg-gray-100 relative">
       <header className="bg-customWebRTCHeader-light text-black p-2">
         <h1 className="text-center text-2xl">회의명 : LH 7월 3주차 정기회의</h1>
       </header>
-      <main className="flex flex-col h-full bg-customWebRTCBackground p-4 w-full">
-        <div className="flex items-center justify-center mb-6 w-full mt-6">
-          {activeSpeaker && (
-            <VideoPlayer
-              stream={activeSpeaker}
-              className="w-2/3 h-full max-h-[55vh] bg-black rounded-lg"
-            />
-          )}
+      <main className="flex flex-grow">
+        <div
+          className={`flex flex-col h-full bg-customWebRTCBackground p-4 transition-all duration-300 ${
+            isChatBoxVisible ? "w-11/12" : "w-full"
+          }`}
+        >
+          <div className="flex items-center justify-center mb-6 w-full mt-6">
+            {activeSpeaker && (
+              <VideoPlayer
+                stream={activeSpeaker}
+                className="w-2/3 h-full max-h-[55vh] bg-black rounded-lg"
+              />
+            )}
+          </div>
+          <div className="flex justify-center w-full">
+            {remoteStreamRefs.current.map((stream, index) => (
+              <ThumbnailPlayer
+                key={index}
+                stream={stream}
+                className="w-1/4 max-w-[30%] bg-black rounded-lg m-6"
+              />
+            ))}
+          </div>
+          <ControlPanels
+            onChatToggle={handleChatToggle}
+            activeIcons={activeIcons}
+            handleButtonClick={handleButtonClick}
+          />
         </div>
-        <div className="flex justify-center w-full">
-          {remoteStreamRefs.current.map((stream, index) => (
-            <ThumbnailPlayer
-              key={index}
-              stream={stream}
-              className="w-1/4 max-w-[30%] bg-black rounded-lg m-6"
-            />
-          ))}
-        </div>
-        <ControlPanels onChatToggle={handleChatToggle} />
         {isChatBoxVisible && (
-          <div className="absolute top-0 right-0 h-full">
+          <div className="h-full w-1/4 bg-white z-50">
             <ChatBox />
           </div>
         )}

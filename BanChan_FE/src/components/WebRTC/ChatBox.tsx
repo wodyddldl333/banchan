@@ -26,11 +26,11 @@ const ChatBox: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+    <div className="max-w-md mx-auto bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 h-full">
       <div className="mb-4">
         <h1 className="text-2xl font-bold">ChatBox</h1>
       </div>
-      <div className="mb-4 h-64 overflow-y-auto border border-gray-200 p-4 rounded">
+      <div className="mb-4 h-[500px] overflow-y-auto border border-gray-200 p-4 rounded">
         {messages.map((message) => (
           <div key={message.id} className="mb-2 p-2 bg-gray-100 rounded">
             {message.text}
