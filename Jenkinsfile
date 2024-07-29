@@ -44,7 +44,7 @@ pipeline {
                     cd docker-compose
                     sudo docker stop banchan_front
                     sudo docker rm banchan_front
-                    sudo docker rmi docker-compose-front_dt
+                    sudo docker rmi docker-compose_front_dt
                     sudo docker-compose -f docker-compose-front.yml up -d
                     '''
                 }
