@@ -15,6 +15,13 @@ import Detail from "./components/CRUD/Detail";
 import Update from "./components/CRUD/Update";
 import MeetingPage from "./pages/MeetingPage";
 import ChatBox from "./components/WebRTC/ChatBox";
+import VoteManagePage from "./pages/VoteManagePage";
+import MainLayout from "./components/MainLayout";
+import VoteCreatePage from "./components/VoteManage/VoteCreate";
+import VoteDetail from "./components/VoteManage/VoteDetail";
+import ActiveVote from "./components/VoteManage/ActiveVote";
+import FinishedVote from "./components/VoteManage/FinishedVote";
+import SendMessage from "./components/VoteManage/SendMessage";
 
 function App() {
   return (
@@ -36,6 +43,18 @@ function App() {
         <Route path="/update" element={<Update />} />
         <Route path="/meetingPage" element={<MeetingPage />} />
         <Route path="/chatBox" element={<ChatBox />} />
+        {/* 메인레이아웃 - 상단 툴바 및 좌측 메뉴바 */}
+        <Route element={<MainLayout />}>
+          <Route path="/vote" element={<VoteManagePage />}>
+            <Route path="active" element={<ActiveVote />} />
+            <Route path="finish" element={<FinishedVote />} />
+            <Route path="create" element={<VoteCreatePage />} />
+            <Route path="detail" element={<VoteDetail />} />
+            <Route path="message" element={<SendMessage />} />
+          </Route>
+        </Route>
+
+
       </Routes>
     </BrowserRouter>
   );
