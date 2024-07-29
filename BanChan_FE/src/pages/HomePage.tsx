@@ -1,62 +1,10 @@
 // import React from "react";
 
-const Home = () => {
+const HomePage = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-64 bg-white shadow-lg">
-        <div className="p-6">
-          <img
-            src="src/assets/logo.png"
-            alt="반찬 로고"
-            className="h-12 mb-6"
-          />
-          <nav className="space-y-4">
-            <a href="#" className="flex items-center text-blue-500">
-              <span className="ml-2">메인페이지</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">마이페이지</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">커뮤니티</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">이용자 관리</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">투표 관리</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">회의 관리</span>
-            </a>
-            <a href="#" className="flex items-center text-gray-600">
-              <span className="ml-2">기타 관리</span>
-            </a>
-          </nav>
-          <button className="mt-6 text-gray-600">로그아웃</button>
-        </div>
-      </div>
-
+<>
       {/* Main Content */}
       <div className="flex-1 p-6 ">
-        <header className="flex items-center justify-between mb-6">
-          <h1 className="text-2xl font-bold">메인페이지</h1>
-          <div className="flex items-center space-x-4">
-            <span className="text-gray-500">현재: 부산 모라 LH 행복주택</span>
-            <input
-              type="text"
-              placeholder="궁금한 것을 검색해보세요"
-              className="px-4 py-2 border rounded"
-            />
-            <img
-              src="src/assets/user.png"
-              alt="프로필"
-              className="h-10 w-10 rounded-full"
-            />
-          </div>
-        </header>
-
         <div className="grid grid-cols-3 gap-6">
           {/* 이달분 고지서 */}
           <div className="bg-white p-6 rounded-lg shadow-md col-span-1">
@@ -94,7 +42,7 @@ const Home = () => {
               src="src/assets/apartment_market.png"
               alt="아파트 당근마켓"
               className="rounded-lg"
-            />
+              />
           </div>
 
           {/* 공지사항 */}
@@ -151,8 +99,8 @@ const Home = () => {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
-export default Home;
+export default HomePage;

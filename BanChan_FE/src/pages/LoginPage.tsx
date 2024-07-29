@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 // import { Link } from "react-router-dom";
 
 const LoginPage = () => {
@@ -73,13 +74,16 @@ const LoginPage = () => {
           </a>
         </div>
         <div className="relative">
+          {/* 임시 통과용 */}
+          <Link to='/home'>
           <button
             className="w-full h-14 bg-customBlue text-white rounded-lg transition-transform transform hover:bg-customBlue hover:scale-105"
             id="submit"
             onClick={validate}
-          >
+            >
             로그인
           </button>
+            </Link>
         </div>
         {/* <div className="text-center text-sm">
           <p>

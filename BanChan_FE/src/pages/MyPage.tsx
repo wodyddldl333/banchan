@@ -1,7 +1,7 @@
 import React from 'react';
 import {Outlet } from "react-router-dom";
 
-const CommunityPage: React.FC = () => {
+const MyPage: React.FC = () => {
 
   return (
         <>
@@ -10,4 +10,4 @@ const CommunityPage: React.FC = () => {
   );
 };
 
-export default CommunityPage;
+export default MyPage;
