@@ -1,6 +1,3 @@
-// import React from "react";
-import MainHeader from "../MainHeader";
-import MainSideBar from "../MainSideBar";
 import Pagination from "../Pagination";
 import Table from "../Table";
 import Nav from "../Nav";
@@ -94,19 +91,14 @@ const NavElements = () => {
 
 const Approval = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <MainSideBar />
-
-      <div className="flex-1 bg-customBackgroundColor  ">
-        <MainHeader />
+<>
         <NavElements />
         <div className="container mx-auto p-4 mt-3">
           <div className="flex justify-end items-center mb-6 mr-6"></div>
           <Table headers={headers} data={data} />
           <Pagination />
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 

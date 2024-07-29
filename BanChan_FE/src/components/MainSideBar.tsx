@@ -38,9 +38,21 @@ const MainSideBar: React.FC = () => {
           className="h-[100px] w-[160px] ml-6 my-6"
         />
         <nav className="space-y-12 text-center mt-20">
-          <SidebarItem icon="home" text="메인페이지" to="/home" />
-          <SidebarItem icon="Person" text="마이페이지" to="/community/notice" />
-          <SidebarItem icon="Chat" text="커뮤니티" to="/community/notice" />
+          <SidebarItem 
+            icon="home" 
+            text="메인페이지" 
+            to="/home" 
+          />
+          <SidebarItem 
+            icon="Person" 
+            text="마이페이지" 
+            to="/user" 
+          />
+          <SidebarItem 
+            icon="Chat" 
+            text="커뮤니티" 
+            to="/community/notice" 
+          />
           <SidebarItem
             icon="manage_accounts"
             text="이용자관리"
@@ -49,7 +61,7 @@ const MainSideBar: React.FC = () => {
           <SidebarItem
             icon="how_to_vote"
             text="투표 관리"
-            to="/community/notice"
+            to="/vote/active"
           />
           <SidebarItem
             icon="video_camera_front"
@@ -59,12 +71,12 @@ const MainSideBar: React.FC = () => {
           <SidebarItem
             icon="HandyMan"
             text="기타 관리"
-            to="/community/notice"
+            to="/others"
           />
         </nav>
 
         <div className="mt-[220px]"></div>
-        <SidebarItem icon="logout" text="로그아웃" to="" />
+        <SidebarItem icon="logout" text="로그아웃" to="/" />
       </div>
     </div>
   );

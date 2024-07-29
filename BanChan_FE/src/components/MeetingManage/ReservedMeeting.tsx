@@ -1,6 +1,3 @@
-// import React from "react";
-import MainSideBar from "../MainSideBar";
-import MainHeader from "../MainHeader";
 import LargeButton from "../Buttons/LargeButton";
 import Pagination from "../Pagination";
 import Table from "../Table";
@@ -71,11 +68,7 @@ const NavElements = () => {
 
 const ReservedMeeting = () => {
   return (
-    <div className="flex h-screen bg-gray-100">
-      <MainSideBar />
-
-      <div className="flex-1 bg-customBackgroundColor  ">
-        <MainHeader />
+<>
         <NavElements />
         <div className="container mx-auto p-4 mt-3">
           <div className="flex justify-end items-center mb-6 mr-6">
@@ -84,8 +77,7 @@ const ReservedMeeting = () => {
           <Table headers={headers} data={data} />
           <Pagination />
         </div>
-      </div>
-    </div>
+    </>
   );
 };
 

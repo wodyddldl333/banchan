@@ -1,7 +1,5 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
-import MainHeader from "../MainHeader";
-import MainSideBar from "../MainSideBar";
 import Pagination from "../Pagination";
 import LargeButton from "../Buttons/LargeButton";
 import Sorting from "../Sorting";
@@ -133,10 +131,7 @@ const Notice: React.FC = () => {
   // }, []);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      <MainSideBar />
-      <div className="flex-1 bg-customBackgroundColor">
-        <MainHeader />
+        <>
         <NavElements />
         <div className="container mx-auto p-4 mt-3">
           <Routes>
@@ -153,11 +148,10 @@ const Notice: React.FC = () => {
                   <Pagination />
                 </>
               }
-            />
+              />
           </Routes>
         </div>
-      </div>
-    </div>
+      </>
   );
 };
 
