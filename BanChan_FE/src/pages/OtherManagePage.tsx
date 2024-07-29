@@ -1,7 +1,7 @@
 import React from 'react';
 import {Outlet } from "react-router-dom";
 
-const UserManagePage: React.FC = () => {
+const OtherManagePage: React.FC = () => {
 
   return (
         <>
@@ -10,4 +10,4 @@ const UserManagePage: React.FC = () => {
   );
 };
 
-export default UserManagePage;
+export default OtherManagePage;
