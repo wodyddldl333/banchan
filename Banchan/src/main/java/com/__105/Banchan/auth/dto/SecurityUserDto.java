@@ -10,5 +10,6 @@ import lombok.Getter;
 public class SecurityUserDto {
     private Long id;          // User 도메인의 id와 일치
     private String email;
+    private String username;
     private Role role;
 }
