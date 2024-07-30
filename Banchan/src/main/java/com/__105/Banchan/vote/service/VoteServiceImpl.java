@@ -1,5 +1,7 @@
 package com.__105.Banchan.vote.service;
 
+import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;
 import com.__105.Banchan.vote.repository.*;
@@ -201,10 +203,7 @@ public class VoteServiceImpl implements VoteService {
 
     private User findUserByUsername(String username) {
 
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new RuntimeException("User not found");
-        }
-        return user;
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("Invalid username"));
     }
 }
