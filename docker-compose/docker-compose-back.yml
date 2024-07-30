@@ -2,7 +2,6 @@ x-environments: &default
   env_file: .env # 기본 환경 파일을 지정합니다.
 
 services:
-
   banchan_back1:
     container_name: banchan_back1
     build:
@@ -42,7 +41,7 @@ services:
       - "3306:3306"
     <<: *default
     volumes:
-      - mysql_data:/var/lib/mysql
+      - ../Banchan/mysql_data:/var/lib/mysql
     networks:
       - mynetwork
     healthcheck:
@@ -64,7 +63,7 @@ services:
     <<: *default
     volumes:
       - ../Banchan/redis_data:/data
-      - ../Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../Banchan/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - mynetwork
     healthcheck:
