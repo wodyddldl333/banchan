@@ -1,6 +1,7 @@
 package com.__105.Banchan.user.domain;
 
 import com.__105.Banchan.user.enums.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,7 +20,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "username", nullable = false, length = 50)
@@ -52,6 +53,12 @@ public class User {
 
     @Column(name = "attribute_key")
     private String attributeKey;
+
+    // User를 지우면 UserApartments도 지워지게끔 설정
+    @Builder.Default // 빌더 패턴 사용시 필드 초기화 값 유지, 없으면 빈 Set으로 초기화
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<UserApartment> userApartments = new HashSet<>();
+
 
     public void changePhone(String phone) {
         this.phone = phone;
