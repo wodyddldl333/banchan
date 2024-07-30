@@ -20,7 +20,7 @@ public class UserApartment {
 
     @JsonIgnore // 순환 참조 방지를 위해 추가
     @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY) // FetchType.LAZY: 지연로딩 (필요할 때 로딩)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(targetEntity = Apartment.class, fetch = FetchType.LAZY)

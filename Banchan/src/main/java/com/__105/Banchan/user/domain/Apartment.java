@@ -7,7 +7,7 @@ import jakarta.persistence.Table;
 import lombok.*;
 
 @Entity
-@Table(name = "apartment")
+@Table(name = "apt")
 @Getter
 @Setter
 @Builder
