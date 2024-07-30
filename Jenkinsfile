@@ -8,7 +8,14 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://lab.ssafy.com/s11-webmobile1-sub2/S11P12E105.git', branch: 'production', credentialsId: GIT_CREDENTIAL_ID
+                script {
+                    git url: 'https://lab.ssafy.com/s11-webmobile1-sub2/S11P12E105.git', branch: 'production', credentialsId: GIT_CREDENTIAL_ID
+                    sh '''
+                    cd /home/S11P12E105
+                    cd docker-compose
+                    '''     
+                }
+                
             }
         }
         stage('Build and Deploy Backend') {
@@ -19,7 +26,6 @@ pipeline {
                 script {
                     sh '''
                     cd /home/S11P12E105
-                    sudo git pull
                     cd docker-compose
                     sudo docker stop banchan_back1
                     sudo docker stop banchan_back2
@@ -40,7 +46,6 @@ pipeline {
                 script {
                     sh '''
                     cd /home/S11P12E105
-                    sudo git pull
                     cd docker-compose
                     sudo docker stop banchan_front
                     sudo docker rm banchan_front
