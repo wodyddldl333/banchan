@@ -19,7 +19,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "user_id")
     private Long id;
 
     @Column(name = "username", nullable = false, length = 50)
@@ -52,7 +52,6 @@ public class User {
 
     @Column(name = "attribute_key")
     private String attributeKey;
-
 
     public void changePhone(String phone) {
         this.phone = phone;
