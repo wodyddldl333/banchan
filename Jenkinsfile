@@ -12,7 +12,7 @@ pipeline {
                     git url: 'https://lab.ssafy.com/s11-webmobile1-sub2/S11P12E105.git', branch: 'production', credentialsId: GIT_CREDENTIAL_ID
                     sh '''
                     cd /home/S11P12E105
-                    cd docker-compose
+                    sudo git pull
                     '''     
                 }
                 
