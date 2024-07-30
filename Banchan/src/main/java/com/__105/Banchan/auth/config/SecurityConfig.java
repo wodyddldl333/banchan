@@ -62,13 +62,13 @@ public class SecurityConfig {
                 .httpBasic(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .csrf(CsrfConfigurer::disable)
-                //.formLogin(AbstractHttpConfigurer::disable)
-                .formLogin(form -> form
-                        .loginPage("/api/auth/login").permitAll()
-                        .loginProcessingUrl("/api/auth/local/login")
-                        .defaultSuccessUrl("/home")
-                        .failureUrl("/api/auth/login?error=true")
-                )
+                .formLogin(AbstractHttpConfigurer::disable)
+//                .formLogin(form -> form
+//                        .loginPage("/api/auth/login").permitAll()
+//                        .loginProcessingUrl("/api/auth/local/login")
+//                        .defaultSuccessUrl("/home")
+//                        .failureUrl("/api/auth/login?error=true")
+//                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers("/api/auth/token/refresh").hasRole("USER")

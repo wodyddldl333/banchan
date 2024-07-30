@@ -34,29 +34,29 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // request Header에서 AccessToken을 가져온다.
         String accessToken = resolveToken(request);
-        log.debug("Access Token: " + accessToken);
+        log.info("Access Token: " + accessToken);
 
         // 토큰 검사 생략(모두 허용 URL의 경우 토큰 검사 통과)
         if (!StringUtils.hasText(accessToken)){
-            log.debug("Access Token이 없습니다.");
+            log.info("Access Token이 없습니다.");
             filterChain.doFilter(request,response);
             return;
         }
 
         // AccessToken을 검증하고, 만료되었을 경우 예외 발생
         if (!jwtUtil.verifyToken(accessToken)){
-            log.debug("Access Token이 만료되었습니다.");
+            log.info("Access Token이 만료되었습니다.");
             throw new JwtException("Access Token 만료!");
         }
 
         // AccessToken의 값이 있고, 유효한 경우 진행
         if (jwtUtil.verifyToken(accessToken)) {
-            log.debug("Access Token이 유효합니다.");
+            log.info("Access Token이 유효합니다.");
 
             // AccessToken 내부의 payload에 있는 email로 user를 조회한다. 없다면 예외 발생
             User findUser = userRepository.findByEmail(jwtUtil.getUid(accessToken))
                     .orElseThrow(() -> new JwtException("Invalid JWT token"));
-            log.debug("User: " + findUser.getEmail());
+            log.info("User: " + findUser.getEmail());
 
             // SecurityContext에 등록할 User 객체를 만들어 준다.
             SecurityUserDto userDto = SecurityUserDto.builder()
@@ -68,7 +68,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // SecurityContext에 인증 객체 등록
             Authentication auth = getAuthentication(userDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
-            log.debug("SecurityContext에 인증 객체 등록 완료");
+            log.info("SecurityContext에 인증 객체 등록 완료");
         }
 
         filterChain.doFilter(request,response);
