@@ -1,31 +1,32 @@
-package com.__105.Banchan.vote.Entity;
+package com.__105.Banchan.user.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Entity
+@Table(name = "apt")
 @Getter
+@Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-@Table(name = "apt")
 public class Apartment {
 
     @Id
+    @Column(name = "code", nullable = false, length = 50)
     private String code;
 
-    @Column(name = "apartment_name", nullable = false)
+    @Column(name = "apartment_name", nullable = false, length = 255)
     private String apartmentName;
 
-    @Column(name = "addr", nullable = false)
+    @Column(name = "addr", nullable = false, length = 255)
     private String addr;
 
     @Column(name = "total_units")
-    private int totalUnits;
+    private Integer totalUnits;
+
+
 }
