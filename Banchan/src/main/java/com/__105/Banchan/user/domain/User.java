@@ -53,7 +53,6 @@ public class User {
     @Column(name = "attribute_key")
     private String attributeKey;
 
-
     public void changePhone(String phone) {
         this.phone = phone;
     }

@@ -14,6 +14,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -54,5 +56,15 @@ public class UserServiceImpl implements UserService {
         userRepository.save(setUser);
 
         log.info("전화번호, 이름 수정 완료");
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public boolean checkPhone(String phone) {
+
+        // 전화번호로 검색 후 존재 유무를 boolean으로 반환
+        Optional<User> entity = userRepository.findByPhone(phone);
+
+        return entity.isPresent(); // 존재하면 true, 존재하지 않으면 false
     }
 }

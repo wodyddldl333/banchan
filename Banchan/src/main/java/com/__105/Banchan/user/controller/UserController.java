@@ -10,10 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -36,5 +33,11 @@ public class UserController {
         User user = userService.getMyInfo();
         userService.setMyInfo(user, signupRequestDto);
         return ResponseEntity.ok().body(user);
+    }
+
+    @GetMapping("/check/phone")
+    @Operation(summary = "전화번호 중복 확인", description = "전화번호 중복 확인")
+    public ResponseEntity<Boolean> checkPhone(@RequestParam String phone) { // 전화번호 하나만 받기 때문에 @PathVariable
+        return ResponseEntity.ok().body(userService.checkPhone(phone));
     }
 }

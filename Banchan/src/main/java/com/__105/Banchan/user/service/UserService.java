@@ -8,6 +8,8 @@ import java.util.Optional;
 public interface UserService {
     User getMyInfo();
 
+    boolean checkPhone(String phone);
+
     void setMyInfo(User user, SignupRequestDto signupRequestDto);
 
 }
