@@ -25,8 +25,8 @@ pipeline {
                     sudo docker stop banchan_back2
                     sudo docker rm banchan_back1
                     sudo docker rm banchan_back2
-                    sudo docker rmi docker-compose-banchan_back1
-                    sudo docker rmi docker-compose-banchan_back2
+                    sudo docker rmi docker-compose_banchan_back1
+                    sudo docker rmi docker-compose_banchan_back2
                     sudo docker-compose -f docker-compose-back.yml up -d
                     '''
                 }
