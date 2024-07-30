@@ -184,9 +184,10 @@ public class AuthServiceImpl implements AuthService {
                 // 회원가입 처리
                 user = User.builder()
                         .email(userEmail)
+                        .username(userEmail)
                         .passwordHash(passwordEncoder.encode(GenerateRandomPassword.createRandomPassword())) // 소셜 로그인에서는 사용하지 않는 값 -> 랜덤 값 삽입
                         .role(Role.USER)
-                        .provider("kakao")
+                        .socialType("kakao")
                         .attributeKey("")
                         .createdAt(LocalDateTime.now())
                         .build();

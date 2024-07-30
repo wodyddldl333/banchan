@@ -5,12 +5,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Getter
+@Setter
 @Builder
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "users")
 public class User {
 
@@ -18,6 +21,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
+
+    @Column(name = "username", nullable = false, length = 50)
+    private String username;
 
     @Column(name = "realname", length = 50)
     private String realname;
@@ -38,14 +44,24 @@ public class User {
     @Column(name = "created_at")
     private LocalDateTime createdAt;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
 
-    // 추가된 필드들
-    @Column(name = "provider")
-    private String provider;
+    @Column(name = "social_type")
+    private String socialType;
 
     @Column(name = "attribute_key")
     private String attributeKey;
+
+
+    public void changePhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void changeRealname(String realname) {
+        this.realname = realname;
+    }
 }
+
+
 

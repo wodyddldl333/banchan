@@ -12,14 +12,15 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Bean
     public WebMvcConfigurer corsConfigurer() {
         return new WebMvcConfigurer() {
-
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
                         .allowedOrigins("http://localhost")
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS","HEAD")
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
-                        .maxAge(3600); 
+                        .exposedHeaders("Authorization", "refreshToken")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
     }
