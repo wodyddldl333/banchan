@@ -51,22 +51,22 @@ const MainSideBar: React.FC = () => {
           <SidebarItem 
             icon="Chat" 
             text="커뮤니티" 
-            to="/community/notice" 
+            to="/community" 
           />
           <SidebarItem
             icon="manage_accounts"
             text="이용자관리"
-            to="/userManage/approval"
+            to="/userManage"
           />
           <SidebarItem
             icon="how_to_vote"
             text="투표 관리"
-            to="/vote/active"
+            to="/vote"
           />
           <SidebarItem
             icon="video_camera_front"
             text="회의 관리"
-            to="/meeting/reservedMeeting"
+            to="/meeting"
           />
           <SidebarItem
             icon="HandyMan"

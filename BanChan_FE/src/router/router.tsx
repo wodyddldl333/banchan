@@ -27,7 +27,7 @@ import MeetingManagePage from "../pages/MeetingManagePage";
 import UserManagePage from "../pages/UserManagePage";
 import MyPage from "../pages/MyPage";
 import OtherManagePage from "../pages/OtherManagePage";
-
+import { Navigate } from "react-router-dom";
 function AppRoutes() {
   return (
       <Routes>
@@ -48,12 +48,14 @@ function AppRoutes() {
           
           {/* 유저관리 페이지 */}
           <Route path="/userManage" element={<UserManagePage/>}>
+            <Route index element={<Navigate to="approval" />} />
             <Route path="approval" element={<Approval />} />
             <Route path="manage" element={<Manage />} />
           </Route>
 
           {/* 회의관리 페이지 */}
           <Route path="/meeting" element={<MeetingManagePage/>}>
+            <Route index element={<Navigate to="reservedMeeting" />} />
             <Route path="reservedMeeting" element={<ReservedMeeting />} />
             <Route path="activeMeeting" element={<ActiveMeeting />} />
             <Route path="finishedMeeting" element={<FinishedMeeting />} />
@@ -61,6 +63,7 @@ function AppRoutes() {
 
           {/* 커뮤니티 페이지 */}
           <Route path="/community" element={<CommunityPage/>}>
+            <Route index element={<Navigate to="notice" />} />
             <Route path="notice" element={<Notice />} />
             <Route path="board" element={<Board />} />
             <Route path="ask" element={<Ask />} />
@@ -68,6 +71,7 @@ function AppRoutes() {
 
           {/* 투표관리 페이지 */}
           <Route path="/vote" element={<VoteManagePage />}>
+            <Route index element={<Navigate to="active" />} />
             <Route path="active" element={<ActiveVote />} />
             <Route path="finish" element={<FinishedVote />} />
             <Route path="create" element={<VoteCreatePage />} />
