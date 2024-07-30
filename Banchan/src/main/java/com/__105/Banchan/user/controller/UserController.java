@@ -20,17 +20,10 @@ public class UserController {
 
     private final UserService userService;
 
-//    @GetMapping("/me")
-//    @Operation(summary = "내 정보 조회", description = "현재 로그인된 사용자의 정보를 반환합니다.")
-//    public ResponseEntity<?> getMyInfo(@AuthenticationPrincipal UserDetails userDetails) {
-//        String user = userDetails.getUsername();
-//        return ResponseEntity.ok().body(user);
-//    }
-
-    @GetMapping("/me")
+    @GetMapping("/myinfo")
     @Operation(summary = "내 정보 조회", description = "현재 로그인된 사용자의 정보를 반환합니다.")
     public ResponseEntity<User> getMyInfo() {
-        User currentUser = userService.getCurrentUser();
-        return ResponseEntity.ok(currentUser);
+        User user = userService.getMyInfo();
+        return ResponseEntity.ok().body(user);
     }
 }
