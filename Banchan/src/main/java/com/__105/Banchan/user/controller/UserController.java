@@ -2,6 +2,7 @@ package com.__105.Banchan.user.controller;
 
 import com.__105.Banchan.user.domain.User;
 import com.__105.Banchan.user.dto.SignupRequestDto;
+import com.__105.Banchan.user.dto.UserAptRequestDto;
 import com.__105.Banchan.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -39,5 +40,13 @@ public class UserController {
     @Operation(summary = "전화번호 중복 확인", description = "전화번호 중복 확인")
     public ResponseEntity<Boolean> checkPhone(@RequestParam String phone) { // 전화번호 하나만 받기 때문에 @PathVariable
         return ResponseEntity.ok().body(userService.checkPhone(phone));
+    }
+
+    @PostMapping("/setmyapt")
+    @Operation(summary = "아파트 정보 초기 설정", description = "아파트 초기 설정")
+    public ResponseEntity<User> setUserAPt(@RequestBody UserAptRequestDto requestDto) {
+        User user = userService.getMyInfo();
+        userService.setUserApt(user, requestDto);
+        return ResponseEntity.ok().body(user);
     }
 }
