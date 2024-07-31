@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import VoteForm from './VoteForm';
+
 const VoteDetail: React.FC = () => {
     
     const voteData = {
@@ -12,7 +14,7 @@ const VoteDetail: React.FC = () => {
         "questions": [
             {
                 "question_id": 1,
-                "question_text": "이거 할거야?",
+                "question_text": "첫번째 투표",
                 "options": [
                     {
                         "id": 1,
@@ -23,15 +25,50 @@ const VoteDetail: React.FC = () => {
                         "option_text": "반대"
                     }
                 ]
+            },
+            {
+                "question_id": 2,
+                "question_text": "두번째 투표",
+                "options": [
+                    {
+                        "id": 1,
+                        "option_text": "A안"
+                    },
+                    {
+                        "id": 2,
+                        "option_text": "B안"
+                    },
+                    {
+                        "id": 3,
+                        "option_text": "C안"
+                    }
+                ]
             }
         ]
     }
+    const [votes, setVotes] = useState<{ [key: number]: number | null }>({});
+
+    const handleVoteChange = (question_id: number, option_id: number) => {
+        setVotes((prevVotes) => ({
+          ...prevVotes,
+          [question_id]: option_id,
+        }));
+      };
     
+      const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const voteResult = Object.keys(votes).map((question_id) => ({
+          question_id: Number(question_id),
+          option_id: votes[Number(question_id)],
+        }));
+        console.log(voteResult);
+    }
+
     const Contents = () =>  {
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
             // 투표 가져오는 로직, submit 했을 시 투표 결과 보내는 로직 및 투표 틀 만들기 필요
-        <form>
+        <form onSubmit={handleSubmit}>
         {/* 제목 */}
             <div>
     
@@ -53,11 +90,15 @@ const VoteDetail: React.FC = () => {
            </p>
 
             {
-                voteData.questions.map((item)=>(
-
-                 <div> {item.options[0].option_text}</div>
+                voteData.questions.map((question)=>(
+                    <VoteForm 
+                    key={question.question_id}
+                    question={question}
+                    voteSelection={handleVoteChange}
+                    />
+                    
                 )
-                )
+            )
             }
             </div>
             </div>
@@ -70,9 +111,9 @@ const VoteDetail: React.FC = () => {
     {/* 투표 버튼 */}
             <div className='pt-2 flex justify-center'>
             
-            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 정지</button>
-            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 알람 전송</button>
-            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 제출</button>
+            <button type='button' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 정지</button>
+            <button type='button' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 알람 전송</button>
+            <button type='submit' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 제출</button>
 
     
             </div>
@@ -97,5 +138,3 @@ const VoteDetail: React.FC = () => {
 };
 
 export default VoteDetail;
-
-
