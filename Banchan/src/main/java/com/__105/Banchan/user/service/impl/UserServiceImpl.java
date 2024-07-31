@@ -4,9 +4,11 @@ import com.__105.Banchan.auth.dto.SecurityUserDto;
 import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.common.exception.CustomException;
 import com.__105.Banchan.common.exception.ErrorCode;
-import com.__105.Banchan.user.domain.Apartment;
-import com.__105.Banchan.user.domain.User;
-import com.__105.Banchan.user.domain.UserApartment;
+import com.__105.Banchan.user.dto.UserDto;
+import com.__105.Banchan.user.dto.UserResponseDto;
+import com.__105.Banchan.user.entity.Apartment;
+import com.__105.Banchan.user.entity.User;
+import com.__105.Banchan.user.entity.UserApartment;
 import com.__105.Banchan.user.dto.SignupRequestDto;
 import com.__105.Banchan.user.dto.UserAptRequestDto;
 import com.__105.Banchan.user.repository.AptRepository;
@@ -32,16 +34,18 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public User getMyInfo(){
+    public UserResponseDto getMyInfo(){
 
         SecurityUserDto userDto = JwtAuthFilter.getUser();
-
-        return userRepository.findByEmail(userDto.getEmail())
+        User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        return new UserResponseDto(user);
+
     }
 
     @Override
-    public void setMyInfo(User user, SignupRequestDto signupRequestDto) {
+    public User setMyInfo(User user, SignupRequestDto signupRequestDto) {
 
         User setUser = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -63,6 +67,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(setUser);
 
         log.info("전화번호, 이름 수정 완료");
+        return setUser;
     }
 
     @Override
@@ -76,7 +81,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setUserApt(User user, UserAptRequestDto requestDto) {
+    public UserResponseDto setUserApt(User user, UserAptRequestDto requestDto) {
 
         Apartment apt = aptRepository.findByCode(requestDto.getAptCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.APARTMENT_NOT_FOUND));
@@ -86,11 +91,18 @@ public class UserServiceImpl implements UserService {
                 .apartment(apt)
                 .buildingNo(requestDto.getBuildingNo())
                 .unitNo(requestDto.getUnitNo())
-                .isActivated(false)
+                .isGranted(false)
                 .build();
 
         userAptRepository.save(setUserApartment);
         log.info("아파트 정보 초기 설정 완료");
 
+        // 아파트 정보가 설정된 후 User 객체를 다시 로드하여 UserResponseDto로 변환하여 반환
+        // 현재 지연 로딩이기 때문에 동작 수행 후에는 반영이 안된 상태의 Dto가 반환된다.
+        // 유저 정보 조회할 때에는 제대로 반영되어 있음
+        User updatedUser = userRepository.findById(user.getId())
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
+
+        return new UserResponseDto(updatedUser);
     }
 }

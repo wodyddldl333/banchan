@@ -1,11 +1,11 @@
-package com.__105.Banchan.user.domain;
+package com.__105.Banchan.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "user_apartment")
+@Table(name = "user_apt")
 @Getter
 @Setter
 @Builder
@@ -24,7 +24,7 @@ public class UserApartment {
     private User user;
 
     @ManyToOne(targetEntity = Apartment.class, fetch = FetchType.LAZY)
-    @JoinColumn(name = "apartment_code", referencedColumnName = "code", nullable = false)
+    @JoinColumn(name = "apt_code", referencedColumnName = "apt_code", nullable = false)
     private Apartment apartment;
 
     @Column(name = "building_no", nullable = false, length = 50)
@@ -33,6 +33,6 @@ public class UserApartment {
     @Column(name = "unit_no", nullable = false, length = 50)
     private String unitNo;
 
-    @Column(name = "is_activated", nullable = false)
-    private boolean isActivated;
+    @Column(name = "is_granted", nullable = false)
+    private boolean isGranted;
 }

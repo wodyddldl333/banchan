@@ -1,4 +1,4 @@
-package com.__105.Banchan.user.domain;
+package com.__105.Banchan.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +16,7 @@ import lombok.*;
 public class Apartment {
 
     @Id
-    @Column(name = "code", nullable = false, length = 50)
+    @Column(name = "apt_code", nullable = false, length = 50)
     private String code;
 
     @Column(name = "apartment_name", nullable = false, length = 255)

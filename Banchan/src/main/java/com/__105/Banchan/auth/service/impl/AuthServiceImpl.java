@@ -13,7 +13,7 @@ import com.__105.Banchan.common.exception.ErrorCode;
 import com.__105.Banchan.redis.domain.RefreshToken;
 import com.__105.Banchan.redis.repository.RefreshTokenRepository;
 import com.__105.Banchan.redis.service.RefreshTokenService;
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.enums.Role;
 import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.util.GenerateRandomPassword;

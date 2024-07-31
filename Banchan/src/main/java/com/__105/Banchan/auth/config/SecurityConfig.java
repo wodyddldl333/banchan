@@ -2,7 +2,7 @@ package com.__105.Banchan.auth.config;
 
 import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.auth.jwt.JwtExceptionFilter;
-import com.__105.Banchan.auth.service.CustomUserDetailsService;
+import com.__105.Banchan.util.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

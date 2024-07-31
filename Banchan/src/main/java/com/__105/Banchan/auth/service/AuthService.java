@@ -6,7 +6,7 @@ import com.__105.Banchan.auth.dto.TokenResponseStatus;
 
 import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 

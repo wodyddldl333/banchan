@@ -1,6 +1,6 @@
-package com.__105.Banchan.auth.service;
+package com.__105.Banchan.util;
 
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +29,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(user.getRole().toString());
 
         return new org.springframework.security.core.userdetails.User(
-                String.valueOf(user.getId()),
+                user.getUsername(),
                 user.getPasswordHash(),
                 Collections.singletonList(grantedAuthority)
         );

@@ -5,6 +5,7 @@ import com.__105.Banchan.auth.dto.KakaoUserInfoDto;
 import com.__105.Banchan.auth.dto.StatusResponseDto;
 import com.__105.Banchan.auth.dto.TokenResponseStatus;
 
+import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.service.AuthService;
 import com.__105.Banchan.user.repository.UserRepository;
@@ -31,6 +32,12 @@ public class AuthController {
     private final AuthService authService;
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final UserRepository userRepository;
+
+    @PostMapping("/origin/login")
+    @Operation(summary = "자체 로그인", description = "이메일, 비밀번호로 로그인")
+    public ResponseEntity<Map<String, String>> originLogin(@RequestBody OriginLoginRequestDto loginRequestDto) {
+        return authService.originLogin(loginRequestDto);
+    }
 
     @PostMapping("/token/logout")
     @Operation(summary = "로그아웃", description = "로그아웃 처리 및 토큰 삭제")
