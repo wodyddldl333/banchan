@@ -1,17 +1,23 @@
 // VoteCreatePage.tsx
 import React, { useState,useRef,useEffect} from 'react';
 import { Link } from 'react-router-dom';
-import VoteForm from './VoteForm';
+import VoteCreateForm from './VoteCreateForm';
+
+
+interface Form {
+  id: number;
+  questionText: string;
+  options: string[];
+
+}
 
 const VoteCreatePage: React.FC = () => {
-  const [forms, setForms] = useState<number[]>([]);
+  const [forms, setForms] = useState<Form[]>([]);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [voteStart, setVoteStart] = useState('');
   const [voteEnd, setVoteEnd] = useState('');
-  const [files, setFiles] = useState<File | null>(null);
 
-    console.log(files)
   //   textarea 높이 자동조절 코드
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
@@ -22,38 +28,47 @@ const VoteCreatePage: React.FC = () => {
     }
   }, [content]);
 
-
+  // 투표 생성
   const handleAddForm = () => {
-    setForms([...forms, Date.now()]);
+    setForms([...forms, { id: Date.now(), questionText : '',options: [] }]);
   };
-
+  // 투표 삭제
   const handleDeleteForm = (id: number) => {
-    setForms(forms.filter(formId => formId !== id));
+    setForms(forms.filter(form => form.id !== id));
   };
-
+  // 제목 변경
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
   };
-
+  // 내용 변경
   const handleContentChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setContent(e.target.value);
   };
-
+  // 투표 내용물 변경
+  const handleFormChange = (id: number, data: { questionText: string; options: string[] }) => {
+    const updatedForms = forms.map(form => form.id === id ? { ...form, ...data } : form);
+    setForms(updatedForms);
+  }
+  // 투표 시작일 변경
   const handleVoteStartChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVoteStart(e.target.value);
   };
-
+  // 투표 종료일 변경
   const handleVoteEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVoteEnd(e.target.value);
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(e.target.files[0]);
-    }
-  };
-
+  // 투표 등록
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const data = {
+      title,
+      content,
+      voteStart,
+      voteEnd,
+      forms
+    }
+    console.log(data)
+    // 서브밋 이벤트 방지
     e.preventDefault();
     // 백엔드로 POST 요청 보내는 로직 필요
   };
@@ -86,7 +101,6 @@ const VoteCreatePage: React.FC = () => {
               <h2 className='text-base m-2 text-customTextColor'>내용</h2>
               <div className='w-full h-[350px] overflow-y-auto bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform'
               >
-
               <textarea
                 ref={textareaRef}
                 placeholder='내용을 입력해 주세요'
@@ -95,8 +109,13 @@ const VoteCreatePage: React.FC = () => {
                 onChange={handleContentChange}
                 ></textarea>
               {/* 투표 항목 렌더링 */}
-                {forms.map(formId => (
-                    <VoteForm key={formId} id={formId} onDelete={handleDeleteForm} />
+                {forms.map(form => (
+                    <VoteCreateForm 
+                    key={form.id} 
+                    id={form.id} 
+                    onDelete={handleDeleteForm}
+                    onChange={handleFormChange}
+                     />
                     ))}
                 </div>
             </div>
@@ -105,19 +124,12 @@ const VoteCreatePage: React.FC = () => {
               {/* 투표버튼 부분 */}
               <div>
                 <button
-                  name='addAgreeVote'
+                  name='addVote'
                   className="w-32 h-10 rounded-lg border-2 text-xs mx-4 transition-transform transform"
                   type='button'
                   onClick={handleAddForm}
                 >
-                  찬반 투표 추가
-                </button>
-                <button
-                  name='addSelectVote'
-                  className="w-32 h-10 rounded-lg border-2 text-xs mx-4 transition-transform transform"
-                  type='button'
-                >
-                  선택형 투표 추가
+                  투표 추가
                 </button>
               </div>
               {/* 투표 기간 부분 */}
@@ -127,8 +139,8 @@ const VoteCreatePage: React.FC = () => {
                 </span>
                 <input
                   name='voteStart'
-                  className="w-32 h-10 p-2 rounded-full border-2 text-sm transition-transform transform"
-                  type='date'
+                  className="w-52 h-10 p-2 rounded-full border-2 text-sm transition-transform transform"
+                  type='datetime-local'
                   required
                   value={voteStart}
                   onChange={handleVoteStartChange}
@@ -138,24 +150,13 @@ const VoteCreatePage: React.FC = () => {
                 </span>
                 <input
                   name='voteEnd'
-                  className="w-32 h-10 p-2 rounded-full border-2 text-sm transition-transform transform"
-                  type='date'
+                  className="w-52 h-10 p-2 rounded-full border-2 text-sm transition-transform transform"
+                  type='datetime-local'
                   required
                   value={voteEnd}
                   onChange={handleVoteEndChange}
                 />
               </div>
-            </div>
-            {/* 첨부파일 등록 input */}
-            <div>
-              <h2 className='text-base m-2 text-customTextColor'>첨부파일</h2>
-              <input
-                name="file"
-                type="file"
-                className="w-full h-14 text-base bg-customBackgroundColor p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
-                placeholder="첨부파일이 없습니다"
-                onChange={handleFileChange}
-              />
             </div>
             {/* 투표 등록 버튼 */}
             <div className='pt-2 flex justify-end'>
