@@ -9,9 +9,6 @@ const VoteCreatePage: React.FC = () => {
   const [content, setContent] = useState('');
   const [voteStart, setVoteStart] = useState('');
   const [voteEnd, setVoteEnd] = useState('');
-  const [files, setFiles] = useState<File | null>(null);
-
-    console.log(files)
   //   textarea 높이 자동조절 코드
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   useEffect(() => {
@@ -45,12 +42,6 @@ const VoteCreatePage: React.FC = () => {
 
   const handleVoteEndChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setVoteEnd(e.target.value);
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setFiles(e.target.files[0]);
-    }
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -105,19 +96,12 @@ const VoteCreatePage: React.FC = () => {
               {/* 투표버튼 부분 */}
               <div>
                 <button
-                  name='addAgreeVote'
+                  name='addVote'
                   className="w-32 h-10 rounded-lg border-2 text-xs mx-4 transition-transform transform"
                   type='button'
                   onClick={handleAddForm}
                 >
-                  찬반 투표 추가
-                </button>
-                <button
-                  name='addSelectVote'
-                  className="w-32 h-10 rounded-lg border-2 text-xs mx-4 transition-transform transform"
-                  type='button'
-                >
-                  선택형 투표 추가
+                  투표 추가
                 </button>
               </div>
               {/* 투표 기간 부분 */}
@@ -145,17 +129,6 @@ const VoteCreatePage: React.FC = () => {
                   onChange={handleVoteEndChange}
                 />
               </div>
-            </div>
-            {/* 첨부파일 등록 input */}
-            <div>
-              <h2 className='text-base m-2 text-customTextColor'>첨부파일</h2>
-              <input
-                name="file"
-                type="file"
-                className="w-full h-14 text-base bg-customBackgroundColor p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
-                placeholder="첨부파일이 없습니다"
-                onChange={handleFileChange}
-              />
             </div>
             {/* 투표 등록 버튼 */}
             <div className='pt-2 flex justify-end'>
