@@ -2,82 +2,88 @@ import { Link } from "react-router-dom";
 import Nav from "../Nav";
 import NavItem from "../NavItem";
 import Sorting from "../Sorting";
-import Table from "../Table";
+import TempTable from "../TempTable";
 import Pagination from "../Pagination";
-const headers = ["번호", "제목", "작성자", "투표 기간", "투표율"]
-const vote = [
-  [
-  1,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  2,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  3,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  4,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  5,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  6,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  7,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  8,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  9,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
-  ],
-  [
-  10,
-  'LH 7월 3주차 회의 안건 관련 투표',
-  '관리자',
-  '24-07-18 00:00 ~ 24-07-24 23:59',
-  '38%'
+const vote = {
+  crt_page : 3,
+  max_page : 10,
+  data : [
+    {
+      id:1,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:2,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:3,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:4,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:5,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:6,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:7,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:8,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:9,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },{
+      id:10,
+      title : 'LH 7월 3주차 회의 안건 관련 투표',
+      writer : '관리자',
+      startDate : '2024-07-30T15:14:10',
+      endDate : '2024-08-06T15:14:10',
+      voteRate : '23%'
+    },
   ]
+}
+const header:string[] = [
+  'id','title','writer','startDate','endDate'
 ]
-
 const NavElements = () => {
   return (
     <Nav>
@@ -100,7 +106,7 @@ const ActiveVote = () => {
           </Link>
           </button>
         </div>
-        <Table headers={headers} data={vote} />
+        <TempTable headerProp={header}data={vote.data} />
         <Pagination/>
       </div>
     </>

@@ -70,12 +70,14 @@ function AppRoutes() {
           </Route>
 
           {/* 투표관리 페이지 */}
+          {/* 완료 투표와 진행 투표 구분 */}
           <Route path="/vote" element={<VoteManagePage />}>
             <Route index element={<Navigate to="active" />} />
             <Route path="active" element={<ActiveVote />} />
+            <Route path="active/:id" element={<VoteDetail />} />
             <Route path="finish" element={<FinishedVote />} />
+            <Route path="finish/:id" element={<VoteDetail />} />
             <Route path="create" element={<VoteCreatePage />} />
-            <Route path="detail" element={<VoteDetail />} />
             <Route path="message" element={<SendMessage />} />
           </Route>
 

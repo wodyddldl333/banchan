@@ -16,14 +16,15 @@ const HeaderFormet: { [key: string]: string } = {
     writer: '작성자',
     startDate: '투표 시작일',
     endDate: '투표 종료일',
-    createdAt: '작성일'
+    createdAt: '작성일',
+    voteRate:'투표율'
 };
 
 const TempTable: React.FC<TableProps> = ({ headerProp, data }) => {
     const headers = headerProp.map(key => HeaderFormet[key]);
 
     return (
-        <div className="min-w-full bg-white border table-fixed rounded-[20px] overflow-hidden">
+        <div className="min-w-full bg-white table-fixed rounded-[20px] overflow-hidden">
             <table className="min-w-full bg-white">
                 <thead>
                     <tr className="w-full border-b text-customTextColor">
