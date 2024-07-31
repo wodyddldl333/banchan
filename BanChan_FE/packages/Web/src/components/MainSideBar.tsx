@@ -41,17 +41,17 @@ const MainSideBar: React.FC = () => {
         <nav className="space-y-12 text-center mt-20">
           <SidebarItem icon="home" text="메인페이지" to="/home" />
           <SidebarItem icon="Person" text="마이페이지" to="/user" />
-          <SidebarItem icon="Chat" text="커뮤니티" to="/community/notice" />
+          <SidebarItem icon="Chat" text="커뮤니티" to="/community" />
           <SidebarItem
             icon="manage_accounts"
             text="이용자관리"
-            to="/userManage/approval"
+            to="/userManage"
           />
-          <SidebarItem icon="how_to_vote" text="투표 관리" to="/vote/active" />
+          <SidebarItem icon="how_to_vote" text="투표 관리" to="/vote" />
           <SidebarItem
             icon="video_camera_front"
             text="회의 관리"
-            to="/meeting/reservedMeeting"
+            to="/meeting"
           />
           <SidebarItem icon="HandyMan" text="기타 관리" to="/others" />
         </nav>

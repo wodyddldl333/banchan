@@ -4,9 +4,9 @@ import { Outlet } from "react-router-dom";
 const VoteManagePage: React.FC = () => {
 
   return (
-      <div>
+      <>
         <Outlet />
-    </div>
+    </>
   );
 };
 
