@@ -82,14 +82,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserResponseDto setUserApt(User user, UserAptRequestDto requestDto) {
-
+        // 아파트 코드 검증 및 조회
         Apartment apt = aptRepository.findByCode(requestDto.getAptCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.APARTMENT_NOT_FOUND));
 
+        // 유닛 번호에 대한 유효성 검증 (유닛 번호는 숫자 형식이어야 함)
+        if (!isValidUnitNo(requestDto.getUnitNo())) {
+            throw new CustomException(ErrorCode.INVALID_UNIT_NUMBER);
+        }
+
+        // 사용자 아파트 정보 설정
         UserApartment setUserApartment = UserApartment.builder()
                 .user(user)
                 .apartment(apt)
-                .buildingNo(requestDto.getBuildingNo())
+                .buildingNo(requestDto.getBuildingNo()) // 건물 번호는 문자와 숫자 모두 허용
                 .unitNo(requestDto.getUnitNo())
                 .isGranted(false)
                 .build();
@@ -97,12 +103,16 @@ public class UserServiceImpl implements UserService {
         userAptRepository.save(setUserApartment);
         log.info("아파트 정보 초기 설정 완료");
 
-        // 아파트 정보가 설정된 후 User 객체를 다시 로드하여 UserResponseDto로 변환하여 반환
-        // 현재 지연 로딩이기 때문에 동작 수행 후에는 반영이 안된 상태의 Dto가 반환된다.
-        // 유저 정보 조회할 때에는 제대로 반영되어 있음
+        // 유저 정보를 다시 로드하여 반영된 상태의 Dto를 반환
         User updatedUser = userRepository.findById(user.getId())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         return new UserResponseDto(updatedUser);
     }
+
+    // 유닛 번호 유효성 검증 메서드 (유닛 번호는 숫자 형식이어야 함)
+    private boolean isValidUnitNo(String unitNo) {
+        return unitNo != null && unitNo.matches("\\d+");
+    }
+
 }
