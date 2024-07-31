@@ -1,8 +1,32 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 const VoteDetail: React.FC = () => {
-
-
+    
+    const voteData = {
+        "id": 1,
+        "title": "제목입니다",
+        "content": "투표 예시입니다 아무거나 입력할레요 \nhttp://example.com/vote1.jpg 이건 주소에여",
+        "start_date": "2024-07-30T15:14:10",
+        "end_date": "2024-08-06T15:14:10",
+        "created_at": "2024-07-30T15:14:10",
+        "questions": [
+            {
+                "question_id": 1,
+                "question_text": "이거 할거야?",
+                "options": [
+                    {
+                        "id": 1,
+                        "option_text": "찬성"
+                    },
+                    {
+                        "id": 2,
+                        "option_text": "반대"
+                    }
+                ]
+            }
+        ]
+    }
+    
     const Contents = () =>  {
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
@@ -10,13 +34,12 @@ const VoteDetail: React.FC = () => {
         <form>
         {/* 제목 */}
             <div>
-
+    
             <h2 className='text-base m-2 text-customTextColor'>제목</h2>
             <p className="w-full h-14   bg-customBackgroundColor text-base p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform">
-                LH 7월 4주차 회의 안건 관련 투표
-                
+                {voteData.title}
             </p>
-
+    
             </div>
         {/* 내용 */}
             <div>
@@ -25,47 +48,33 @@ const VoteDetail: React.FC = () => {
             <div
             className="w-full h-[350px] overflow-y-auto bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
             >
-            <p className=''>
-                이번 7월 4주차 회의안건은 총 2가지 입니다.<br />
-                1. 엘레베이터 점검 일자 관련<br />
-                2. 각 세대별 출입 카드 제작 관련<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                <a href="https://www.banchan.com/notice/123456789" className="text-blue-500">https://www.banchan.com/notice/123456789</a>
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-                자세한 사항은 아래 공지사항에서 확인 부탁드립니다.<br />
-
+            <p className=' whitespace-pre-wrap'>
+                {voteData.content}
            </p>
+
+            {
+                voteData.questions.map((item)=>(
+
+                 <div> {item.options[0].option_text}</div>
+                )
+                )
+            }
             </div>
             </div>
         {/* 투표 기간 */}
             <div className='flex justify-end pt-2'>
                 <span className='text-sm font-semibold mx-4'>
-                    투표 기간 : 2024.07.24 ~ 2024.07.27
+                    투표 기간 : {voteData.start_date} ~ {voteData.end_date}
                 </span>
             </div>
-
-{/* 첨부파일, 가져오는 로직 필요 */}
-            <div>
-            <h2 className='text-base m-2 text-customTextColor'>첨부파일</h2>
-                <p className="w-full h-14 text-base bg-customBackgroundColor p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform">
-                    첨부파일이 없습니다
-                    </p>
-            </div>
-{/* 투표 버튼 */}
+    {/* 투표 버튼 */}
             <div className='pt-2 flex justify-center'>
             
             <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 정지</button>
-            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 수정</button>
             <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 알람 전송</button>
+            <button className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 제출</button>
 
+    
             </div>
         </form>
         )
