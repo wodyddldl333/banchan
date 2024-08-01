@@ -44,7 +44,10 @@ public enum ErrorCode {
     INTERNAL_SERVER_ERROR(500, "S001", "서버 내부 오류가 발생했습니다."),
     BAD_REQUEST(400, "S002", "잘못된 요청입니다."),
     FORBIDDEN(403, "S003", "액세스가 거부되었습니다."),
-    NOT_FOUND(404, "S004", "리소스를 찾을 수 없습니다.");
+    NOT_FOUND(404, "S004", "리소스를 찾을 수 없습니다."),
+
+    // 로그아웃 관련 에러 코드
+    LOGOUT_FAILED(500, "L001", "로그아웃 실패");
 
     private final int status;
     private final String code;
