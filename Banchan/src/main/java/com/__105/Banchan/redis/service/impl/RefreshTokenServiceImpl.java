@@ -28,14 +28,5 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
         }
     }
 
-    @Override
-    public void removeRefreshToken(String accessToken) {
-        RefreshToken refreshToken = refreshTokenRepository.findByAccessToken(accessToken)
-                .orElseThrow(() -> {
-                    log.error("리프레시 토큰을 찾을 수 없습니다. accessToken={}", accessToken);
-                    return new CustomException(ErrorCode.REDIS_REFRESH_TOKEN_NOT_FOUND);
-                });
-        refreshTokenRepository.delete(refreshToken);
-        log.info("RefreshToken 삭제 완료. accessToken={}", accessToken);
-    }
+
 }

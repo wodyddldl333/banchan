@@ -8,6 +8,7 @@ import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.jwt.JwtUtil;
 import com.__105.Banchan.auth.service.AuthService;
+import com.__105.Banchan.auth.service.TokenBlacklistService;
 import com.__105.Banchan.common.exception.CustomException;
 import com.__105.Banchan.common.exception.ErrorCode;
 import com.__105.Banchan.redis.domain.RefreshToken;
@@ -55,6 +56,7 @@ public class AuthServiceImpl implements AuthService {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final RestTemplate restTemplate = new RestTemplate(); // RestTemplate 빈 초기화
     private final ObjectMapper objectMapper;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Value("${kakao.client-id}")
     private String clientId;
@@ -74,12 +76,26 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public ResponseEntity<StatusResponseDto> logout(String accessToken) {
         try {
-            tokenService.removeRefreshToken(accessToken);
-            return ResponseEntity.ok(StatusResponseDto.addStatus(200));
+            // 액세스 토큰을 블랙리스트에 추가
+            tokenBlacklistService.blacklistToken(accessToken);
+
+            // 액세스 토큰과 연관된 리프레시 토큰 삭제
+            tokenRepository.deleteByAccessToken(accessToken);
+
+            log.info("로그아웃 완료. 엑세스 토큰을 블랙리스트에 추가하고 리프레시 토큰 삭제 완료. 액세스 토큰: {}", accessToken);
+            return ResponseEntity.ok(StatusResponseDto.addStatus(HttpStatus.OK.value(), "로그아웃이 성공적으로 처리되었습니다."));
+
         } catch (CustomException e) {
+            // CustomException 처리
             log.error("로그아웃 실패. 액세스 토큰: {}, 오류: {}", accessToken, e.getMessage());
+            return ResponseEntity.status(e.getErrorCode().getStatus())
+                    .body(StatusResponseDto.addStatus(e.getErrorCode().getStatus(), e.getErrorCode().getMessage()));
+
+        } catch (Exception e) {
+            // 그 외의 모든 예외 처리
+            log.error("로그아웃 처리 중 예상치 못한 오류 발생. 액세스 토큰: {}, 오류: {}", accessToken, e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(StatusResponseDto.addStatus(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+                    .body(StatusResponseDto.addStatus(HttpStatus.INTERNAL_SERVER_ERROR.value(), "로그아웃 처리 중 서버 오류가 발생했습니다."));
         }
     }
 

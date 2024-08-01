@@ -29,8 +29,4 @@ public class RefreshToken implements Serializable { // RefreshToken 객체의 �
         this.accessToken = accessToken;
     }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
 }

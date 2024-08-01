@@ -28,7 +28,10 @@ public class JwtExceptionFilter extends OncePerRequestFilter {
             response.setStatus(401);
             response.setContentType(MediaType.APPLICATION_JSON_VALUE);
             response.setCharacterEncoding("UTF-8");
-            objectMapper.writeValue(response.getWriter(), StatusResponseDto.addStatus(401));
+
+            // 상태 코드와 메시지를 포함한 응답 반환
+            StatusResponseDto errorResponse = StatusResponseDto.addStatus(HttpServletResponse.SC_UNAUTHORIZED, "JWT 토큰이 유효하지 않습니다.");
+            objectMapper.writeValue(response.getWriter(), errorResponse);
         }
     }
 }

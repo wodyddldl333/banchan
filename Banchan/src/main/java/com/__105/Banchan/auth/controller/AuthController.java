@@ -8,18 +8,18 @@ import com.__105.Banchan.auth.dto.TokenResponseStatus;
 import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.service.AuthService;
-import com.__105.Banchan.common.exception.ErrorCode;
+
 import com.__105.Banchan.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
-import jakarta.servlet.http.Cookie;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,18 +47,21 @@ public class AuthController {
     @Operation(summary = "로그아웃", description = "로그아웃 처리 및 토큰 삭제")
     public ResponseEntity<StatusResponseDto> logout(HttpServletRequest request) {
         // HTTP 요청에서 액세스 토큰 헤더를 추출
-        String accessToken = request.getHeader("Authorization");
+        String accessTokenHeader = request.getHeader("Authorization");
 
         // 액세스 토큰이 없으면 오류 반환
-        if (accessToken == null || !accessToken.startsWith("Bearer ")) {
-            return ResponseEntity.badRequest().body(StatusResponseDto.addStatus(400));
+        if (accessTokenHeader == null || !accessTokenHeader.startsWith("Bearer ")) {
+            log.error("로그아웃 요청에 유효한 액세스 토큰이 없습니다.");
+            return ResponseEntity.badRequest()
+                    .body(StatusResponseDto.addStatus(400, "유효한 액세스 토큰이 없습니다."));
         }
-
         // 'Bearer ' 접두사 제거
-        accessToken = accessToken.substring(7);
+        String accessToken = accessTokenHeader.substring(7);
 
+        // 로그아웃 처리: 액세스 토큰을 블랙리스트에 추가하고, 연관된 리프레시 토큰 삭제
         return authService.logout(accessToken);
     }
+
 
     @PostMapping("/token/refresh")
     @Operation(summary = "토큰 갱신", description = "액세스 토큰을 갱신")
