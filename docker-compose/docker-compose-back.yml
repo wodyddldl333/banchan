@@ -7,7 +7,7 @@ services:
     build:
       context: ../Banchan/
       dockerfile: Dockerfile
-    ports:
+    expose:
       - "8080"
     <<: *default
     depends_on:
