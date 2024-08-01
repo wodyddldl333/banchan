@@ -2,7 +2,7 @@ package com.__105.Banchan.auth.jwt;
 
 import com.__105.Banchan.auth.dto.SecurityUserDto;
 import com.__105.Banchan.auth.exception.JwtException;
-import com.__105.Banchan.user.entity.User;
+import com.__105.Banchan.user.domain.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,10 +13,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -60,7 +58,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .orElseThrow(() -> new JwtException("Invalid JWT token"));
             log.info("User: " + findUser.getEmail());
 
-            // SecurityUserDto를 생성하여 UserDetails로 등록
+            // SecurityContext에 등록할 User 객체를 만들어 준다.
             SecurityUserDto userDto = SecurityUserDto.builder()
                     .id(findUser.getId())
                     .email(findUser.getEmail())
@@ -68,16 +66,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .role(findUser.getRole())
                     .build();
 
-            // UserDetails로 Authentication 객체 생성 및 SecurityContext에 설정
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDto, null, userDto.getAuthorities());
+            // SecurityContext에 인증 객체 등록
+            Authentication auth = getAuthentication(userDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
             log.info("SecurityContext에 인증 객체 등록 완료");
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request,response);
     }
-
-
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

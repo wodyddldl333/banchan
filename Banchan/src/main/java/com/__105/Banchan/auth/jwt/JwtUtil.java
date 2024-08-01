@@ -89,7 +89,7 @@ public class JwtUtil {
                     .setSigningKey(secretKey)
                     .build()
                     .parseClaimsJws(token);
-            return claims.getBody().getExpiration().after(new Date()); // 토큰 만료 여부 확인
+            return claims.getBody().getExpiration().after(new Date());
         } catch (Exception e) {
             return false;
         }
