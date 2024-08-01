@@ -38,7 +38,7 @@ function AppRoutes() {
       <Route path="/write" element={<Write />} />
       <Route path="/detail" element={<Detail />} />
       <Route path="/update" element={<Update />} />
-      <Route path="/meetingPage" element={<MeetingPage />} />
+      <Route path="/meetingPage/:id" element={<MeetingPage />} />
       <Route path="/chatBox" element={<ChatBox />} />
 
       {/* 메인레이아웃 - 상단 툴바 및 좌측 메뉴바 */}

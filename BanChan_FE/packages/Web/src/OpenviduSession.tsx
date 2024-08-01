@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from "react";
-import {
-  OpenVidu,
-  Session,
-  Publisher,
-  StreamManager,
-  StreamEvent,
-} from "openvidu-browser";
+// import {
+//   OpenVidu,
+//   Session,
+//   Publisher,
+//   StreamManager,
+//   StreamEvent,
+// } from "openvidu-browser";
 
 interface OpenViduSessionProps {
   sessionId: string;

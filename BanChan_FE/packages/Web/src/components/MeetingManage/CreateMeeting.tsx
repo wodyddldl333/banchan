@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -5,20 +6,34 @@ const CreateMeeting: React.FC = () => {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [startTime, setStartTime] = useState("");
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // 회의 생성 로직
-    console.log("Meeting Created:", { title, date, startTime });
-    navigate("/meetingPage", { state: { title, date, startTime } });
+  const createSession = async (): Promise<string> => {
+    const response = await axios.post("http://localhost:8080/api/session", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
+      },
+      body: JSON.stringify({ customSessionId: title }),
+    });
+
+    return response.data;
+  };
+
+  const handleCreateMeeting = async () => {
+    const sessionId = await createSession();
+    navigate(`/meetingPage/${sessionId}`, {
+      state: { title, date, startTime },
+    });
   };
 
   return (
     <div className=" flex items-center justify-center ">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md  mt-[200px]">
         <h2 className="text-2xl font-bold mb-6">회의 생성</h2>
-        <form onSubmit={handleSubmit}>
+        <form>
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -71,7 +86,7 @@ const CreateMeeting: React.FC = () => {
             <button
               type="submit"
               className="w-full bg-blue-500 text-white px-4 py-2 rounded-md"
-              onClick={handleSubmit}
+              onClick={handleCreateMeeting}
             >
               생성 완료
             </button>
