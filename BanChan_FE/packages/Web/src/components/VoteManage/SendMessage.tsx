@@ -1,4 +1,7 @@
 import React, { useState } from 'react';
+import BackButton from "../Buttons/BackButton";
+import { useNavigate } from 'react-router-dom';
+import { sendSMS } from '../../api/SenaMassageAPI';
 
 interface MultiSelectDropdownProps {
     options: string[];
@@ -50,14 +53,45 @@ interface MultiSelectDropdownProps {
 
 
 const SendMessage: React.FC = () => {
-    const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-    const options = ['101동','1012동','1021동','103동','102동','104동',]
-    
+
+    const navigate = useNavigate()
+    // 제목 내용 초기설정
+
     const Contents = () =>  {
+      const [contents,setContent] = useState('')
+      const [title,setTitle] = useState('')
+      const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+      const options = ['101동','102동','103동','104동','105동','106동',]
+  
+      const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setContent(e.target.value);
+      }
+      const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+      }
+
+      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        navigate(-1)
+        e.preventDefault()
+        const phone = ['010-2098-3066','010-7132-4405']
+        phone.map((number) => {
+          const after = number.replace(/-/gi,'')
+          const messages = [
+            {
+              to: after,
+              from: '01020983066',
+              subject: title,
+              text : contents,
+              autoTypeDetect: true // 자동 타입 감지 활성화
+            }
+          ]
+          sendSMS(messages)
+        })
+      }
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
             //투표 생성 버튼 누를 시 투표 생성 구현 필요
-        <form>
+        <form onSubmit={handleSubmit}>
         {/* 제목 */}
             <div>
             <h2 className='text-base m-2 text-customTextColor'>제목</h2>
@@ -67,6 +101,8 @@ const SendMessage: React.FC = () => {
                 className="w-full h-14 bg-customBackgroundColor text-base px-4 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
                 placeholder="제목을 입력해 주세요"
                 autoComplete="off"
+                value={title}
+                onChange={handleTitle}
                 required
                 />
             </div>
@@ -75,9 +111,11 @@ const SendMessage: React.FC = () => {
             <h2 className='text-base m-2 text-customTextColor'>내용</h2>
             <textarea
             name="contents"
-            className="w-full h-[350px]  bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
             placeholder="제목을 입력해 주세요"
             autoComplete="off"
+            value={contents}
+            onChange={handleContent}
+            className="w-full h-[350px]  bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
             required
             />
             </div>
@@ -112,7 +150,7 @@ const SendMessage: React.FC = () => {
             </div>
 
 
-{/* 투표 등록 버튼 */}
+{/* 메세지 전송 버튼 */}
             <div className='pt-2 flex justify-end'>
                 
                 <button 
@@ -131,7 +169,7 @@ const SendMessage: React.FC = () => {
   return (
       <div>
         <div className="flex justify-start p-5">
-
+          <BackButton />
             <h3 className='text-3xl	font-semibold'> 알람 보내기</h3>
         </div>
 
