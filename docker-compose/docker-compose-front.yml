@@ -5,7 +5,7 @@ services:
       context: ../BanChan_FE
       dockerfile: Dockerfile
     ports:
-      - "5173:80"
+      - "80"
     volumes:
       - /usr/share/nginx/html
     networks:

@@ -8,7 +8,7 @@ services:
       context: ../Banchan/
       dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8080"
     <<: *default
     depends_on:
       mysql:
@@ -24,7 +24,7 @@ services:
       context: ../Banchan/
       dockerfile: Dockerfile
     ports:
-      - "8082:8080"
+      - "8080"
     <<: *default
     depends_on:
       mysql:
@@ -38,7 +38,7 @@ services:
     image: mysql:8.0
     container_name: mysql
     ports:
-      - "3306:3306"
+      - "3306"
     <<: *default
     volumes:
       - /home/S11P12E105/Banchan/mysql_data:/var/lib/mysql
@@ -59,7 +59,7 @@ services:
     command: redis-server /usr/local/etc/redis/redis.conf --requirepass banchan201105
     container_name: redis
     ports:
-      - "6379:6379"
+      - "6379"
     <<: *default
     volumes:
       - /home/S11P12E105/Banchan/redis_data:/data
