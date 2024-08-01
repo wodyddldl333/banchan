@@ -1,16 +1,17 @@
 import React, { useEffect, useRef, useState } from "react";
 import { OpenVidu, Session, Publisher } from "openvidu-browser";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams, useLocation, useNavigate } from "react-router-dom";
 import ThumbnailPlayer from "../components/WebRTC/ThumbnailPlayer";
 import VideoPlayer from "../components/WebRTC/VideoPlayer";
 import ChatBox from "../components/WebRTC/ChatBox";
+import axios from "axios";
 
 type IconName =
   | "record_voice_over"
-  | "mic_off"
-  | "videocam_off"
+  | "mic"
+  | "videocam"
   | "screen_share"
-  | "mic_off2"
+  | "headset_mic"
   | "exit_to_app"
   | "book"
   | "group"
@@ -22,47 +23,45 @@ const ControlPanels: React.FC<{
   activeIcons: Record<IconName, boolean>;
   handleButtonClick: (icon: IconName) => void;
 }> = ({ onChatToggle, activeIcons, handleButtonClick }) => {
+  useEffect(() => {
+    console.log(activeIcons); // activeIcons 상태가 변경될 때마다 로그를 출력
+  }, [activeIcons]);
   return (
     <div className="px-4 flex items-center mt-4">
       <div className="flex space-x-8 ml-[210px]">
         <button
-          className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("record_voice_over")}
+          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
+            activeIcons.mic ? "text-customRed" : "text-white"
+          }`}
+          onClick={() => handleButtonClick("mic")}
         >
           <span
             className={`material-symbols-outlined ${
-              activeIcons.record_voice_over ? "text-customRed" : "text-white"
+              activeIcons.mic ? "text-customRed" : "text-white"
             }`}
           >
-            record_voice_over
+            {activeIcons.mic ? "mic_off" : "mic"}
           </span>
-          <span className="ml-2">발언권 요청</span>
+          <span className="ml-2">
+            {activeIcons.mic ? "마이크 켜기" : "마이크 끄기"}
+          </span>
         </button>
         <button
-          className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("mic_off")}
+          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
+            activeIcons.videocam ? "text-customRed" : "text-white"
+          }`}
+          onClick={() => handleButtonClick("videocam")}
         >
           <span
             className={`material-symbols-outlined ${
-              activeIcons.mic_off ? "text-customRed" : "text-white"
+              activeIcons.videocam ? "text-customRed" : "text-white"
             }`}
           >
-            mic_off
+            {activeIcons.videocam ? "videocam_off" : "videocam"}
           </span>
-          <span className="ml-2">마이크 시작</span>
-        </button>
-        <button
-          className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("videocam_off")}
-        >
-          <span
-            className={`material-symbols-outlined ${
-              activeIcons.videocam_off ? "text-customRed" : "text-white"
-            }`}
-          >
-            videocam_off
+          <span className="ml-2">
+            {activeIcons.videocam ? "비디오 켜기" : "비디오 끄기"}
           </span>
-          <span className="ml-2">비디오 시작</span>
         </button>
         <button
           className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
@@ -78,17 +77,21 @@ const ControlPanels: React.FC<{
           <span className="ml-2">화면 공유</span>
         </button>
         <button
-          className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("mic_off2")}
+          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
+            activeIcons.headset_mic ? "text-customRed" : "text-white"
+          }`}
+          onClick={() => handleButtonClick("headset_mic")}
         >
           <span
             className={`material-symbols-outlined ${
-              activeIcons.mic_off2 ? "text-customRed" : "text-white"
+              activeIcons.headset_mic ? "text-customRed" : "text-white"
             }`}
           >
-            mic_off
+            {activeIcons.headset_mic ? "headset_off" : "headset_mic"}
           </span>
-          <span className="ml-2">음소거 해제</span>
+          <span className="ml-2">
+            {activeIcons.headset_mic ? "음소거 끄기" : "음소거 켜기"}
+          </span>
         </button>
         <button
           className="bg-red-500 text-white flex items-center px-4 py-2 rounded-full"
@@ -129,6 +132,7 @@ const ControlPanels: React.FC<{
 
 const MeetingPage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { id: sessionId } = useParams<{ id: string }>(); // URL 파라미터를 가져옵니다
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
@@ -143,10 +147,10 @@ const MeetingPage: React.FC = () => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
     record_voice_over: false,
-    mic_off: false,
-    videocam_off: false,
+    mic: false,
+    videocam: false,
     screen_share: false,
-    mic_off2: false,
+    headset_mic: false,
     exit_to_app: false,
     book: false,
     group: false,
@@ -187,6 +191,12 @@ const MeetingPage: React.FC = () => {
         mySession.publish(publisher);
         setPublisher(publisher);
         publisher.addVideoElement(videoRef.current);
+
+        setActiveIcons((prevState) => ({
+          ...prevState,
+          videocam: !publisher.stream.videoActive,
+          mic: !publisher.stream.audioActive,
+        }));
       } catch (error) {
         console.error("Error connecting to session:", error);
       }
@@ -201,7 +211,7 @@ const MeetingPage: React.FC = () => {
   }, [sessionId]);
 
   const createToken = async (sessionId: string): Promise<string> => {
-    const response = await fetch(
+    const response = await axios.post(
       `http://localhost:8080/api/session/${sessionId}/token`,
       {
         method: "POST",
@@ -211,8 +221,7 @@ const MeetingPage: React.FC = () => {
         },
       }
     );
-    const data = await response.text();
-    return data;
+    return response.data;
   };
 
   const handleChatToggle = () => {
@@ -226,6 +235,27 @@ const MeetingPage: React.FC = () => {
         ...prevState,
         [icon]: !prevState[icon],
       }));
+    } else if (icon === "exit_to_app") {
+      if (session) session.disconnect();
+      navigate("/");
+    } else if (icon === "videocam") {
+      if (publisher) {
+        const newPublishVideo = !activeIcons.videocam;
+        publisher.publishVideo(!newPublishVideo);
+        setActiveIcons((prevState) => ({
+          ...prevState,
+          videocam: newPublishVideo,
+        }));
+      }
+    } else if (icon === "mic") {
+      if (publisher) {
+        const newPublishMic = !activeIcons.mic;
+        publisher.publishAudio(!newPublishMic);
+        setActiveIcons((prevState) => ({
+          ...prevState,
+          mic: newPublishMic,
+        }));
+      }
     } else {
       setActiveIcons((prevState) => ({
         ...prevState,
@@ -233,7 +263,6 @@ const MeetingPage: React.FC = () => {
       }));
     }
   };
-
   return (
     <div className="flex flex-col items-center justify-center h-screen bg-customTextColor">
       <h1 className="text-2xl mb-4">회의 ID: {title}</h1>

@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -9,7 +10,7 @@ const CreateMeeting: React.FC = () => {
   const navigate = useNavigate();
 
   const createSession = async (): Promise<string> => {
-    const response = await fetch("http://localhost:8080/api/session", {
+    const response = await axios.post("http://localhost:8080/api/session", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -17,8 +18,8 @@ const CreateMeeting: React.FC = () => {
       },
       body: JSON.stringify({ customSessionId: title }),
     });
-    const data = await response.text();
-    return data;
+
+    return response.data;
   };
 
   const handleCreateMeeting = async () => {
