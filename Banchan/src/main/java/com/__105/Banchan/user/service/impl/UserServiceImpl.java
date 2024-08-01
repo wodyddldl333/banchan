@@ -4,11 +4,9 @@ import com.__105.Banchan.auth.dto.SecurityUserDto;
 import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.common.exception.CustomException;
 import com.__105.Banchan.common.exception.ErrorCode;
-import com.__105.Banchan.user.dto.UserDto;
-import com.__105.Banchan.user.dto.UserResponseDto;
-import com.__105.Banchan.user.entity.Apartment;
-import com.__105.Banchan.user.entity.User;
-import com.__105.Banchan.user.entity.UserApartment;
+import com.__105.Banchan.user.domain.Apartment;
+import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.domain.UserApartment;
 import com.__105.Banchan.user.dto.SignupRequestDto;
 import com.__105.Banchan.user.dto.UserAptRequestDto;
 import com.__105.Banchan.user.repository.AptRepository;
@@ -34,18 +32,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public UserResponseDto getMyInfo(){
+    public User getMyInfo(){
 
         SecurityUserDto userDto = JwtAuthFilter.getUser();
-        User user = userRepository.findByEmail(userDto.getEmail())
+
+        return userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        return new UserResponseDto(user);
-
     }
 
     @Override
-    public User setMyInfo(User user, SignupRequestDto signupRequestDto) {
+    public void setMyInfo(User user, SignupRequestDto signupRequestDto) {
 
         User setUser = userRepository.findByUsername(user.getUsername())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
@@ -67,7 +63,6 @@ public class UserServiceImpl implements UserService {
         userRepository.save(setUser);
 
         log.info("전화번호, 이름 수정 완료");
-        return setUser;
     }
 
     @Override
@@ -81,38 +76,21 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserResponseDto setUserApt(User user, UserAptRequestDto requestDto) {
-        // 아파트 코드 검증 및 조회
+    public void setUserApt(User user, UserAptRequestDto requestDto) {
+
         Apartment apt = aptRepository.findByCode(requestDto.getAptCode())
                 .orElseThrow(() -> new CustomException(ErrorCode.APARTMENT_NOT_FOUND));
 
-        // 유닛 번호에 대한 유효성 검증 (유닛 번호는 숫자 형식이어야 함)
-        if (!isValidUnitNo(requestDto.getUnitNo())) {
-            throw new CustomException(ErrorCode.INVALID_UNIT_NUMBER);
-        }
-
-        // 사용자 아파트 정보 설정
         UserApartment setUserApartment = UserApartment.builder()
                 .user(user)
                 .apartment(apt)
-                .buildingNo(requestDto.getBuildingNo()) // 건물 번호는 문자와 숫자 모두 허용
+                .buildingNo(requestDto.getBuildingNo())
                 .unitNo(requestDto.getUnitNo())
-                .isGranted(false)
+                .isActivated(false)
                 .build();
 
         userAptRepository.save(setUserApartment);
         log.info("아파트 정보 초기 설정 완료");
 
-        // 유저 정보를 다시 로드하여 반영된 상태의 Dto를 반환
-        User updatedUser = userRepository.findById(user.getId())
-                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
-
-        return new UserResponseDto(updatedUser);
     }
-
-    // 유닛 번호 유효성 검증 메서드 (유닛 번호는 숫자 형식이어야 함)
-    private boolean isValidUnitNo(String unitNo) {
-        return unitNo != null && unitNo.matches("\\d+");
-    }
-
 }

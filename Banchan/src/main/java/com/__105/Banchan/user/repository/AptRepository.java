@@ -1,6 +1,6 @@
 package com.__105.Banchan.user.repository;
 
-import com.__105.Banchan.user.entity.Apartment;
+import com.__105.Banchan.user.domain.Apartment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
