@@ -1,6 +1,6 @@
-import axios from "axios";
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+// import axios from "axios";
 
 const CreateMeeting: React.FC = () => {
   const [title, setTitle] = useState("");
@@ -9,31 +9,36 @@ const CreateMeeting: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const createSession = async (): Promise<string> => {
-    const response = await axios.post("http://localhost:8080/api/session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
-      },
-      body: JSON.stringify({ customSessionId: title }),
-    });
-
-    return response.data;
-  };
-
   const handleCreateMeeting = async () => {
-    const sessionId = await createSession();
-    navigate(`/meetingPage/${sessionId}`, {
+    navigate(`/meeting/reservedMeeting`, {
       state: { title, date, startTime },
     });
   };
+
+  // const handleCreateMeeting = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     await axios.post("http://localhost:8080/api/meetings", {
+  //       title,
+  //       date,
+  //       startTime,
+  //     });
+  //     navigate(`/meeting/reservedMeeting`);
+  //   } catch (error) {
+  //     console.error("Error creating meeting:", error);
+  //   }
+  // };
 
   return (
     <div className=" flex items-center justify-center ">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md  mt-[200px]">
         <h2 className="text-2xl font-bold mb-6">회의 생성</h2>
-        <form>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleCreateMeeting();
+          }}
+        >
           <div className="mb-4">
             <label
               htmlFor="title"
@@ -82,15 +87,13 @@ const CreateMeeting: React.FC = () => {
               required
             />
           </div>
-          <Link to="/meetingPage">
-            <button
-              type="submit"
-              className="w-full bg-blue-500 text-white px-4 py-2 rounded-md"
-              onClick={handleCreateMeeting}
-            >
-              생성 완료
-            </button>
-          </Link>
+
+          <button
+            type="submit"
+            className="w-full bg-blue-500 text-white px-4 py-2 rounded-md"
+          >
+            생성 완료
+          </button>
         </form>
       </div>
     </div>

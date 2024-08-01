@@ -5,8 +5,8 @@ const HomeInfo = () => {
         className="w-full max-w-md p-8  bg-white shadow-md rounded-md h-screen "
         style={{ height: "800px" }}
       >
-        <div className="flex items-center justify-between">
-          <button className="text-gray-600">
+        <div className="flex items-center justify-between bg-blue-500  w-full py-2 fixed top-0 left-0">
+          <button className="text-white ">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               fill="none"
@@ -22,7 +22,7 @@ const HomeInfo = () => {
               />
             </svg>
           </button>
-          <h2 className="text-xl font-bold text-gray-800">세대 정보 기입</h2>
+          <h2 className="text-xl font-bold text-white ">세대 정보 기입</h2>
           <div className=""></div>
         </div>
         <form className="mt-[100px]">
@@ -73,6 +73,22 @@ const HomeInfo = () => {
               htmlFor="phoneNumber"
               className="block text-sm font-medium text-gray-600"
             >
+              이름
+            </label>
+            <input
+              id="phoneNumber"
+              name="phoneNumber"
+              type="text"
+              required
+              placeholder="이름 입력하세요"
+              className="block w-full text-[14px] px-4 py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
+            />
+          </div>
+          <div>
+            <label
+              htmlFor="phoneNumber"
+              className="block text-sm font-medium text-gray-600"
+            >
               휴대폰 번호
             </label>
             <input
@@ -81,12 +97,12 @@ const HomeInfo = () => {
               type="text"
               required
               placeholder="휴대폰 번호를 입력하세요"
-              className="block w-full text-[14px] px-4 py-4 mt-2 mb-[200px] border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
+              className="block w-full text-[14px] px-4 py-4 mt-2  border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
             />
           </div>
           <button
             type="submit"
-            className="block w-full py-4 mt-4 font-semibold text-white bg-blue-500 rounded-xl hover:bg-blue-600"
+            className="fixed bottom-0 left-0 right-0 w-full py-4 font-semibold text-white bg-blue-500 rounded-t-xl hover:bg-blue-600"
           >
             등록하기
           </button>

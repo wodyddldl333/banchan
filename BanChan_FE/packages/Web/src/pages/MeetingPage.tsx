@@ -212,15 +212,19 @@ const MeetingPage: React.FC = () => {
 
   const createToken = async (sessionId: string): Promise<string> => {
     const response = await axios.post(
-      `http://localhost:8080/api/session/${sessionId}/token`,
+      `http://ec2-54-66-234-44.ap-southeast-2.compute.amazonaws.com:8080/api/session/${sessionId}/token`,
       {
-        method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
         },
       }
     );
+    // const data = token.replace(
+    //   "localhost:4443",
+    //   "http://ec2-54-66-234-44.ap-southeast-2.compute.amazonaws.com:8080"
+    // );
+    console.log(response.data);
     return response.data;
   };
 
@@ -237,7 +241,7 @@ const MeetingPage: React.FC = () => {
       }));
     } else if (icon === "exit_to_app") {
       if (session) session.disconnect();
-      navigate("/");
+      navigate("/meeting/reservedMeeting");
     } else if (icon === "videocam") {
       if (publisher) {
         const newPublishVideo = !activeIcons.videocam;
