@@ -1,7 +1,7 @@
 // VoteCreatePage.tsx
 import React, { useState,useRef,useEffect} from 'react';
-import { Link } from 'react-router-dom';
 import VoteCreateForm from './VoteCreateForm';
+import BackButton from "../Buttons/BackButton";
 
 
 interface Form {
@@ -70,14 +70,16 @@ const VoteCreatePage: React.FC = () => {
     console.log(data)
     // 서브밋 이벤트 방지
     e.preventDefault();
-    // 백엔드로 POST 요청 보내는 로직 필요
+    // 백엔드로 POST 요청 보내는 로직 필요(axios)
   };
 
   return (
     <div className="p-8">
       <div className="">
         <div className="flex justify-start p-5">
-          <Link to='/vote/active' className='text-3xl font-semibold'> ← </Link>
+
+        <BackButton />
+
           <h3 className='text-3xl font-semibold'>투표 생성</h3>
         </div>
         <div className="min-w-full min-h-[700px] p-6 bg-white border rounded-[20px] overflow-hidden">

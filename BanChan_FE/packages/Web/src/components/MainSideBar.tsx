@@ -40,7 +40,6 @@ const MainSideBar: React.FC = () => {
         />
         <nav className="space-y-12 text-center mt-20">
           <SidebarItem icon="home" text="메인페이지" to="/home" />
-          <SidebarItem icon="Person" text="마이페이지" to="/user" />
           <SidebarItem icon="Chat" text="커뮤니티" to="/community" />
           <SidebarItem
             icon="manage_accounts"

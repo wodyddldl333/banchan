@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import VoteForm from './VoteForm';
-import BackButton from "../Buttons/BackButton";
 import { Link } from 'react-router-dom';
-const VoteDetail: React.FC = () => {
+import VoteForm from './VoteForm';
+
+const VoteEnd: React.FC = () => {
     // axios요청으로 voteData 안에 데이터 담아야함
     const voteData = {
         "id": 1,
@@ -78,9 +78,10 @@ const VoteDetail: React.FC = () => {
         return (
             // 백엔드로 POST 요청 보내는 로직 필요
             // 투표 가져오는 로직, submit 했을 시 투표 결과 보내는 로직 및 투표 틀 만들기 필요
-            <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
         {/* 제목 */}
             <div>
+    
             <h2 className='text-base m-2 text-customTextColor'>제목</h2>
             <p className="w-full h-14   bg-customBackgroundColor text-base p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform">
                 {voteData.title}
@@ -122,10 +123,7 @@ const VoteDetail: React.FC = () => {
             <div className='pt-2 flex justify-center'>
             
             <button type='button' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 정지</button>
-            <Link to='/message'>
             <button type='button' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 알람 전송</button>
-            </Link>
-            
             <button type='submit' className=" w-32 h-10 mx-3 bg-customBlue text-white p-2 rounded-full">투표 제출</button>
 
     
@@ -138,7 +136,7 @@ const VoteDetail: React.FC = () => {
       <div className="p-8">
       <div className="">
         <div className="flex justify-start p-5">
-            <BackButton />
+            <Link to='/vote/finish' className='text-3xl	font-semibold'> ← </Link>
             <h3 className='text-3xl	font-semibold'>투표 상세</h3>
         </div>
 
@@ -150,4 +148,4 @@ const VoteDetail: React.FC = () => {
   );
 };
 
-export default VoteDetail;
+export default VoteEnd;

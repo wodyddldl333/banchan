@@ -4,7 +4,6 @@ import NavItem from "../NavItem";
 import Sorting from "../Sorting";
 import Pagination from "../Pagination";
 import TempTable from "../TempTable";
-
 const vote = {
   crt_page : 3,
   max_page : 10,

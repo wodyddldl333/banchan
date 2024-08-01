@@ -17,7 +17,7 @@ interface VoteFormProps {
   selectedOption : number | null;
 }
 
-const VoteForm: React.FC<VoteFormProps> = ({ question, voteSelection,selectedOption }) => {
+const VoteEndForm: React.FC<VoteFormProps> = ({ question, voteSelection,selectedOption }) => {
 
   const handleOptionChange = (optionId: number) => {
     voteSelection(question.question_id, optionId);
@@ -45,4 +45,4 @@ const VoteForm: React.FC<VoteFormProps> = ({ question, voteSelection,selectedOpt
   );
 };
 
-export default VoteForm;
+export default VoteEndForm;

@@ -76,10 +76,10 @@ function AppRoutes() {
           <Route path="finish" element={<FinishedVote />} />
           <Route path="create" element={<VoteCreatePage />} />
           <Route path="active/:id" element={<VoteDetail />} />
-          <Route path="message" element={<SendMessage />} />
           <Route path="finish/:id" element={<VoteDetail />} />
         </Route>
-
+        {/* 메세지 전송 */}
+        <Route path="/message" element={<SendMessage />} />
         {/* 마이페이지 */}
         <Route path="/user" element={<MyPage />}></Route>
         {/* 기타 관리 */}
