@@ -15,7 +15,7 @@ public class UserApartment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id", nullable = false)
+    @Column(name = "user_apt_id", nullable = false)
     private Integer id;
 
     @JsonIgnore // 순환 참조 방지를 위해 추가

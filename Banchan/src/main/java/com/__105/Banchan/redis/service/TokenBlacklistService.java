@@ -1,4 +1,4 @@
-package com.__105.Banchan.auth.service;
+package com.__105.Banchan.redis.service;
 
 public interface TokenBlacklistService {
     void blacklistToken(String token);

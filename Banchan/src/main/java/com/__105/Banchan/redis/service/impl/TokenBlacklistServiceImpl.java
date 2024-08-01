@@ -1,8 +1,6 @@
-package com.__105.Banchan.auth.service.impl;
+package com.__105.Banchan.redis.service.impl;
 
-import com.__105.Banchan.auth.service.TokenBlacklistService;
-import com.__105.Banchan.redis.repository.RefreshTokenRepository;
-import lombok.RequiredArgsConstructor;
+import com.__105.Banchan.redis.service.TokenBlacklistService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;

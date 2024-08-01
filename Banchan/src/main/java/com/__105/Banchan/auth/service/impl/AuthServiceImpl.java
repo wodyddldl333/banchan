@@ -8,7 +8,7 @@ import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.jwt.JwtUtil;
 import com.__105.Banchan.auth.service.AuthService;
-import com.__105.Banchan.auth.service.TokenBlacklistService;
+import com.__105.Banchan.redis.service.TokenBlacklistService;
 import com.__105.Banchan.common.exception.CustomException;
 import com.__105.Banchan.common.exception.ErrorCode;
 import com.__105.Banchan.redis.domain.RefreshToken;
