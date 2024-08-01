@@ -1,7 +1,6 @@
 package com.__105.Banchan.vote.service;
 
-import com.__105.Banchan.user.entity.User;
-import com.__105.Banchan.user.enums.Role;
+import com.__105.Banchan.user.domain.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;
@@ -38,7 +37,7 @@ public class VoteServiceImpl implements VoteService {
 
         User user = findUserByUsername(username);
 
-        if (user.getRole() != Role.ADMIN) {
+        if (!user.getRole().equals("ROLE_ADMIN")) {
             throw new RuntimeException("Only ADMIN users can regist");
         }
 

@@ -1,6 +1,6 @@
 package com.__105.Banchan.vote.Entity;
 
-import com.__105.Banchan.user.entity.User;
+import com.__105.Banchan.user.domain.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
