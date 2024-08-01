@@ -25,10 +25,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -76,23 +73,54 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public ResponseEntity<StatusResponseDto> logout(String accessToken) {
-        tokenService.removeRefreshToken(accessToken);
-        return ResponseEntity.ok(StatusResponseDto.addStatus(200));
+        try {
+            tokenService.removeRefreshToken(accessToken);
+            return ResponseEntity.ok(StatusResponseDto.addStatus(200));
+        } catch (CustomException e) {
+            log.error("로그아웃 실패. 액세스 토큰: {}, 오류: {}", accessToken, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StatusResponseDto.addStatus(HttpStatus.INTERNAL_SERVER_ERROR.value()));
+        }
     }
 
     @Override
-    public ResponseEntity<TokenResponseStatus> refresh(String accessToken) {
-        Optional<RefreshToken> refreshToken = tokenRepository.findByAccessToken(accessToken);
+    public ResponseEntity<TokenResponseStatus> refresh(String accessToken, String refreshToken) {
+        try {
+            // 액세스 토큰의 유효성 검사
+            if (!jwtUtil.verifyToken(accessToken)) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new TokenResponseStatus(ErrorCode.INVALID_PARAMETER.getStatus(), null));
+            }
 
-        if (refreshToken.isPresent() && jwtUtil.verifyToken(refreshToken.get().getRefreshToken())) {
-            RefreshToken resultToken = refreshToken.get();
-            String newAccessToken = jwtUtil.generateAccessToken(resultToken.getId(), jwtUtil.getRole(resultToken.getRefreshToken()));
-            resultToken.updateAccessToken(newAccessToken);
-            tokenRepository.save(resultToken);
-            return ResponseEntity.ok(TokenResponseStatus.addStatus(200, newAccessToken));
+            // 리프레시 토큰 유효성 검사
+            if (!jwtUtil.verifyToken(refreshToken)) {
+                // 리프레시 토큰이 만료된 경우, 새로운 액세스 및 리프레시 토큰 발급을 위해 재로그인 유도
+                log.warn("리프레시 토큰이 만료되었습니다. 액세스 토큰: {}, 리프레시 토큰: {}", accessToken, refreshToken);
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(new TokenResponseStatus(ErrorCode.INVALID_REFRESH_TOKEN.getStatus(), null));
+            }
+
+            // 리프레시 토큰 정보 조회
+            Optional<RefreshToken> storedRefreshToken = tokenRepository.findByAccessToken(accessToken);
+
+            // 리프레시 토큰이 존재하고, 검증이 성공하면 새로운 액세스 토큰 발급
+            if (storedRefreshToken.isPresent()) {
+                RefreshToken resultToken = storedRefreshToken.get(); // 리프레시 토큰 정보
+                String newAccessToken = jwtUtil.generateAccessToken(resultToken.getId(), jwtUtil.getRole(refreshToken)); // 새로운 액세스 토큰 발급
+                resultToken.updateAccessToken(newAccessToken); // 리프레시 토큰 정보 업데이트
+                tokenRepository.save(resultToken);
+                log.info("새로운 액세스 토큰 발급 완료. 사용자 ID: {}, 새로운 액세스 토큰: {}", resultToken.getId(), newAccessToken);
+                return ResponseEntity.ok(new TokenResponseStatus(HttpStatus.OK.value(), newAccessToken));
+            }
+
+            // 리프레시 토큰 정보가 없는 경우
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new TokenResponseStatus(ErrorCode.REDIS_REFRESH_TOKEN_NOT_FOUND.getStatus(), null));
+        } catch (Exception e) {
+            log.error("액세스 토큰 갱신 실패. 액세스 토큰: {}, 리프레시 토큰: {}, 오류: {}", accessToken, refreshToken, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(new TokenResponseStatus(ErrorCode.INTERNAL_SERVER_ERROR.getStatus(), null));
         }
-
-        return ResponseEntity.badRequest().body(TokenResponseStatus.addStatus(400, null));
     }
 
     @Override
@@ -212,11 +240,12 @@ public class AuthServiceImpl implements AuthService {
         Cookie refreshTokenCookie = new Cookie("refreshToken", token.getRefreshToken());
         refreshTokenCookie.setHttpOnly(true);
         refreshTokenCookie.setPath("/");
-        refreshTokenCookie.setMaxAge(60 * 60); // 1시간
+        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 24시간
         response.addCookie(refreshTokenCookie);
 
         return token;
     }
+
 
 
     // 액세스 토큰으로 유저 정보 요청

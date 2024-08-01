@@ -14,7 +14,7 @@ import java.io.Serializable;
 * Hash Collection을 명시하는 어노테이션
 * RedisHash의 key는 value인 jwtToken과 @Id가 붙은 id 필드의 값을 합성하여 사용
 * */
-@RedisHash(value = "jwtToken", timeToLive = 60 * 60 * 24 * 7) // 1주,
+@RedisHash(value = "jwtToken", timeToLive = 24 * 60 * 60) // 24시간,
 public class RefreshToken implements Serializable { // RefreshToken 객체의 직렬화와 역직렬화가 지원되도록 마커 인터페이스인 Serializable 인터페이스를 구현
 
     @Id // Spring Data Redis에서 제공하는 Id
@@ -27,6 +27,10 @@ public class RefreshToken implements Serializable { // RefreshToken 객체의 �
 
     public void updateAccessToken(String accessToken) {
         this.accessToken = accessToken;
+    }
+
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
     }
 
 }
