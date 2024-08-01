@@ -3,7 +3,7 @@ services:
     container_name: jenkins
     build:
       dockerfile: Dockerfile
-    ports:
+    expose:
       - "8080"
       - "50000"
     environment:
