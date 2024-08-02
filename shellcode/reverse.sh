@@ -6,8 +6,10 @@ docker stop reverse
 
 docker rm reverse
 
-docker builder prune -f
+docker volume prune -a -f
 
-docker image prune -f
+docker builder prune -a -f
+
+docker image prune -a -f
 
 docker-compose -f docker-compose-rvproxy.yml up -d
