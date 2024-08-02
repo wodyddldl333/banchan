@@ -5,13 +5,14 @@ FROM node:20-alpine AS build-web
 WORKDIR /app/Web
 
 COPY package.json ./
+
+COPY src ./src
+
 RUN npm install
 
 RUN npm install --save-dev @types/node
 
 RUN npm install --save-dev ts-node
-
-RUN npm install @types/node --save-dev
 
 RUN npm install @types/crypto-js --save-dev
 
@@ -27,13 +28,14 @@ FROM node:20-alpine AS build-mobile
 WORKDIR /app/Mobile
 
 COPY package.json ./
+
+COPY src ./src
+
 RUN npm install
 
 RUN npm install --save-dev @types/node
 
 RUN npm install --save-dev ts-node
-
-RUN npm install @types/node --save-dev
 
 RUN npm install @types/crypto-js --save-dev
 
@@ -47,7 +49,6 @@ FROM nginx:alpine
 COPY --from=build-web /app/Web/dist /usr/share/nginx/html
 COPY --from=build-mobile /app/Mobile/dist /usr/share/nginx/html
 
-COPY ./shared/public/assets /usr/share/nginx/html/assets
 # Copy custom Nginx configuration if needed
 # COPY nginx.conf /etc/nginx/nginx.conf
 
