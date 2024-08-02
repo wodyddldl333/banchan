@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ../docker-compose
+
 docker stop reverse
 
 docker rm reverse

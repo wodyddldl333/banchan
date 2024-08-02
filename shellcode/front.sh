@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd ../docker-compose
+
 docker stop banchan_front
 docker stop banchan_front_mobile
 
