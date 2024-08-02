@@ -27,13 +27,14 @@ pipeline {
                     sh '''
                     cd /home/S11P12E105
                     cd docker-compose
+                    sudo docker-compose -f docker-compose-back.yml build --no-cache
+                    sudo docker-compose -f docker-compose-back.yml up -d
                     sudo docker stop banchan_back1
                     sudo docker stop banchan_back2
                     sudo docker rm banchan_back1
                     sudo docker rm banchan_back2
                     sudo docker rmi docker-compose_banchan_back1
                     sudo docker rmi docker-compose_banchan_back2
-                    sudo docker-compose -f docker-compose-back.yml up -d
                     '''
                 }
             }
@@ -47,10 +48,11 @@ pipeline {
                     sh '''
                     cd /home/S11P12E105
                     cd docker-compose
+                    sudo docker-compose -f docker-compose-front.yml build --no-cache 
+                    sudo docker-compose -f docker-compose-front.yml up -d
                     sudo docker stop banchan_front
                     sudo docker rm banchan_front
                     sudo docker rmi docker-compose_front_dt
-                    sudo docker-compose -f docker-compose-front.yml up -d
                     '''
                 }
             }
