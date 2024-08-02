@@ -2,7 +2,7 @@ services:
   front_dt:
     container_name: banchan_front
     build:
-      context: ../BanChan_FE/packages/Web
+      context: ../BanChan_FE
       dockerfile: Dockerfile
     expose:
       - "80"
@@ -14,7 +14,7 @@ services:
   front_dt_mobile:
     container_name: banchan_front_mobile
     build:
-      context: ../BanChan_FE/packages/Mobile
+      context: ../BanChan_FE
       dockerfile: Dockerfile
     expose:
       - "80"
