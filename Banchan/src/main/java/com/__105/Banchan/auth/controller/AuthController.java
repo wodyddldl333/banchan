@@ -39,8 +39,8 @@ public class AuthController {
 
     @PostMapping("/origin/login")
     @Operation(summary = "자체 로그인", description = "이메일, 비밀번호로 로그인")
-    public ResponseEntity<Map<String, String>> originLogin(@RequestBody OriginLoginRequestDto loginRequestDto) {
-        return authService.originLogin(loginRequestDto);
+    public ResponseEntity<Map<String, String>> originLogin(@RequestBody OriginLoginRequestDto loginRequestDto, HttpServletResponse response) {
+        return authService.originLogin(loginRequestDto, response);
     }
 
     @PostMapping("/token/logout")
