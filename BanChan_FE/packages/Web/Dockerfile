@@ -15,6 +15,7 @@ FROM nginx:alpine
 
 COPY --from=build /app/dist /usr/share/nginx/html
 
+COPY ../shared/public/assets /usr/share/nginx/html/assets
 # Copy custom Nginx configuration if needed
 # COPY nginx.conf /etc/nginx/nginx.conf
 
