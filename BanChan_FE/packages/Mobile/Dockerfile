@@ -6,6 +6,12 @@ WORKDIR /app
 COPY package.json ./
 RUN npm install
 
+RUN npm install --save-dev ts-node
+
+RUN npm install @types/node --save-dev
+
+RUN npm install @types/crypto-js --save-dev
+
 COPY . .
 
 RUN npm run build
