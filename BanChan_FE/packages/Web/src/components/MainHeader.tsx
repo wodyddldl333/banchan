@@ -1,5 +1,4 @@
-// import React from "react";
-import logo from "../../../../shared/public/assets/logo.png";
+import React from "react";
 
 const MainHeader: React.FC = () => {
   return (
@@ -10,8 +9,6 @@ const MainHeader: React.FC = () => {
             <span className="text-gray-500 mr-6 font-semibold text-[18px]">
               주소: 광주전남 공동혁신도시 빛가람 대방엘리움로얄카운티1차
             </span>
-
-            <img src={logo} alt="프로필" className="h-10 w-10 rounded-full" />
           </div>
         </header>
       </div>

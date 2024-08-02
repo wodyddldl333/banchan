@@ -59,7 +59,6 @@ const NavElements = () => {
   return (
     <Nav>
       <NavItem to="/meeting/reservedMeeting" label="예약된 회의" />
-      <NavItem to="/meeting/activeMeeting" label="진행중인 회의" />
       <NavItem to="/meeting/finishedMeeting" label="종료된 회의" />
     </Nav>
   );
@@ -67,13 +66,13 @@ const NavElements = () => {
 
 const FinishedMeeting = () => {
   return (
-<>
-        <NavElements />
-        <div className="container mx-auto p-4 mt-3">
-          <div className="flex justify-end items-center mb-6 mr-6"></div>
-          <Table headers={headers} data={data} />
-          <Pagination />
-        </div>
+    <>
+      <NavElements />
+      <div className="container mx-auto p-4 mt-3">
+        <div className="flex justify-end items-center mb-6 mr-6"></div>
+        <Table headers={headers} data={data} />
+        <Pagination />
+      </div>
     </>
   );
 };

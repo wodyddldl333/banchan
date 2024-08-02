@@ -1,7 +1,7 @@
 import React from "react";
 import SwipeableContent from "./SwipeableContent";
 
-const ShowVote = () => {
+const ShowVote: React.FC = () => {
   const voteItems = [
     {
       question: "이번 회계 감사 받기를 동의하십니까?",
