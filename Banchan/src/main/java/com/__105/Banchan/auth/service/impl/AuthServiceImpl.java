@@ -140,7 +140,7 @@ public class AuthServiceImpl implements AuthService {
     }
 
     @Override
-    public ResponseEntity<Map<String, String>> originLogin(OriginLoginRequestDto loginRequestDto) {
+    public ResponseEntity<Map<String, String>> originLogin(OriginLoginRequestDto loginRequestDto,HttpServletResponse response) {
         Optional<User> user = userRepository.findByEmail(loginRequestDto.getUserId());
 
         if (user.isEmpty()) {
@@ -162,11 +162,18 @@ public class AuthServiceImpl implements AuthService {
         GeneratedToken token = jwtUtil.generateToken(loginRequestDto.getUserId(), user.get().getRole());
         log.info("Generated Token: {}", token);
 
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Login successful! Here is your access token.");
-        response.put("accessToken", token.getAccessToken());
+        // 리프레시 토큰을 쿠키에 저장 (1시간 동안 유효)
+        Cookie refreshTokenCookie = new Cookie("refreshToken", token.getRefreshToken());
+        refreshTokenCookie.setHttpOnly(true);
+        refreshTokenCookie.setPath("/");
+        refreshTokenCookie.setMaxAge(24 * 60 * 60); // 24시간
+        response.addCookie(refreshTokenCookie);
 
-        return ResponseEntity.ok(response);
+        Map<String, String> responseMap = new HashMap<>();
+        responseMap.put("message", "Login successful! Here is your access token.");
+        responseMap.put("accessToken", token.getAccessToken());
+
+        return ResponseEntity.ok(responseMap);
     }
 
     @Override
