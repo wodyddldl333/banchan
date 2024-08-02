@@ -11,6 +11,10 @@ COPY packages/Web .
 
 RUN npm run build
 
+RUN npm install --save-dev @types/node
+
+RUN npm install --save-dev ts-node
+
 #두번째 앱 (모바일)
 
 FROM node:20-alpine AS build-mobile
@@ -19,6 +23,10 @@ WORKDIR /app/Mobile
 
 COPY package.json ./
 RUN npm install
+
+RUN npm install --save-dev @types/node
+
+RUN npm install --save-dev ts-node
 
 COPY packages/Mobile .
 
