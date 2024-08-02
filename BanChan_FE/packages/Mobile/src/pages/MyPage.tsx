@@ -1,5 +1,31 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+
+interface SidebarItemProps {
+  icon: string;
+  text: string;
+  to: string;
+}
+
+const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
+  return (
+    <NavLink
+      to={to}
+      className={({ isActive }) =>
+        `flex items-center w-full text-black focus:text-customBlue hover:text-customBlue hover:border-l-4 hover:border-customBlue ${
+          isActive ? "border-l-4 border-customBlue text-customBlue" : ""
+        }`
+      }
+    >
+      <span className="material-symbols-outlined text-[30px] pl-10">
+        {icon}
+      </span>
+      <div className="mt-[2.8px] ml-2 ">
+        <span className="ml-2 text-[18px]">{text}</span>
+      </div>
+    </NavLink>
+  );
+};
 
 const MyPage = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -65,31 +91,17 @@ const MyPage = () => {
               </svg>
             </button>
             {menuOpen && (
-              <div className="absolute right-0 mt-2 w-48 bg-white border rounded shadow-lg">
-                <Link
-                  to="/mypage"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  마이페이지
-                </Link>
-                <Link
-                  to="/community"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  커뮤니티
-                </Link>
-                <Link
-                  to="/vote"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  투표
-                </Link>
-                <Link
-                  to="/meeting"
-                  className="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                >
-                  회의
-                </Link>
+              <div
+                className="absolute right-0 mt-2 w-[270px]  bg-white border rounded shadow-lg
+              space-y-12 text-center h-[712px] transition-transform duration-700 transform ${menuOpen ? 'translate-y-0' : 'translate-y-full'}`}"
+              >
+                <div className="mt-[100px]"></div>
+                <SidebarItem icon="person" text="마이페이지" to="/" />
+                <SidebarItem icon="forum" text="커뮤니티" to="/" />
+                <SidebarItem icon="how_to_vote" text="투표" to="/" />
+                <SidebarItem icon="calendar_today" text="회의" to="/" />
+                <div className="mt-[50px]"></div>
+                <SidebarItem icon="logout" text="로그아웃" to="/" />
               </div>
             )}
           </div>

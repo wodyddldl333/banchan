@@ -1,4 +1,4 @@
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import HomePage from "../pages/HomePage";
 import SocialLoginPage from "../pages/SocialLoginPage";
 import LoginPage from "../pages/LoginPage";
@@ -27,7 +27,6 @@ import UserManagePage from "../pages/UserManagePage";
 import OtherManagePage from "../pages/OtherManagePage";
 import CreateMeeting from "../components/MeetingManage/CreateMeeting";
 import MyPage from "../pages/MyPage";
-import { Navigate } from "react-router-dom";
 
 function AppRoutes() {
   return (
