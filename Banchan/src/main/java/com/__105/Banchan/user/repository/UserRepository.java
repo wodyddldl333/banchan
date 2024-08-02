@@ -18,8 +18,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByUsername(String username);
 
-    @Query("SELECT ua2.user FROM UserApartment ua1 " +
-            "JOIN UserApartment ua2 ON ua1.apartment.code = ua2.apartment.code " +
-            "WHERE ua1.user.id = :userId AND ua2.user.id != :userId")
+    @Query("SELECT ua.user FROM UserApartment ua " +
+            "WHERE ua.apartment.code = " +
+            "(SELECT ua1.apartment.code FROM UserApartment ua1 " +
+            "WHERE ua1.user.id = :userId)")
     List<User> findUsersInSameApartment(@Param("userId") Long userId);
 }

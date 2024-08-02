@@ -27,4 +27,12 @@ public class VoteParticipant {
     @MapsId("user")
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Column(name = "is_voted", columnDefinition = "TINYINT(1) DEFAULT 0")
+    private boolean isVoted;
+
+    public void changeIsVote() {
+        this.isVoted = true;
+    }
+
 }

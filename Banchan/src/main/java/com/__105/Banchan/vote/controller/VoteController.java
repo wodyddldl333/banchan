@@ -34,15 +34,17 @@ public class VoteController {
     // 현재 진행 중인 투표 목록 조회
     @GetMapping("/list/current")
     public ResponseEntity<?> listCurrent(@AuthenticationPrincipal UserDetails userDetails) {
+
         List<VoteListResponseDto> votes = voteService.getCurrentVoteList(userDetails.getUsername());
-        return ResponseEntity.ok().body(votes);
+        return ResponseEntity.ok().body(new DataResponse<>(votes));
     }
 
     // 투표 완료된 투표 목록 조회
     @GetMapping("/list/finished")
     public ResponseEntity<?> listFinished(@AuthenticationPrincipal UserDetails userDetails) {
+
         List<VoteListResponseDto> votes = voteService.getlistFinished(userDetails.getUsername());
-        return ResponseEntity.ok().body(votes);
+        return ResponseEntity.ok().body(new DataResponse<>(votes));
     }
 
     // 투표 결과 조회
@@ -56,7 +58,8 @@ public class VoteController {
     @PostMapping("/vote")
     public ResponseEntity<?> vote(@RequestBody DoVoteRequestDto voteRequestDto,
                                   @AuthenticationPrincipal UserDetails userDetails) {
+
         voteService.vote(voteRequestDto, userDetails.getUsername());
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body("success vote");
     }
 }

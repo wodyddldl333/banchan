@@ -7,6 +7,7 @@ import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;
 import com.__105.Banchan.vote.repository.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class VoteServiceImpl implements VoteService {
 
     private final VoteRepository voteRepository;
@@ -50,6 +52,7 @@ public class VoteServiceImpl implements VoteService {
                 .startDate(voteRequestDto.getStartDate())
                 .endDate(voteRequestDto.getEndDate())
                 .build();
+
         voteRepository.save(vote);
 
         for (VoteRequestDto.QuestionDto questionDto : voteRequestDto.getQuestions()) {
@@ -71,9 +74,17 @@ public class VoteServiceImpl implements VoteService {
         }
 
         List<User> users = userRepository.findUsersInSameApartment(user.getId());
+//        log.info("Users in same apartment: {}", users.size());
 
         for (User user1 : users) {
+//            log.info("User: {}", user1);
+            VoteParticipantId id = VoteParticipantId.builder()
+                    .vote(vote.getId())
+                    .user(user1.getId())
+                    .build();
+
             VoteParticipant voteParticipant = VoteParticipant.builder()
+                    .id(id)
                     .vote(vote)
                     .user(user1)
                     .build();
@@ -105,7 +116,13 @@ public class VoteServiceImpl implements VoteService {
         List<Vote> votes = voteParticipantRepository.findVotesByUserId(user.getId(), currentDate);
 
         return votes.stream()
-                .map(VoteListResponseDto::new)
+                .map(vote -> new VoteListResponseDto(vote,
+                        voteParticipantRepository.findVoteCountByVoteId(vote.getId()),
+                        voteParticipantRepository.findVoteIsVoted(vote.getId()),
+                        voteParticipantRepository.existsByIdAndIsVotedTrue(VoteParticipantId.builder()
+                                .user(user.getId())
+                                .vote(vote.getId())
+                                .build())))
                 .collect(Collectors.toList());
     }
 
@@ -115,8 +132,15 @@ public class VoteServiceImpl implements VoteService {
         User user = findUserByUsername(username);
         LocalDateTime currentDate = LocalDateTime.now();
         List<Vote> votes = voteParticipantRepository.findDoneVotesByUserId(user.getId(), currentDate);
+
         return votes.stream()
-                .map(VoteListResponseDto::new)
+                .map(vote -> new VoteListResponseDto(vote,
+                        voteParticipantRepository.findVoteCountByVoteId(vote.getId()),
+                        voteParticipantRepository.findVoteIsVoted(vote.getId()),
+                        voteParticipantRepository.existsByIdAndIsVotedTrue(VoteParticipantId.builder()
+                                .user(user.getId())
+                                .vote(vote.getId())
+                                .build())))
                 .collect(Collectors.toList());
     }
 
@@ -142,8 +166,14 @@ public class VoteServiceImpl implements VoteService {
 
         VoteParticipantId vpId = new VoteParticipantId(vote.getId(), user.getId());
 
-        if (!voteParticipantRepository.existsById(vpId)) {
-            throw new RuntimeException("Vote participant does not exist");
+        VoteParticipant vp = voteParticipantRepository.findById(vpId)
+                .orElseThrow(() -> new RuntimeException("Vote participant does not exist"));
+
+        // 투표 완료 시 투표 완료 Check!
+        if (!vp.isVoted()) {
+            vp.changeIsVote();
+        } else {
+            throw new RuntimeException("Vote participant is already voted");
         }
 
         List<DoVoteRequestDto.ResponseDto> responseDtos = doVoteRequestDto.getResponses();
@@ -199,7 +229,7 @@ public class VoteServiceImpl implements VoteService {
                 })
                 .collect(Collectors.toList());
 
-        return new VoteResultDto(vote.getId(), questionResults);
+        return new VoteResultDto(vote.getId(), vote.getTitle(), vote.getContent(), questionResults);
     }
 
     private User findUserByUsername(String username) {

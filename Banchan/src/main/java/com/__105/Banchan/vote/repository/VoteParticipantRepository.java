@@ -25,4 +25,15 @@ public interface VoteParticipantRepository extends JpaRepository<VoteParticipant
             "and :currentDate >= vp.vote.endDate " +
             "order by vp.vote.id desc")
     List<Vote> findDoneVotesByUserId(@Param("userId") Long userId, @Param("currentDate") LocalDateTime currentDate);
+
+    @Query(value = "select count(*) from vote_participant " +
+            "where vote_id = :voteId", nativeQuery = true)
+    int findVoteCountByVoteId(@Param("voteId") Long voteId);
+
+    @Query(value = "select count(*) from vote_participant " +
+            "where vote_id = :voteId " +
+            "and is_voted = 1",nativeQuery = true)
+    int findVoteIsVoted(@Param("voteId") Long voteId);
+
+    boolean existsByIdAndIsVotedTrue(VoteParticipantId id);
 }
