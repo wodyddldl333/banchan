@@ -15,6 +15,10 @@ RUN npm install --save-dev @types/node
 
 RUN npm install --save-dev ts-node
 
+RUN npm install @types/node --save-dev
+
+RUN npm install @types/crypto-js --save-dev
+
 #두번째 앱 (모바일)
 
 FROM node:20-alpine AS build-mobile
@@ -27,6 +31,10 @@ RUN npm install
 RUN npm install --save-dev @types/node
 
 RUN npm install --save-dev ts-node
+
+RUN npm install @types/node --save-dev
+
+RUN npm install @types/crypto-js --save-dev
 
 COPY packages/Mobile .
 
