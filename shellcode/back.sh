@@ -12,6 +12,4 @@ docker builder prune -f
 
 docker image prune -f
 
-docker-compose -f docker-compose-back.yml build --no-cache
-
 docker-compose -f docker-compose-back.yml up -d
