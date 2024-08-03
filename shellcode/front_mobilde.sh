@@ -2,9 +2,9 @@
 
 cd ../docker-compose
 
-docker stop banchan_front
+docker stop banchan_front_mobile
 
-docker rm banchan_front
+docker rm banchan_front_mobile
 
 docker volume prune -a -f
 
