@@ -6,8 +6,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - "80"
-    volumes:
-      - /usr/share/nginx/html
+    # volumes:
+    #   - /usr/share/nginx/html
     networks:
       - mynetwork
 
@@ -18,8 +18,8 @@ services:
       dockerfile: Dockerfile
     expose:
       - "80"
-    volumes:
-      - /usr/share/nginx/html
+    # volumes:
+    #   - /usr/share/nginx/html
     networks:
       - mynetwork
 
