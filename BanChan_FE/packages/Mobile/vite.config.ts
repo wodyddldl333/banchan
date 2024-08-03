@@ -3,8 +3,6 @@ import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
 
-// import tsconfigPaths from "vite-tsconfig-paths";
-
 export default defineConfig({
   plugins: [react(), tsconfigPaths()],
   resolve: {
@@ -15,4 +13,5 @@ export default defineConfig({
   build: {
     outDir: "dist",
   },
+  base: '/m/',  // 모든 경로에 /m을 붙이도록 설정
 });
