@@ -23,7 +23,7 @@ RUN curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-c
     chmod +x /usr/local/bin/docker-compose
 
 # Docker 그룹에 jenkins 사용자 추가
-RUN groupadd -g 999 docker && usermod -aG docker jenkins
+# RUN groupadd -g 999 docker && usermod -aG docker jenkins
 
 # sudoers 파일에 jenkins 사용자 추가
 RUN echo "jenkins ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers

@@ -63,7 +63,7 @@ services:
     <<: *default
     volumes:
       - ../Banchan/redis_data:/data
-      - ../Banchan/redis.conf:/usr/local/etc/redis/redis.conf
+      - ../Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - mynetwork
     healthcheck:
