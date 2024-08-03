@@ -1,15 +1,5 @@
 services:
-  front_dt:
-    container_name: banchan_front
-    build:
-      context: ../BanChan_FE/packages/Web
-      dockerfile: Dockerfile
-    expose:
-      - "80"
-    networks:
-      - mynetwork
-
-  front_dt_mobile:
+  banchan_front_mobile:
     container_name: banchan_front_mobile
     build:
       context: ../BanChan_FE/packages/Mobile
@@ -18,7 +8,7 @@ services:
       - "80"
     networks:
       - mynetwork
-
+      
 networks:
   mynetwork:
     external: true
