@@ -4,6 +4,7 @@ import com.__105.Banchan.auth.dto.KakaoUserInfoDto;
 import com.__105.Banchan.auth.dto.StatusResponseDto;
 import com.__105.Banchan.auth.dto.TokenResponseStatus;
 
+import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.service.AuthService;
 
