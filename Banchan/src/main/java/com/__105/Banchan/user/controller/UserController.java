@@ -1,6 +1,6 @@
 package com.__105.Banchan.user.controller;
 
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.dto.SignupRequestDto;
 import com.__105.Banchan.user.dto.UserAptRequestDto;
 import com.__105.Banchan.user.service.UserService;
@@ -8,8 +8,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

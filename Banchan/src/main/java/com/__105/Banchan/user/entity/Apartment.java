@@ -1,4 +1,4 @@
-package com.__105.Banchan.user.domain;
+package com.__105.Banchan.user.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

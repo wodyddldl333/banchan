@@ -1,4 +1,4 @@
-package com.__105.Banchan.user.domain;
+package com.__105.Banchan.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;

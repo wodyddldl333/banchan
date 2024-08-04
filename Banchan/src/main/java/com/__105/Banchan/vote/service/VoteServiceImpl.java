@@ -1,6 +1,6 @@
 package com.__105.Banchan.vote.service;
 
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;

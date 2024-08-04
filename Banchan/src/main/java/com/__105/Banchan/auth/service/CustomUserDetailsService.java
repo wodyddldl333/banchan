@@ -1,6 +1,6 @@
 package com.__105.Banchan.auth.service;
 
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
