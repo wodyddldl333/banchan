@@ -38,8 +38,8 @@ function AppRoutes() {
       <Route path="/write" element={<Write />} />
       <Route path="/detail" element={<Detail />} />
       <Route path="/update" element={<Update />} />
-      <Route path="/meetingPage/:id" element={<MeetingPage />} />
-      <Route path="/chatBox" element={<ChatBox />} />
+      <Route path="/meetingpage/:id" element={<MeetingPage />} />
+      <Route path="/chatbox" element={<ChatBox />} />
 
       {/* 메인레이아웃 - 상단 툴바 및 좌측 메뉴바 */}
       <Route element={<MainLayout />}>
@@ -55,10 +55,10 @@ function AppRoutes() {
 
         {/* 회의관리 페이지 */}
         <Route path="/meeting" element={<MeetingManagePage />}>
-          <Route index element={<Navigate to="reservedMeeting" />} />
-          <Route path="reservedMeeting" element={<ReservedMeeting />} />
-          <Route path="finishedMeeting" element={<FinishedMeeting />} />
-          <Route path="createMeeting" element={<CreateMeeting />} />
+          <Route index element={<Navigate to="reservedmeeting" />} />
+          <Route path="reservedmeeting" element={<ReservedMeeting />} />
+          <Route path="finishedmeeting" element={<FinishedMeeting />} />
+          <Route path="createmeeting" element={<CreateMeeting />} />
         </Route>
 
         {/* 커뮤니티 페이지 */}

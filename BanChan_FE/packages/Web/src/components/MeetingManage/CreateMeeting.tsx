@@ -10,7 +10,7 @@ const CreateMeeting: React.FC = () => {
   const navigate = useNavigate();
 
   const handleCreateMeeting = async () => {
-    navigate(`/meeting/reservedMeeting`, {
+    navigate(`/meeting/reservedmeeting`, {
       state: { title, date, startTime },
     });
   };
@@ -23,7 +23,7 @@ const CreateMeeting: React.FC = () => {
   //       date,
   //       startTime,
   //     });
-  //     navigate(`/meeting/reservedMeeting`);
+  //     navigate(`/meeting/reservedmeeting`);
   //   } catch (error) {
   //     console.error("Error creating meeting:", error);
   //   }

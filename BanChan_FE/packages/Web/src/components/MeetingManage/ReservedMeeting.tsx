@@ -10,8 +10,8 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 const NavElements = () => {
   return (
     <Nav>
-      <NavItem to="/meeting/reservedMeeting" label="예약된 회의" />
-      <NavItem to="/meeting/finishedMeeting" label="종료된 회의" />
+      <NavItem to="/meeting/reservedmeeting" label="예약된 회의" />
+      <NavItem to="/meeting/finishedmeeting" label="종료된 회의" />
     </Nav>
   );
 };
@@ -52,7 +52,7 @@ const ReservedMeeting = () => {
 
   // const handleActivateMeeting = async () => {
   //   const sessionId = await createSession();
-  //   navigate(`/meetingPage/${sessionId}`, {
+  //   navigate(`/meetingpage/${sessionId}`, {
   //     state: { title, date, startTime },
   //   });
   // };
@@ -107,7 +107,7 @@ const ReservedMeeting = () => {
       <NavElements />
       <div className="container mx-auto p-4 mt-3">
         <div className="flex justify-end items-center mb-6 mr-6">
-          <Link to="/meeting/createMeeting">
+          <Link to="/meeting/createmeeting">
             <LargeButton title="회의 생성" />
           </Link>
         </div>
