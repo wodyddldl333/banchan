@@ -1,6 +1,5 @@
-#환경변수 파일 
+###환경변수
 docker-compose/.env
+Banchan_FE/.env
 .env
-
-#젠킨스 설정
 jenkins_home/

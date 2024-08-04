@@ -66,7 +66,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .orElseThrow(() -> new JwtException("Invalid JWT token"));
             log.info("User: " + findUser.getEmail());
 
-            // SecurityUserDto를 생성하여 UserDetails로 등록
+            // SecurityContext에 등록할 User 객체를 만들어 준다.
             SecurityUserDto userDto = SecurityUserDto.builder()
                     .id(findUser.getId())
                     .email(findUser.getEmail())
@@ -74,16 +74,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     .role(findUser.getRole())
                     .build();
 
-            // UserDetails로 Authentication 객체 생성 및 SecurityContext에 설정
-            Authentication auth = new UsernamePasswordAuthenticationToken(userDto, null, userDto.getAuthorities());
+            // SecurityContext에 인증 객체 등록
+            Authentication auth = getAuthentication(userDto);
             SecurityContextHolder.getContext().setAuthentication(auth);
             log.info("SecurityContext에 인증 객체 등록 완료");
         }
 
-        filterChain.doFilter(request, response);
+        filterChain.doFilter(request,response);
     }
-
-
 
     private String resolveToken(HttpServletRequest request) {
         String bearerToken = request.getHeader("Authorization");

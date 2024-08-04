@@ -1,18 +1,15 @@
 package com.__105.Banchan.auth.controller;
 
-
 import com.__105.Banchan.auth.dto.KakaoUserInfoDto;
 import com.__105.Banchan.auth.dto.StatusResponseDto;
 import com.__105.Banchan.auth.dto.TokenResponseStatus;
 
-import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
 import com.__105.Banchan.auth.jwt.GeneratedToken;
 import com.__105.Banchan.auth.service.AuthService;
 
 import com.__105.Banchan.user.repository.UserRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -64,40 +61,9 @@ public class AuthController {
 
 
     @PostMapping("/token/refresh")
-    @Operation(summary = "토큰 갱신", description = "액세스 토큰을 갱신")
-    public ResponseEntity<TokenResponseStatus> refresh(HttpServletRequest request) {
-
-        // Authorization 헤더에서 액세스 토큰 추출
-        String accessTokenHeader = request.getHeader("Authorization");
-        String accessToken = null;
-
-        log.info("전달 받은 accessToken: " + accessTokenHeader);
-
-        if (accessTokenHeader != null && accessTokenHeader.startsWith("Bearer ")) {
-            accessToken = accessTokenHeader.substring(7);
-        }
-
-        // 쿠키에서 리프레시 토큰 추출
-        String refreshToken = null;
-        if (request.getCookies() != null) {
-            for (var cookie : request.getCookies()) {
-                if ("refreshToken".equals(cookie.getName())) {
-                    refreshToken = cookie.getValue();
-                    break;
-                }
-            }
-        }
-
-        log.info("전달 받은 refreshToken: " + refreshToken);
-
-        // refreshToken이 없거나 accessToken이 없으면 오류 반환
-        if (accessToken == null || accessToken.trim().isEmpty() || refreshToken == null || refreshToken.trim().isEmpty()) {
-            log.error("Access Token or Refresh Token is missing");
-            return ResponseEntity.badRequest().body(new TokenResponseStatus(400, null));
-        }
-
-        // 토큰 갱신 서비스 호출
-        return authService.refresh(accessToken, refreshToken);
+    @Operation(summary = "토큰 갱신", description = "액세스 토큰 갱신")
+    public ResponseEntity<TokenResponseStatus> refresh(@RequestHeader("Authorization") final String accessToken) {
+        return authService.refresh(accessToken);
     }
 
     @GetMapping("/kakao/login")

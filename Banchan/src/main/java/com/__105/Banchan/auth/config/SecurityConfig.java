@@ -2,7 +2,7 @@ package com.__105.Banchan.auth.config;
 
 import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.auth.jwt.JwtExceptionFilter;
-import com.__105.Banchan.util.CustomUserDetailsService;
+import com.__105.Banchan.auth.service.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -71,7 +71,7 @@ public class SecurityConfig {
 //                )
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/api/auth/token/refresh").permitAll()
+                        .requestMatchers("/api/auth/token/refresh").hasRole("USER")
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .requestMatchers("/", "/css/**", "/images/**", "/js/**", "/favicon.ico", "/h2-console/**").permitAll()

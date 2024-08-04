@@ -27,8 +27,6 @@ public enum ErrorCode {
     // 리프레시 토큰 관련 에러 코드
     REDIS_REFRESH_TOKEN_NOT_FOUND(404, "R001", "해당 액세스 토큰에 대한 리프레시 토큰을 찾을 수 없습니다."),
     REDIS_TOKEN_CREATE_FAILED(500, "R002", "Redis에 토큰 생성 중 오류 발생"),
-    REFRESH_TOKEN_EXPIRED(401, "R003", "리프레시 토큰이 만료되었습니다."),
-    INVALID_REFRESH_TOKEN(400, "R004", "잘못된 리프레시 토큰입니다."),
 
     // 인증 권한 관련 에러 코드
     USER_NOT_AUTHORIZED(403, "A001", "사용자가 권한이 없습니다."),
