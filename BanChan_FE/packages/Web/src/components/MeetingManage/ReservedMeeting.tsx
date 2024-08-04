@@ -5,7 +5,7 @@ import SmallButton from "../Buttons/SmallButton";
 import Nav from "../Nav";
 import NavItem from "../NavItem";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 
 const NavElements = () => {
   return (
@@ -17,9 +17,9 @@ const NavElements = () => {
 };
 
 const ReservedMeeting = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-  const { title, date, startTime } = location.state || {};
+  // const location = useLocation();
+  // const navigate = useNavigate();
+  // const { title, date, startTime } = location.state || {};
   // const [meetings, setMeetings] = useState([]);
 
   //  useEffect(() => {
@@ -35,27 +35,27 @@ const ReservedMeeting = () => {
   //    fetchMeetings();
   //  }, []);
 
-  const createSession = async (): Promise<string> => {
-    const response = await axios.post(
-      "http://ec2-54-66-234-44.ap-southeast-2.compute.amazonaws.com:8080/api/session",
+  // const createSession = async (): Promise<string> => {
+  //   const response = await axios.post(
+  //     "http://ec2-54-66-234-44.ap-southeast-2.compute.amazonaws.com:8080/api/session",
 
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
-        },
-      }
-    );
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
+  //       },
+  //     }
+  //   );
 
-    return response.data;
-  };
+  //   return response.data;
+  // };
 
-  const handleActivateMeeting = async () => {
-    const sessionId = await createSession();
-    navigate(`/meetingPage/${sessionId}`, {
-      state: { title, date, startTime },
-    });
-  };
+  // const handleActivateMeeting = async () => {
+  //   const sessionId = await createSession();
+  //   navigate(`/meetingPage/${sessionId}`, {
+  //     state: { title, date, startTime },
+  //   });
+  // };
 
   const startMeeting = () => {
     return (
@@ -64,7 +64,7 @@ const ReservedMeeting = () => {
         bgColor="bg-white"
         txtColor=""
         borderColor="border-customGreen"
-        onClick={handleActivateMeeting}
+        // onClick={handleActivateMeeting}
       />
     );
   };
