@@ -4,7 +4,7 @@ import Table from "../Table";
 import SmallButton from "../Buttons/SmallButton";
 import Nav from "../Nav";
 import NavItem from "../NavItem";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 // import axios from "axios";
 
 const NavElements = () => {
