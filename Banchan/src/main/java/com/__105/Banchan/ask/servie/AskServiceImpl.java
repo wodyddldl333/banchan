@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -66,7 +67,9 @@ public class AskServiceImpl implements AskService {
             ask.updateViews();
         }
 
-        AskDetailResponse responseDto = AskDetailResponse.builder()
+        int likes = askLikeRepository.countByAskId(ask.getId());
+
+        return AskDetailResponse.builder()
                 .id(askId)
                 .username(ask.getUser().getUsername())
                 .apt(ask.getApt())
@@ -74,11 +77,10 @@ public class AskServiceImpl implements AskService {
                 .content(ask.getContent())
                 .createdAt(ask.getCreatedAt())
                 .views(ask.getViews())
+                .likes(likes)
                 .isAdmin(isAdmin)
                 .isWriter(ask.getUser().getUsername().equals(username))
                 .build();
-
-        return responseDto;
     }
 
     @Override
@@ -149,12 +151,26 @@ public class AskServiceImpl implements AskService {
 
         Page<Ask> askPage = askRepository.findAll(spec, pageable);
 
+        List<Long> askIds = askPage.getContent().stream()
+                .map(Ask::getId)
+                .collect(Collectors.toList());
+
+        List<Object[]> results = askLikeRepository.countLikesByAskIds(askIds);
+        Map<Long, Long> likesCountMap = results.stream()
+                .collect(Collectors.toMap(
+                        result -> (Long) result[0],  // ask_id (Long)
+                        result -> (Long) result[1]   // like count (Long)
+                ));
+
+
         List<AskListResponse> askList = askPage.getContent().stream().map(ask ->
                 AskListResponse.builder()
                         .id(ask.getId())
                         .title(ask.getTitle())
                         .content(ask.getContent())
                         .username(ask.getUser().getUsername())
+                        .views(ask.getViews())
+                        .likes(likesCountMap.getOrDefault(ask.getId(), 0L))
                         .createdAt(ask.getCreatedAt())
                         .build()
         ).collect(Collectors.toList());

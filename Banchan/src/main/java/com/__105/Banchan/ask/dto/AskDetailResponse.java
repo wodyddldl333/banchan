@@ -19,6 +19,7 @@ public class AskDetailResponse {
     private String title;
     private String content;
     private int views;
+    private int likes;
     private LocalDateTime createdAt;
     private boolean isAdmin;
     private boolean isWriter;

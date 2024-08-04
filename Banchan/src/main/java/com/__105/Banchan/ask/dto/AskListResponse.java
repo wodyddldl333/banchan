@@ -17,5 +17,7 @@ public class AskListResponse {
     private String title;
     private String content;
     private String username;
+    private int views;
+    private Long likes;
     private LocalDateTime createdAt;
 }
