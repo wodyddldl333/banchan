@@ -241,7 +241,7 @@
 //       }));
 //     } else if (icon === "exit_to_app") {
 //       if (session) session.disconnect();
-//       navigate("/meeting/reservedmeeting");
+//       navigate("/meeting/reservedMeeting");
 //     } else if (icon === "videocam") {
 //       if (publisher) {
 //         const newPublishVideo = !activeIcons.videocam;

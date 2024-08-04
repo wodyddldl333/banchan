@@ -55,10 +55,10 @@ function AppRoutes() {
 
         {/* 회의관리 페이지 */}
         <Route path="/meeting" element={<MeetingManagePage />}>
-          <Route index element={<Navigate to="reservedmeeting" />} />
-          <Route path="reservedmeeting" element={<ReservedMeeting />} />
-          <Route path="finishedmeeting" element={<FinishedMeeting />} />
-          <Route path="createmeeting" element={<CreateMeeting />} />
+          <Route index element={<Navigate to="reservedMeeting" />} />
+          <Route path="reservedMeeting" element={<ReservedMeeting />} />
+          <Route path="finishedMeeting" element={<FinishedMeeting />} />
+          <Route path="createMeeting" element={<CreateMeeting />} />
         </Route>
 
         {/* 커뮤니티 페이지 */}

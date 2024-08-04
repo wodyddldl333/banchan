@@ -58,8 +58,8 @@ const data = [
 const NavElements = () => {
   return (
     <Nav>
-      <NavItem to="/meeting/reservedmeeting" label="예약된 회의" />
-      <NavItem to="/meeting/finishedmeeting" label="종료된 회의" />
+      <NavItem to="/meeting/reservedMeeting" label="예약된 회의" />
+      <NavItem to="/meeting/finishedMeeting" label="종료된 회의" />
     </Nav>
   );
 };
