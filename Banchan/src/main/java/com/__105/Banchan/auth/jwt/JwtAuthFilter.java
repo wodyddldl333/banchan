@@ -2,7 +2,8 @@ package com.__105.Banchan.auth.jwt;
 
 import com.__105.Banchan.auth.dto.SecurityUserDto;
 import com.__105.Banchan.auth.exception.JwtException;
-import com.__105.Banchan.user.domain.User;
+import com.__105.Banchan.redis.service.TokenBlacklistService;
+import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.repository.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -29,6 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private final JwtUtil jwtUtil;
     private final UserRepository userRepository;
+    private final TokenBlacklistService tokenBlacklistService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
@@ -41,6 +43,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             log.info("Access Token이 없습니다.");
             filterChain.doFilter(request,response);
             return;
+        }
+
+        // 블랙리스트에 있는 토큰인지 확인
+        if (tokenBlacklistService.isTokenBlacklisted(accessToken)) {
+            log.warn("블랙리스트에 있는 Access Token입니다: {}", accessToken);
+            throw new JwtException("블랙리스트에 등록된 Access Token입니다.");
         }
 
         // AccessToken을 검증하고, 만료되었을 경우 예외 발생

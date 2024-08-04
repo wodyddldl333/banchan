@@ -7,7 +7,4 @@ public interface RefreshTokenService {
     @Transactional
     void saveTokenInfo(String email, String refreshToken, String accessToken);
 
-    @Transactional
-    void removeRefreshToken(String accessToken);
-
 }

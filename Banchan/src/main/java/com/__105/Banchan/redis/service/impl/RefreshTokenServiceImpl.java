@@ -30,10 +30,5 @@ public class RefreshTokenServiceImpl implements RefreshTokenService {
 
     }
 
-    @Override
-    public void removeRefreshToken(String accessToken) {
-        RefreshToken refreshToken = refreshTokenRepository.findByAccessToken(accessToken)
-                .orElseThrow(() -> new CustomException(ErrorCode.REDIS_REFRESH_TOKEN_NOT_FOUND));
-        refreshTokenRepository.delete(refreshToken);
-    }
+
 }

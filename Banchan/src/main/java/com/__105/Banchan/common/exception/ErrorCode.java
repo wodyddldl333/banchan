@@ -34,7 +34,19 @@ public enum ErrorCode {
     // 아파트 관련 에러코드
     USER_APARTMENT_NOT_FOUND(404, "AP001", "유저의 아파트 정보를 찾을 수 없습니다."),
     APARTMENT_NOT_FOUND(404, "AP002", "아파트 정보를 찾을 수 없습니다."),
-    ;;
+    INVALID_APT_CODE(400, "AP003", "잘못된 아파트 코드입니다."),
+    INVALID_BUILDING_NUMBER(400, "AP004", "잘못된 건물 번호입니다."),
+    INVALID_UNIT_NUMBER(400, "AP005", "잘못된 유닛 번호입니다. 문자를 입력이 발생했는지 확인이 필요합니다."),
+
+    // 일반적인 에러 코드
+    INTERNAL_SERVER_ERROR(500, "S001", "서버 내부 오류가 발생했습니다."),
+    BAD_REQUEST(400, "S002", "잘못된 요청입니다."),
+    FORBIDDEN(403, "S003", "액세스가 거부되었습니다."),
+    NOT_FOUND(404, "S004", "리소스를 찾을 수 없습니다."),
+
+    // 로그아웃 관련 에러 코드
+    LOGOUT_FAILED(500, "L001", "로그아웃 실패");
+
     private final int status;
     private final String code;
     private final String message;

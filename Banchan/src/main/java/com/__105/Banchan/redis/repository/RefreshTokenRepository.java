@@ -11,4 +11,10 @@ public interface RefreshTokenRepository extends CrudRepository<RefreshToken, Str
 
     // accessToken으로 RefreshToken을 찾아온다.
     Optional<RefreshToken> findByAccessToken(String accessToken);
+
+    // 사용자 이메일로 RefreshToken을 찾아온다.
+    Optional<RefreshToken> findByUserEmail(String userEmail);
+
+    // RefreshToken을 삭제한다.
+    void deleteByAccessToken(String accessToken);
 }

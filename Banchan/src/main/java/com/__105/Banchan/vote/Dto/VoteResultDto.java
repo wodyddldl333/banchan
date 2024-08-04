@@ -14,6 +14,8 @@ import java.util.List;
 public class VoteResultDto {
 
     private Long voteId;
+    private String title;
+    private String content;
     private List<QuestionResultDto> questionResults;
 
     @Getter
