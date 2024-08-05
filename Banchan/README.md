@@ -1,1 +1,1 @@
-백엔드 젠킨스 restart 1
+백엔드 젠킨스 restart
