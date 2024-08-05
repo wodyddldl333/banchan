@@ -45,7 +45,7 @@ services:
       - "3306"
     <<: *default
     volumes:
-      - ../Banchan/mysql_data:/var/lib/mysql
+      - /home/201-105/S11P12E105/Banchan/mysql_data:/var/lib/mysql
     networks:
       - mynetwork
     healthcheck:
@@ -66,8 +66,8 @@ services:
       - "6379"
     <<: *default
     volumes:
-      - ../Banchan/redis_data:/data
-      - ../Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
+      - /home/201-105/S11P12E105/Banchan/redis_data:/data
+      - /home/201-105/S11P12E105/Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
     networks:
       - mynetwork
     healthcheck:
@@ -81,13 +81,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: ../Banchan/mysql_data
+      device: /home/201-105/S11P12E105/Banchan/mysql_data
       o: bind
   redis_data:
     driver: local
     driver_opts:
       type: none
-      device: ../Banchan/redis_data
+      device: /home/201-105/S11P12E105/Banchan/redis_data
       o: bind
 
 networks:
