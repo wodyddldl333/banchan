@@ -49,7 +49,7 @@ springdoc:
 
 openvidu:
   url: http://openvidu-server:5443
-  secret: MY_SECRET
+  secret: 1234
 
 
 
