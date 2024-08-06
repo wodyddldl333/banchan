@@ -47,5 +47,9 @@ springdoc:
     enabled: true # Swagger UI 활성화
     path: /swagger-ui.html # Swagger UI 접근 경로 설정
 
+openvidu:
+  url: http://localhost:4443
+  secret: MY_SECRET
+
 
 
