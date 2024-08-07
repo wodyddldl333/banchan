@@ -98,7 +98,7 @@ const Approval: React.FC = () => {
 
   const handleApprove = async (user: User) => {
     try {
-      // 주석 처리된 API 호출 부분 - 배포할 땐 저거 주석 해제하고 보내면 될 듯
+      // 주석 처리된 API 호출 부분 - 배포할 땐 저거 주석 해제하고 보내면 될 듯 - get으로 해야되나?
       // await axios.post(`/api/admin/users/approval/${encodeURIComponent(user.name)}`);
       navigate("/userManage/manage", { state: { user } });
     } catch (error) {
