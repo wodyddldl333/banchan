@@ -51,5 +51,6 @@ openvidu:
   url: http://localhost:4443
   secret: MY_SECRET
 
-
+file:
+  upload-dir: /app/uploads
 
