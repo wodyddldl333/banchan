@@ -58,8 +58,10 @@ function AppRoutes() {
         <Route path="/userManage" element={<UserManagePage />}>
           <Route index element={<Navigate to="approval" />} />
           <Route path="detail" element={<UserDetailForm />} />
-          <Route path="approval" element={<Approval />} />
-          <Route path="manage" element={<Manage />} />
+          {/* <Route path="approval" element={<Approval />} />
+          <Route path="manage" element={<Manage />} /> */}
+          <Route path="/userManage/approval" element={<Approval />} />
+          <Route path="/userManage/manage" element={<Manage />} />
         </Route>
 
         {/* 회의관리 페이지 */}
