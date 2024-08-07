@@ -29,6 +29,11 @@ import CreateMeeting from "../components/MeetingManage/CreateMeeting";
 import MyPage from "../pages/MyPage";
 import VoteEnd from "../components/VoteManage/VoteEnd";
 import SessionJoinPage from "../pages/SessionJoinPage";
+import OpenViduSession from "../OpenviduSession";
+import Kakaocallback from "../pages/KakaoCallback";
+import KakaoLoginButton from '../components/Buttons/KakaoLoginButton'; // KakaoLoginButton 컴포넌트 임포트
+import UserDetailForm from '../components/UserDetailForm'; // UserDetailForm 컴포넌트 임포트
+
 
 function AppRoutes() {
   return (
@@ -40,6 +45,10 @@ function AppRoutes() {
       <Route path="/update" element={<Update />} />
       <Route path="/meetingPage/:id" element={<MeetingPage />} />
       <Route path="/chatBox" element={<ChatBox />} />
+      <Route path="/openvidu" element={<OpenViduSession />} />
+
+      <Route path="/login/oauth2/code/kakao" element={<Kakaocallback />} />
+      <Route path="/kakao-login" element={<KakaoLoginButton />} />
       {/* 메인레이아웃 - 상단 툴바 및 좌측 메뉴바 */}
       <Route element={<MainLayout />}>
         {/* 메인 페이지 */}
@@ -48,6 +57,7 @@ function AppRoutes() {
         {/* 유저관리 페이지 */}
         <Route path="/userManage" element={<UserManagePage />}>
           <Route index element={<Navigate to="approval" />} />
+          <Route path="detail" element={<UserDetailForm />} />
           <Route path="approval" element={<Approval />} />
           <Route path="manage" element={<Manage />} />
         </Route>

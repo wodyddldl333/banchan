@@ -1,7 +1,13 @@
 // import React from "react";
 import { NavLink } from "react-router-dom";
 import logo from "@assets/logo.png";
-import { SidebarItemProps } from "../Type";
+import LogoutButton from './Buttons/LogoutButton'; // 로그아웃 버튼 import
+
+interface SidebarItemProps {
+  icon: string;
+  text: string;
+  to: string;
+}
 
 const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
   return (
@@ -51,7 +57,7 @@ const MainSideBar: React.FC = () => {
         </nav>
 
         <div className="mt-[220px]"></div>
-        <SidebarItem icon="logout" text="로그아웃" to="/" />
+        <LogoutButton /> {/* 로그아웃 버튼 추가 */}
       </div>
     </div>
   );
