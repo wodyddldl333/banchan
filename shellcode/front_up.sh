@@ -8,4 +8,4 @@ docker builder prune -a -f
 
 docker image prune -a -f
 
-docker-compose -f docker-compose-front.yml up -d
+docker-compose -f docker-compose-front-web.yml up -d
