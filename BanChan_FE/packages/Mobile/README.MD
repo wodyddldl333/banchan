@@ -1,1 +1,1 @@
-모바일 restart
+모바일 restart'
