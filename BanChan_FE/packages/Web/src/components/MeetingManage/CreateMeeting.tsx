@@ -28,6 +28,7 @@ const CreateMeeting: React.FC = () => {
         },
         {
           headers: {
+            // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
             Authorization: `Bearer ${token}`,
           },
         }

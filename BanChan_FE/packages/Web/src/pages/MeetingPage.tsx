@@ -13,8 +13,6 @@ import ThumbnailPlayer from "../components/WebRTC/ThumbnailPlayer";
 import SubscriberList from "../components/WebRTC/SubscribeList";
 import { IconName, LocationState } from "../Type";
 import { useCookies } from "react-cookie";
-import ChatBox from "../components/WebRTC/ChatBox";
-import { Message } from "../Type";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -26,13 +24,12 @@ const MeetingPage: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
+  // const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
     Publisher | Subscriber | null
   >(null);
 
   const { token, roomName } = location.state as LocationState;
-  const [messages, setMessages] = useState<Message[]>([]); // 채팅 메시지 상태 추가
 
   const subscriberStreams = useRef<Set<string>>(new Set());
   const [activeIcons, setActiveIcons] = useState<Record<IconName, boolean>>({
@@ -76,7 +73,7 @@ const MeetingPage: React.FC = () => {
         });
 
         // 퍼블리셔를 세션에 추가
-        mySession.publish(publisher);
+        await mySession.publish(publisher);
         setPublisher(publisher);
         setThumbnailPlayer(publisher);
 
@@ -125,17 +122,8 @@ const MeetingPage: React.FC = () => {
         console.log("Number of subscribers: ", subscribers.length);
       };
 
-      const signalHandler = (event: any) => {
-        const newMessage: Message = {
-          id: messages.length + 1,
-          text: event.data,
-        };
-        setMessages((prevMessages) => [...prevMessages, newMessage]);
-      };
-
       mySession.on("streamCreated", streamCreatedHandler);
       mySession.on("streamDestroyed", streamDestroyedHandler);
-      mySession.on("signal:chat", signalHandler); // 채팅 메시지 수신 핸들러 추가
 
       await joinSession(mySession, token);
       setSession(mySession);
@@ -159,9 +147,8 @@ const MeetingPage: React.FC = () => {
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.Token}`,
-
           // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
+          Authorization: `Bearer ${cookies.Token}`,
         },
       });
       navigate("/meeting/reservedMeeting");
@@ -173,7 +160,7 @@ const MeetingPage: React.FC = () => {
   };
 
   const handleChatToggle = () => {
-    setIsChatBoxVisible((prevState) => !prevState);
+    // setIsChatBoxVisible((prevState) => !prevState);
   };
 
   const handleButtonClick = (icon: IconName) => {
@@ -212,51 +199,24 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  const sendMessage = (message: string) => {
-    if (session) {
-      session.signal({
-        data: message,
-        to: [],
-        type: "chat",
-      });
-
-      const newMessage: Message = {
-        id: messages.length + 1,
-        text: message,
-      };
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
-    }
-  };
-
   return (
-    <div className="flex h-screen bg-customTextColor relative transition-all duration-300">
-      <div
-        className={`flex flex-col items-center justify-center flex-grow ${
-          isChatBoxVisible ? "mr-[25%]" : ""
-        }`}
-      >
-        <h1 className="text-2xl mb-4">회의 ID: {roomName}</h1>
-        <div className="flex flex-col items-center">
-          <div className="flex justify-center items-center mb-4">
-            {thumbnailPlayer && (
-              <ThumbnailPlayer
-                stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
-              />
-            )}
-          </div>
-          <SubscriberList subscribers={subscribers} />
+    <div className="flex flex-col items-center justify-center h-screen bg-customTextColor">
+      <h1 className="text-2xl mb-4">회의 ID: {roomName}</h1>
+      <div className="flex flex-col items-center">
+        <div className="flex justify-center items-center mb-4">
+          {thumbnailPlayer && (
+            <ThumbnailPlayer
+              stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
+            />
+          )}
         </div>
-        <ControlPanels
-          onChatToggle={handleChatToggle}
-          activeIcons={activeIcons}
-          handleButtonClick={handleButtonClick}
-        />
+        <SubscriberList subscribers={subscribers} />
       </div>
-      {isChatBoxVisible && (
-        <div className="absolute right-0 top-0 h-full w-1/4 bg-white shadow-lg p-4">
-          <ChatBox onSendMessage={sendMessage} messages={messages} />
-        </div>
-      )}
+      <ControlPanels
+        onChatToggle={handleChatToggle}
+        activeIcons={activeIcons}
+        handleButtonClick={handleButtonClick}
+      />
     </div>
   );
 };
