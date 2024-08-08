@@ -105,6 +105,16 @@ interface voteOption {
   optionText : string
 }
 
+export interface VoteType {
+  voteId : number,
+  responses : OptionType[]
+}
+
+interface OptionType {
+  questionId : number
+  optionId : number
+}
+
 export interface CommunityGetType {
   content : CommunityListType[]
 

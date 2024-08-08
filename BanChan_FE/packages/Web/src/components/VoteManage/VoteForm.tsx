@@ -19,8 +19,9 @@ interface VoteFormProps {
 
 const VoteForm: React.FC<VoteFormProps> = ({ question, voteSelection, selectedOption }) => {
 
-  const handleOptionChange = (optionId: number) => {
-    voteSelection(question.questionId, optionId);
+  const handleOptionChange = (optionId: number,event:React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault()
+      voteSelection(question.questionId, optionId);
   };
 
   return (
@@ -33,7 +34,7 @@ const VoteForm: React.FC<VoteFormProps> = ({ question, voteSelection, selectedOp
               type="radio"
               name={`vote-${question.questionId}`}
               value={option.id}
-              onChange={() => handleOptionChange(option.id)}
+              onChange={(event) => handleOptionChange(option.id,event)}
               className="mr-2"
               checked={selectedOption === option.id}
             />
