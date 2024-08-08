@@ -12,12 +12,14 @@ import ControlPanels from "../components/WebRTC/ControlPanels";
 import ThumbnailPlayer from "../components/WebRTC/ThumbnailPlayer";
 import SubscriberList from "../components/WebRTC/SubscribeList";
 import { IconName, LocationState } from "../Type";
+import { useCookies } from "react-cookie";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
 const MeetingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const [cookies] = useCookies();
   const { id: sessionId } = useParams<{ id: string }>(); // URL 파라미터를 가져옵니다
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
@@ -45,6 +47,7 @@ const MeetingPage: React.FC = () => {
 
   const joinSession = useCallback(
     async (mySession: Session, token: string) => {
+      const urlWithoutWSS = token.replace("wss://", "ws://");
       try {
         if (!token || !sessionId) {
           console.error("SessionId or token is undefined");
@@ -55,10 +58,11 @@ const MeetingPage: React.FC = () => {
         console.log("Received token:", token);
 
         // 세션에 연결
-        await mySession.connect(token, { clientData: "Host" });
+        await mySession.connect(urlWithoutWSS, { clientData: "Host" });
         console.log("Successfully connected to session");
 
         const OV = new OpenVidu();
+
         const publisher = OV.initPublisher(undefined, {
           audioSource: undefined,
           videoSource: undefined,
@@ -71,7 +75,7 @@ const MeetingPage: React.FC = () => {
         });
 
         // 퍼블리셔를 세션에 추가
-        mySession.publish(publisher);
+        await mySession.publish(publisher);
         setPublisher(publisher);
         setThumbnailPlayer(publisher);
 
@@ -91,40 +95,49 @@ const MeetingPage: React.FC = () => {
 
   useEffect(() => {
     const initSession = async () => {
-      if (!sessionId || !token) {
-        console.error("sessionId or token is undefined");
-        return;
-      }
-
-      const OV = new OpenVidu();
-      const mySession = OV.initSession();
-
-      const streamCreatedHandler = (event: StreamEvent) => {
-        console.log("Stream created:", event.stream.streamId);
-        if (!subscriberStreams.current.has(event.stream.streamId)) {
-          subscriberStreams.current.add(event.stream.streamId);
-          const subscriber = mySession.subscribe(event.stream, undefined);
-          setSubscribers((prevSubscribers) => [...prevSubscribers, subscriber]);
-          console.log("Number of subscribers: ", subscribers.length + 1);
+      try {
+        if (!sessionId || !token) {
+          console.error("sessionId or token is undefined");
+          return;
         }
-      };
 
-      const streamDestroyedHandler = (event: StreamEvent) => {
-        console.log("Stream destroyed:", event.stream.streamId);
-        subscriberStreams.current.delete(event.stream.streamId);
-        setSubscribers((prevSubscribers) =>
-          prevSubscribers.filter(
-            (subscriber) => subscriber.stream.streamId !== event.stream.streamId
-          )
-        );
-        console.log("Number of subscribers: ", subscribers.length);
-      };
+        const OV = new OpenVidu();
 
-      mySession.on("streamCreated", streamCreatedHandler);
-      mySession.on("streamDestroyed", streamDestroyedHandler);
+        const mySession = OV.initSession();
 
-      await joinSession(mySession, token);
-      setSession(mySession);
+        const streamCreatedHandler = (event: StreamEvent) => {
+          console.log("Stream created:", event.stream.streamId);
+          if (!subscriberStreams.current.has(event.stream.streamId)) {
+            subscriberStreams.current.add(event.stream.streamId);
+            const subscriber = mySession.subscribe(event.stream, undefined);
+            setSubscribers((prevSubscribers) => [
+              ...prevSubscribers,
+              subscriber,
+            ]);
+            console.log("Number of subscribers: ", subscribers.length + 1);
+          }
+        };
+
+        const streamDestroyedHandler = (event: StreamEvent) => {
+          console.log("Stream destroyed:", event.stream.streamId);
+          subscriberStreams.current.delete(event.stream.streamId);
+          setSubscribers((prevSubscribers) =>
+            prevSubscribers.filter(
+              (subscriber) =>
+                subscriber.stream.streamId !== event.stream.streamId
+            )
+          );
+          console.log("Number of subscribers: ", subscribers.length);
+        };
+
+        mySession.on("streamCreated", streamCreatedHandler);
+        mySession.on("streamDestroyed", streamDestroyedHandler);
+
+        await joinSession(mySession, token);
+        setSession(mySession);
+      } catch (error) {
+        console.error("Error initializing session:", error);
+      }
     };
 
     initSession();
@@ -145,7 +158,8 @@ const MeetingPage: React.FC = () => {
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
+          // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
+          Authorization: `Bearer ${cookies.Token}`,
         },
       });
       navigate("/meeting/reservedMeeting");
