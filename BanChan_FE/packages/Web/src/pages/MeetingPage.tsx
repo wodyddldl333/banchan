@@ -28,6 +28,7 @@ const MeetingPage: React.FC = () => {
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
     Publisher | Subscriber | null
   >(null);
+  const [recordingId, setRecordingId] = useState<string | null>(null);
 
   const { token, roomName } = location.state as LocationState;
 
@@ -36,13 +37,14 @@ const MeetingPage: React.FC = () => {
     record_voice_over: false,
     mic: false,
     videocam: false,
-    screen_share: false,
     headset_mic: false,
     exit_to_app: false,
     book: false,
     group: false,
     chat_bubble: false,
     notifications: false,
+    radio_button_checked: false, // 녹화 시작 버튼 상태
+    radio_button_unchecked: false, // 녹화 종료 버튼 상태
   });
 
   const joinSession = useCallback(
@@ -199,6 +201,49 @@ const MeetingPage: React.FC = () => {
     }
   };
 
+  const startRecording = async (sessionId: string): Promise<void> => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/api/session/${sessionId}/startRecording`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        }
+      );
+
+      const recordId = response.data.id;
+      setRecordingId(recordId); // 녹화 ID 저장
+      console.log(recordId);
+    } catch (error) {
+      console.error(`error start recording`, error);
+    }
+  };
+
+  const endRecording = async (
+    sessionId: string,
+    recordId: string
+  ): Promise<void> => {
+    try {
+      await axios.post(
+        `${baseUrl}/api/session/${sessionId}/${recordId}/stopRecording`,
+        {},
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        }
+      );
+      setRecordingId(null); // 녹화 종료 후 ID 초기화
+      console.log(`Recording stopped with ID: ${recordId}`);
+    } catch (error) {
+      console.error(`error end recording`, error);
+    }
+  };
+
   const handleChatToggle = () => {
     // setIsChatBoxVisible((prevState) => !prevState);
   };
@@ -231,6 +276,28 @@ const MeetingPage: React.FC = () => {
           mic: newPublishMic,
         }));
       }
+    } else if (
+      icon === "radio_button_checked" &&
+      !activeIcons.radio_button_checked
+    ) {
+      // 녹화 시작 버튼 클릭
+      startRecording(sessionId!);
+      setActiveIcons((prevState) => ({
+        ...prevState,
+        radio_button_checked: true,
+        radio_button_unchecked: false,
+      }));
+    } else if (
+      icon === "radio_button_unchecked" &&
+      recordingId // recordingId가 있을 때만 종료
+    ) {
+      // 녹화 종료 버튼 클릭
+      endRecording(sessionId!, recordingId);
+      setActiveIcons((prevState) => ({
+        ...prevState,
+        radio_button_checked: false,
+        radio_button_unchecked: true,
+      }));
     } else {
       setActiveIcons((prevState) => ({
         ...prevState,

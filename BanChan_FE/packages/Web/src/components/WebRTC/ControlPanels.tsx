@@ -48,16 +48,20 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
         </button>
         <button
           className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("screen_share")}
+          onClick={() => handleButtonClick("radio_button_checked")}
         >
           <span
             className={`material-symbols-outlined ${
-              activeIcons.screen_share ? "text-customRed" : "text-white"
+              activeIcons.radio_button_checked ? "text-customRed" : "text-white"
             }`}
           >
-            screen_share
+            {!activeIcons.radio_button_checked
+              ? "radio_button_checked"
+              : "radio_button_unchecked"}
           </span>
-          <span className="ml-2">화면 공유</span>
+          <span className="ml-2">
+            {!activeIcons.radio_button_checked ? "녹화 시작" : "녹화 끄기"}
+          </span>
         </button>
         <button
           className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
