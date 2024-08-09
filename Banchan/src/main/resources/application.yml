@@ -53,4 +53,6 @@ openvidu:
 
 file:
   upload-dir: /app/uploads
+  record:
+    path: /opt/openvidu/recordings/
 

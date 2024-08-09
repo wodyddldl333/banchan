@@ -107,4 +107,14 @@ public class OpenViduService {
 
         confRoomRepository.delete(room);
     }
+
+    public void saveSummuryRecord(Long roomId, String content) {
+
+        ConfRoom room = confRoomRepository.findById(roomId)
+                .orElseThrow(() -> new RuntimeException("Not found conference room"));
+
+        room.saveSummury(content);
+
+        confRoomRepository.save(room);
+    }
 }
