@@ -11,6 +11,11 @@ import FinishedVote from "../components/Vote/FinishedVote";
 import MeetingList from "../components/Meeting/MeetingList";
 import CalendarApp from "../components/Meeting/CalendarApp";
 import MeetingHome from "../components/Meeting/MeetingHome";
+import NoticeList from "../components/Community/Notice/NoticeList";
+import NoticeDetail from "../components/Community/Notice/NoticeDetail";
+import AskList from "../components/Community/Ask/AskList";
+import AskWrite from "../components/Community/Ask/AskWrite";
+import BoardList from "../components/Community/Board/BoardList";
 
 const router: React.FC = () => {
   return (
@@ -27,6 +32,11 @@ const router: React.FC = () => {
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingHome" element={<MeetingHome />} />
+      <Route path="/m/community/notice/list" element={<NoticeList />} />
+      <Route path="/m/community/notice/detail" element={<NoticeDetail />} />
+      <Route path="/m/community/ask/list" element={<AskList />} />
+      <Route path="/m/community/ask/write" element={<AskWrite />} />
+      <Route path="/m/community/board/list" element={<BoardList />} />
     </Routes>
   );
 };
