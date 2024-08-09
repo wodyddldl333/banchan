@@ -1,106 +1,41 @@
-import React, { useState } from "react";
+import React from "react";
+import logo from "@assets/logo.png";
+import google from "@assets/google_logo.png";
+import KakaoLoginButton from "../components/oauthlogin/KakaoLoginButton";  // KakaoLoginButton 컴포넌트 임포트
 import { useNavigate } from "react-router-dom";
-import { SidebarItemProps, HeaderProps } from "../Types";
-import { NavLink } from "react-router-dom";
 
-const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
-  return (
-    <NavLink
-      to={to}
-      className={({ isActive }) =>
-        `flex items-center w-full text-black focus:text-customBlue hover:text-customBlue hover:border-l-4 hover:border-customBlue ${
-          isActive ? "border-l-4 border-customBlue text-customBlue" : ""
-        }`
-      }
-    >
-      <span className="material-symbols-outlined text-[30px] pl-10">
-        {icon}
-      </span>
-      <div className="mt-[2.8px] ml-2 ">
-        <span className="ml-2 text-[18px]">{text}</span>
-      </div>
-    </NavLink>
-  );
-};
-
-const Header: React.FC<HeaderProps> = ({ children }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+const FirstPage: React.FC = () => {
   const navigate = useNavigate();
 
-  const handleMenuToggle = () => {
-    setMenuOpen(!menuOpen);
-  };
-
-  const handleBackButtonClick = () => {
-    navigate(-1); // 이전 페이지로 이동
+  const gotoMain = () => {
+    navigate("/m/home");
   };
 
   return (
-    <div className="flex items-center justify-between px-4 py-2 bg-blue-500 relative">
-      <button className="text-white" onClick={handleBackButtonClick}>
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-            d="M15 19l-7-7 7-7"
-          />
-        </svg>
-      </button>
-      <h2 className="text-xl font-bold text-white">{children}</h2>
-      <div className="relative">
-        <button
-          onClick={handleMenuToggle}
-          className="text-white focus:outline-none"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-6 h-6"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
+    <div className="h-screen flex flex-col justify-center items-center bg-white">
+      <div className="mb-8 text-center">
+        <img
+          src={logo}
+          alt="Logo"
+          className="w-[361px] h-[230px] mr-2"
+        />
+      </div>
+      <div className="w-80">
+        {/* 카카오 로그인 버튼 추가 */}
+        <KakaoLoginButton />
+        <button className="mt-4 flex items-center justify-center w-full mb-4 p-4 border border-black rounded-lg">
+          <img src={google} alt="Google Logo" className="w-6 h-6 mr-2" />
+          구글로 계속하기
         </button>
-        {menuOpen && (
-          <div
-            className="absolute right-[-16px] mt-2 w-[200px] bg-white border rounded shadow-lg 
-               text-center h-[708px] transition-transform duration-700 transform z-50"
-          >
-            <div className="mt-[100px]"></div>
-            <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
-            <div className="mt-[50px]"></div>
-
-            <SidebarItem icon="forum" text="커뮤니티" to="/" />
-            <div className="mt-[50px]"></div>
-
-            <SidebarItem icon="how_to_vote" text="투표" to="/m/voteList" />
-            <div className="mt-[50px]"></div>
-
-            <SidebarItem
-              icon="calendar_today"
-              text="회의"
-              to="/m/meetingList"
-            />
-            <div className="mt-[150px]"></div>
-            <SidebarItem icon="logout" text="로그아웃" to="/" />
-          </div>
-        )}
+        <button
+          onClick={gotoMain}
+          className="mt-10 w-full p-4 bg-blue-500 text-white rounded-lg"
+        >
+          로그인
+        </button>
       </div>
     </div>
   );
 };
 
-export default Header;
+export default FirstPage;
