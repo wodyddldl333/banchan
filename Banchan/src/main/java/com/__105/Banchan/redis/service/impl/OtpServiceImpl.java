@@ -1,5 +1,6 @@
 package com.__105.Banchan.redis.service.impl;
 
+import com.__105.Banchan.auth.dto.otp.OtpCreateResponseDto;
 import com.__105.Banchan.auth.dto.otp.OtpRequestDto;
 import com.__105.Banchan.auth.dto.otp.OtpResponseDto;
 import com.__105.Banchan.auth.dto.otp.OtpValidateRequestDto;
@@ -27,7 +28,7 @@ public class OtpServiceImpl implements OtpService {
     private OtpRepository otpRepository;
 
     @Override
-    public OtpResponseDto generateOtp(OtpRequestDto requestDto) {
+    public OtpCreateResponseDto generateOtp(OtpRequestDto requestDto) {
         String phoneNumber = requestDto.getPhoneNumber();
         String otp = generateRandomOtp();
 
@@ -39,7 +40,7 @@ public class OtpServiceImpl implements OtpService {
 
         log.info("전화번호 {}에 OTP가 성공적으로 생성되었습니다.", phoneNumber);
 
-        return new OtpResponseDto(true, "OTP generated successfully.");
+        return new OtpCreateResponseDto(true, "OTP generated successfully.",otp);
     }
 
     @Override

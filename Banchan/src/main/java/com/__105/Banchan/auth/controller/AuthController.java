@@ -6,6 +6,7 @@ import com.__105.Banchan.auth.dto.StatusResponseDto;
 import com.__105.Banchan.auth.dto.login.TokenResponseStatus;
 
 import com.__105.Banchan.auth.dto.login.OriginLoginRequestDto;
+import com.__105.Banchan.auth.dto.otp.OtpCreateResponseDto;
 import com.__105.Banchan.auth.dto.otp.OtpRequestDto;
 import com.__105.Banchan.auth.dto.otp.OtpResponseDto;
 import com.__105.Banchan.auth.dto.otp.OtpValidateRequestDto;
@@ -133,8 +134,8 @@ public class AuthController {
 
     @PostMapping("/otp/generate")
     @Operation(summary = "OTP 생성", description = "SMS 인증을 위한 OTP 생성")
-    public ResponseEntity<OtpResponseDto> generateOtp(@RequestBody OtpRequestDto requestDto) {
-        OtpResponseDto responseDto = otpService.generateOtp(requestDto);
+    public ResponseEntity<OtpCreateResponseDto> generateOtp(@RequestBody OtpRequestDto requestDto) {
+        OtpCreateResponseDto responseDto = otpService.generateOtp(requestDto);
         return ResponseEntity.ok(responseDto);
     }
 
