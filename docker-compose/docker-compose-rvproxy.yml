@@ -10,8 +10,6 @@ services:
       - "443:443"
     networks:
       - mynetwork
-    volumes:
-      - /etc/letsencrypt/live/i11e105.p.ssafy.io:/etc/letsencrypt/live/i11e105.p.ssafy.io 
 
 networks:
   mynetwork:
