@@ -83,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
             <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
             <div className="mt-[50px]"></div>
 
-            <SidebarItem icon="forum" text="커뮤니티" to="/" />
+            <SidebarItem icon="forum" text="커뮤니티" to="/m/notice" />
             <div className="mt-[50px]"></div>
 
             <SidebarItem icon="how_to_vote" text="투표" to="/m/voteList" />
