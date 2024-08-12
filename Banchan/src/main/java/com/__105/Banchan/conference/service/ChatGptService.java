@@ -3,6 +3,7 @@ package com.__105.Banchan.conference.service;
 import com.__105.Banchan.conference.config.ChatGptConfig;
 import com.__105.Banchan.conference.dto.ChatGptRequestDto;
 import com.__105.Banchan.conference.dto.ChatGptResponseDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -13,20 +14,23 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Arrays;
 
 @Service
+@RequiredArgsConstructor
 public class ChatGptService {
 
     private static final RestTemplate restTemplate = new RestTemplate();
 
+    private final ChatGptConfig chatGptConfig;
+
     public HttpEntity<ChatGptRequestDto> buildHttpEntity(ChatGptRequestDto requestDto) {
         HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.parseMediaType(ChatGptConfig.MEDIA_TYPE));
-        headers.add(ChatGptConfig.AUTHORIZATION, ChatGptConfig.BEARER + ChatGptConfig.API_KEY);
+        headers.setContentType(MediaType.parseMediaType(chatGptConfig.getMediaType()));
+        headers.add(chatGptConfig.getAUTHORIZATION(), chatGptConfig.getBEARER() + chatGptConfig.getApiKey());
         return new HttpEntity<>(requestDto, headers);
     }
 
     public ChatGptResponseDto getResponse(HttpEntity<ChatGptRequestDto> chatGptRequestDtoHttpEntity) {
         ResponseEntity<ChatGptResponseDto> responseEntity = restTemplate.postForEntity(
-                ChatGptConfig.URL,
+                chatGptConfig.getUrl(),
                 chatGptRequestDtoHttpEntity,
                 ChatGptResponseDto.class);
 
@@ -38,27 +42,28 @@ public class ChatGptService {
         String prompt = String.format("다음은 아파트 반상회의 회의 내용입니다.\n" +
                         "회의 내용:\n%s" +
                         " \n주어진 회의 내용을 아래의 양식에 맞춰서 요약해 주세요:\n\n" +
-                        "반상회 회의 요약\n\n" +
-                        "1. 주차문제\n" +
+                        "회의 요약\n\n" +
+                        "1. \n" +
                         "    a. \n" +
                         "    b. \n\n" +
-                        "2. 층간 소음 문제\n" +
+                        "2. \n" +
                         "    a. \n" +
                         "    b. \n" +
                         "    c. \n\n" +
-                        "3. 주민 행사\n" +
+                        "3. \n" +
                         "    a. \n" +
                         "    b. \n" +
-                        "    c. \n\n",
+                        "    c. \n\n" +
+                        "4. \n.......",
                 text);
         ChatGptRequestDto.Message userMessage = new ChatGptRequestDto.Message("user", prompt);
 
         ChatGptRequestDto request = new ChatGptRequestDto(
-                ChatGptConfig.MODEL,
+                chatGptConfig.getModel(),
                 Arrays.asList(systemMessage, userMessage),
-                ChatGptConfig.MAX_TOKEN,
-                ChatGptConfig.TEMPERATURE,
-                ChatGptConfig.TOP_P
+                chatGptConfig.getMaxToken(),
+                chatGptConfig.getTemperature(),
+                chatGptConfig.getTopP()
         );
 
         return this.getResponse(this.buildHttpEntity(request));

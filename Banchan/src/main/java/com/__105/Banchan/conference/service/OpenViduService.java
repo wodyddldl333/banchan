@@ -89,9 +89,22 @@ public class OpenViduService {
         Session session = openVidu.getActiveSessions().stream()
                 .filter(s -> s.getSessionId().equals(sessionId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Session invalid"));
+                .orElse(null);
 
-        session.close();
+        if (session != null) {
+            try {
+                session.close();
+            } catch (OpenViduHttpException e) {
+                if (e.getStatus() == 404) {
+                    // 세션이 이미 종료된 경우
+                    System.out.println("Session not found on OpenVidu server: " + sessionId);
+                } else {
+                    throw e; // 다른 예외는 다시 던짐
+                }
+            }
+        } else {
+            System.out.println("Session is already inactive or not found: " + sessionId);
+        }
 
         room = room.toBuilder()
                 .isActive(false)
