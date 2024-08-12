@@ -111,23 +111,31 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
                text-center h-[708px] transition-transform duration-700 transform z-50"
           >
             <div className="mt-[100px]"></div>
+            <SidebarItem
+              icon="calendar_today"
+              text="홈"
+              to="/m/home"
+            />
+
+
+            <div className="mt-[50px]"></div>
             <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
             <div className="mt-[40px]"></div>
 
             <SidebarItem
               icon="forum"
               text="커뮤니티"
-              to="/m/community/notice/list"
+              to="/m/community/"
             >
+              <SidebarItem
+                icon="assignment"
+                text="공지사항"
+                to="/m/community/notice/list"
+              />
               <SidebarItem
                 icon="person_raised_hand"
                 text="건의함"
                 to="/m/community/ask/list"
-              />
-              <SidebarItem
-                icon="assignment"
-                text="게시판"
-                to="/m/community/board/list"
               />
             </SidebarItem>
 

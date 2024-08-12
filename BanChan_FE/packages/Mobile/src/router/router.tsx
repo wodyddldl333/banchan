@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route,Navigate } from "react-router-dom";
 import FirstPage from "../pages/FirstPage";
 import Home from "../pages/Home";
 import HomeInfo from "../components/UserSettings/HomeInfo";
@@ -32,11 +32,14 @@ const router: React.FC = () => {
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingHome" element={<MeetingHome />} />
-      <Route path="/m/community/notice/list" element={<NoticeList />} />
-      <Route path="/m/community/notice/detail" element={<NoticeDetail />} />
-      <Route path="/m/community/ask/list" element={<AskList />} />
-      <Route path="/m/community/ask/write" element={<AskWrite />} />
-      <Route path="/m/community/board/list" element={<BoardList />} />
+      <Route path="/m/community">
+        <Route index element={<Navigate to="notice/list" />} />
+        <Route path="notice/list" element={<NoticeList />} />
+        <Route path="notice/detail" element={<NoticeDetail />} />
+        <Route path="ask/list" element={<AskList />} />
+        <Route path="ask/write" element={<AskWrite />} />
+        <Route path="board/list" element={<BoardList />} />
+      </Route>
       <Route path="/m/homeInfo" element={<HomeInfo />} />
       <Route
         path="/m/login/oauth2/code/kakao"
