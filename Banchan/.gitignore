@@ -39,5 +39,11 @@ out/
 ### db_volume
 mysql_data/
 
-###
+### 레디스 데이터
 redis_data/dump.rdb
+
+### 업로드 파일
+uploads/
+
+### 녹화 파일
+recordings/

@@ -1,5 +1,7 @@
 ###환경변수
 docker-compose/.env
+docker-compose/credentials.json
+
 Banchan_FE/.env
 .env
 jenkins_home/
