@@ -7,6 +7,7 @@ import com.__105.Banchan.notice.dto.SearchCondition;
 import com.__105.Banchan.user.entity.Apartment;
 import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.entity.UserApartment;
+import com.__105.Banchan.user.enums.Role;
 import com.__105.Banchan.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
@@ -141,6 +142,10 @@ public class AskServiceImpl implements AskService {
 
         Specification<Ask> spec = Specification.where(null);
         spec = spec.and(AskSpecification.whereApt(aptCode));
+
+        if (user.getRole() != Role.ADMIN) {
+            spec = spec.and(AskSpecification.wherUser(user.getId()));
+        }
 
         if (searchCondition.getKeyword() != null && !searchCondition.getKeyword().isEmpty()) {
             spec = spec.and(AskSpecification.containsKeyword(searchCondition.getKeyword()));

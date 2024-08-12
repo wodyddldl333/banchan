@@ -17,4 +17,9 @@ public class AskSpecification {
         return ((root, query, cb) ->
                 cb.equal(root.get("apt").get("code"), code));
     }
+
+    public static Specification<Ask> wherUser(Long userId) {
+        return ((root, query, cb) ->
+                cb.equal(root.get("user").get("id"), userId));
+    }
 }
