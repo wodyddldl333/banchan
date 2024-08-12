@@ -1,29 +1,38 @@
 import React from 'react';
+import { logout } from '../../api/auth.ts'; // 상대 경로 사용
+import { useCookies } from 'react-cookie';
 
-const KAKAO_CLIENT_ID = import.meta.env.VITE_KAKAO_CLIENT_ID;
-const KAKAO_REDIRECT_URI = import.meta.env.VITE_KAKAO_REDIRECT_URI;
-import kakao from '@assets/kakao_logo.png'
-const KakaoLoginButton: React.FC = () => {
-  const handleKakaoLogin = () => {
-    const KAKAO_AUTH_URL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}`;
-    window.location.href = KAKAO_AUTH_URL;
+const LogoutButton: React.FC = () => {
+  const [cookies, , removeCookie] = useCookies(['Token', 'refreshToken']);
+
+  const handleLogout = async () => {
+    try {
+      await logout(cookies.Token); // 쿠키에서 가져온 accessToken을 사용하여 로그아웃
+      // 로그아웃 성공 후, 토큰을 삭제
+      removeCookie('Token');
+      removeCookie('refreshToken');
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+
+      // 첫 번째 페이지로 리다이렉트
+      window.location.href = 'https://i11e105.p.ssafy.io/';
+    } catch (error) {
+      console.error('Logout failed: ', error);
+      // 필요시 사용자에게 로그아웃 실패 알림을 추가할 수 있습니다.
+    }
   };
 
   return (
     <button
-      onClick={handleKakaoLogin}
-      className="bg-yellow-400 text-black py-3.5 px-20 rounded-2xl flex items-center justify-center mx-4"
+      onClick={handleLogout}
+      className="flex items-center w-full text-customSideBarTextColor focus:text-customBlue hover:text-customBlue hover:border-l-4 hover:border-customBlue cursor-pointer"
     >
-      <div className="w-[200px] flex items-center justify-center">
-        <img
-          src={kakao}
-          alt="KakaoTalk"
-          className="w-6 h-6 mr-2"
-        />
-        <span className="text-center">카카오로 계속하기</span>
+      <span className="material-symbols-outlined text-[30px] pl-10">logout</span>
+      <div className="mt-[2.8px] ml-2">
+        <span className="ml-2 text-[18px]">로그아웃</span>
       </div>
     </button>
   );
 };
 
-export default KakaoLoginButton;
+export default LogoutButton;
