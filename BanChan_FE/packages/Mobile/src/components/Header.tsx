@@ -95,7 +95,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
               to="/m/meetingList"
             />
             <div className="mt-[150px]"></div>
-            <SidebarItem icon="logout" text="로그아웃" to="/" />
+            <SidebarItem icon="logout" text="로그아웃" to="/m" />
           </div>
         )}
       </div>
