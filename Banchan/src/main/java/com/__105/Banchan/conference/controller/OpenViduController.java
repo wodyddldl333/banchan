@@ -1,5 +1,6 @@
 package com.__105.Banchan.conference.controller;
 
+import com.__105.Banchan.conference.dto.ConfDetailResponse;
 import com.__105.Banchan.conference.dto.ConfRequest;
 import com.__105.Banchan.conference.dto.ConfRoomResponse;
 import com.__105.Banchan.conference.dto.DataResponse;
@@ -118,5 +119,13 @@ public class OpenViduController {
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @GetMapping("/detail/{roomId}")
+    public ResponseEntity<?> detail(@PathVariable Long roomId,
+                                    @AuthenticationPrincipal UserDetails userDetails) {
+
+        ConfDetailResponse response = openViduService.getDetailRoom(roomId, userDetails.getUsername());
+        return ResponseEntity.ok().body(response);
     }
 }
