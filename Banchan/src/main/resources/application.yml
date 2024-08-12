@@ -48,8 +48,8 @@ springdoc:
     path: /swagger-ui.html # Swagger UI 접근 경로 설정
 
 openvidu:
-  url: https://i11e105.p.ssafy.io:8443
-  secret: 1234
+  url: ${OPENVIDU_PUBLICURL}
+  secret: ${OPENVIDU_SECRET}
 
 
 

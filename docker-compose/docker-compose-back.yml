@@ -12,6 +12,7 @@ services:
     <<: *default
     environment:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      GOOGLE_APPLICATION_CREDENTIALS: /app/config/credentials.json
     depends_on:
       mysql:
         condition: service_healthy
@@ -33,6 +34,7 @@ services:
     <<: *default
     environment:
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      GOOGLE_APPLICATION_CREDENTIALS: /app/config/credentials.json
     depends_on:
       mysql:
         condition: service_healthy
