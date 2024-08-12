@@ -1,6 +1,7 @@
 package com.__105.Banchan.conference.service;
 
 import com.__105.Banchan.conference.dto.ConfDetailResponse;
+import com.__105.Banchan.conference.dto.ConfInfoResponse;
 import com.__105.Banchan.conference.dto.ConfRequest;
 import com.__105.Banchan.conference.dto.ConfRoomResponse;
 import com.__105.Banchan.conference.entity.ConfRoom;
@@ -193,6 +194,17 @@ public class OpenViduService {
                 .startDate(room.getStartDate())
                 .startTime(room.getStartTime())
                 .summary(room.getSummury())
+                .build();
+    }
+
+    public ConfInfoResponse getRoomName(String sessionId) {
+
+        ConfRoom room = confRoomRepository.findBySession(sessionId)
+                .orElseThrow(() -> new RuntimeException("Session not found"));
+
+        return ConfInfoResponse.builder()
+                .id(room.getId())
+                .roomName(room.getRoomName())
                 .build();
     }
 }
