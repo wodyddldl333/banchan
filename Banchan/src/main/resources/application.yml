@@ -51,5 +51,16 @@ openvidu:
   url: ${OPENVIDU_PUBLICURL}
   secret: ${OPENVIDU_SECRET}
 
+file:
+  upload-dir: /app/uploads
+  record:
+    path: /opt/openvidu/recordings/
 
-
+chatgpt:
+  api-key: ${GPT_APIKEY}
+  model: ${GPT_MODEL}
+  max-token: 8196
+  temperature: 0.0
+  top-p: 1.0
+  media-type: application/json; charset=UTF-8
+  url: https://api.openai.com/v1/chat/completions
