@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Sorting from "../Sorting";
 import Pagination from "../Pagination";
 import Nav from "../Nav";
 import NavItem from "../NavItem";

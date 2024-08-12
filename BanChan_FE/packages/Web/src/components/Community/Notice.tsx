@@ -1,7 +1,6 @@
 import React from "react";
 import Pagination from "../Pagination";
 import LargeButton from "../Buttons/LargeButton";
-import Sorting from "../Sorting";
 import NavItem from "../NavItem";
 import Nav from "../Nav";
 import { useCookies } from "react-cookie";
