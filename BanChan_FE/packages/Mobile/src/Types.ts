@@ -13,10 +13,11 @@ export interface SwipeableContentProps {
 export interface DrawerProps {
   title: string;
   items: Array<{
+    id: number;
     title: string;
     date: string;
-    buttonText: string;
-    statusText: string;
+    voteRate: string;
+    voted :boolean;
     onClick: () => void;
   }>;
 }

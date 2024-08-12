@@ -1,47 +1,76 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import Drawer from "./Drawer";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
-import { Items } from "../../Types";
-
+import { getVote } from "../../mobileapi/VoteAPI";
+import { useCookies } from "react-cookie";
 const VoteList: React.FC = () => {
   const navigate = useNavigate();
-  const ongoingItems = [
+  const [cookies]  = useCookies();
+  const [ongoingItems,setOngoingVote] = useState([
     {
+      id : 1,
       title: "LH 7월 3주차 투표",
       date: "07.15 19:00 ~ 07.21 18:00",
-      buttonText: "투표하기",
-      statusText: "실시간 투표율 : 38%",
+      voteRate: "38%",
+      voted : false,
     },
-    {
+    { id : 2,
       title: "LH 7월 3주차 투표",
       date: "07.15 19:00 ~ 07.21 18:00",
-      buttonText: "투표하기",
-      statusText: "실시간 투표율 : 38%",
+      voteRate: "38%",
+      voted : false,
     },
-  ];
+  ])
 
-  const completedItems = [
+  const [completedItems,setCompleteVote] = useState([
     {
+      id : 1,
       title: "LH 6월 3주차 투표",
       date: "06.15 19:00 ~ 06.21 18:00",
-      buttonText: "결과보기",
-      statusText: "최종 투표율 : 75%",
+      voteRate: "75%",
+      voted : false,
+
     },
-    {
+    { id : 2,
       title: "LH 5월 3주차 투표",
       date: "05.15 19:00 ~ 05.21 18:00",
-      buttonText: "결과보기",
-      statusText: "최종 투표율 : 60%",
+      voteRate: "60%",
+      voted : false,
     },
-  ];
+  ])
 
-  const handleVoteClick = (item: Items) => {
-    navigate("/m/showvote", { state: { item } });
+  useEffect(() => {
+    const getData = async () => {
+      const nowVote = await getVote(cookies.Token,'api/votes/list/current');
+      const crt_data = nowVote.data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        voteRate: ((item.finishCount / item.voteCount) * 100).toFixed(1) + '%',
+        date: `${item.startDate} ~ ${item.endDate}`,
+        voted: item.voted
+      }));
+      setOngoingVote(crt_data);
+
+      const endVote = await getVote(cookies.Token,'api/votes/list/finish');
+      const end_data = endVote.data.map((item) => ({
+        id: item.id,
+        title: item.title,
+        voteRate: ((item.finishCount / item.voteCount) * 100).toFixed(1) + '%',
+        date: `${item.startDate} ~ ${item.endDate}`,
+        voted: item.voted
+      }));
+      setCompleteVote(end_data);
+      
+    };
+    getData();
+  }, [cookies.Token]);
+  const handleVoteClick = (id: number) => {
+    navigate(`/m/vote/showvote/${id}`);
   };
 
-  const handleResultClick = (item: Items) => {
-    navigate("/m/voteResult", { state: { item } });
+  const handleResultClick = (id: number) => {
+    navigate(`/m/vote/voteResult/${id}`);
   };
   return (
     <div className="min-h-screen ">
@@ -52,7 +81,7 @@ const VoteList: React.FC = () => {
         title="진행중인 투표"
         items={ongoingItems.map((item) => ({
           ...item,
-          onClick: () => handleVoteClick(item),
+          onClick: () => handleVoteClick(item.id),
         }))}
       />
       {/* 완료된 투표 */}
@@ -60,7 +89,7 @@ const VoteList: React.FC = () => {
         title="완료된 투표"
         items={completedItems.map((item) => ({
           ...item,
-          onClick: () => handleResultClick(item),
+          onClick: () => handleResultClick(item.id),
         }))}
       />{" "}
     </div>

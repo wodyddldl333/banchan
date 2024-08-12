@@ -51,10 +51,11 @@ const Drawer: React.FC<DrawerProps> = ({ title, items }) => {
                   onClick={item.onClick}
                   className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
                 >
-                  {item.buttonText}
+                  {title == "진행중인 투표"?
+                  ('투표하기') :('결과보기')}
                 </button>
                 <button className="py-2 px-4 bg-gray-200 text-blue-500 font-semibold rounded-full">
-                  {item.statusText}
+                  투표율 : {item.voteRate}
                 </button>
               </div>
             </div>

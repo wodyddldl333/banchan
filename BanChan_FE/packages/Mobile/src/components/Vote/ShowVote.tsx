@@ -1,11 +1,9 @@
 import React from "react";
-import { useLocation } from "react-router-dom";
 import SwipeableContent from "./SwipeableContent";
 import Header from "../Header";
 
 const ShowVote: React.FC = () => {
-  const location = useLocation();
-  const { item } = location.state;
+
 
   const voteItems = [
     {
@@ -49,7 +47,7 @@ const ShowVote: React.FC = () => {
       <Header>투표</Header>
       <div className="p-4">
         <h3 className="text-[20px] font-bold mb-4 flex justify-center mt-10">
-          {item.title}
+          대충제목
         </h3>
         <SwipeableContent items={voteItems} />
       </div>

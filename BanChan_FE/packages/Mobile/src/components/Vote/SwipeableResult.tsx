@@ -17,7 +17,7 @@ const SwipeableResults: React.FC<SwipeableContentProps> = ({ items }) => {
   });
 
   const goToVoteList = () => {
-    navigate("/m/voteList");
+    navigate("/m/vote/voteList");
   };
 
   // Generating random percentages for each option

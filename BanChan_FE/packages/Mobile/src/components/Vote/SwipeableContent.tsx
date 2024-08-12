@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
 import { SwipeableContentProps } from "../../Types";
+import { useParams } from "react-router-dom";
 
 const SwipeableContent: React.FC<SwipeableContentProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
-
+  const {id} = useParams()
   const [selectedOptions, setSelectedOptions] = useState<number[]>(
     Array(items.length).fill(-1)
   );
@@ -27,7 +28,7 @@ const SwipeableContent: React.FC<SwipeableContentProps> = ({ items }) => {
   };
 
   const handleFinishVoteClick = () => {
-    navigate("/m/finishedVote");
+    navigate(`/m/vote/finishedVote/${id}`);
   };
 
   return (
