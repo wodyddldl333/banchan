@@ -1,16 +1,14 @@
-import React from "react";
+import React,{ useEffect, useState } from "react";
 import Pagination from "../Pagination";
 import LargeButton from "../Buttons/LargeButton";
-import Sorting from "../Sorting";
 import NavItem from "../NavItem";
 import Nav from "../Nav";
 import { useCookies } from "react-cookie";
 import TempTable from "../TempTable";
 import { getCommunityList } from "../../api/CommunityAPI";
 import { CommunityParamsType,CommunityListType,DataItem} from "../../Type";
-import { useEffect, useState } from "react";
 
-const headers = ["id", "title", "writer", "createdAt"];
+const headers = ["id", "title", "writer", "createdAt",'views'];
 
 const NavElements = () => {
   return (
@@ -45,6 +43,7 @@ const Notice: React.FC = () => {
         title: item.title,
         writer: item.username,
         createdAt: item.createdAt.replace("T", " ").slice(0, -7),
+        views: item.views
       }));
       setData(real_data);
     };
@@ -66,7 +65,6 @@ const Notice: React.FC = () => {
         <NavElements />
         <div className="container mx-auto p-4 mt-3">
           <div className="flex justify-end items-center mb-6 mr-6">
-            <Sorting />
             <LargeButton title="글작성" to="write" />
           </div>
           <TempTable headerProp={headers} data={data} />

@@ -1,4 +1,4 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
 import path from "path";
@@ -12,9 +12,13 @@ export default defineConfig(({ mode }) => {
     define: {
       "process.env": env, // 환경 변수를 define을 통해 사용
     },
-    resolve: {
-      alias: {
-        "@assets": path.resolve(__dirname, "./src/assets"),
+  },
+  server: {
+    proxy: {
+      "/api": {
+        target: "https://i11e105.p.ssafy.io", // 실제 API 서버 주소
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ""),
       },
     },
     server: {
@@ -32,3 +36,4 @@ export default defineConfig(({ mode }) => {
     base: "/", // 모든 경로에 /m을 붙이도록 설정
   };
 });
+
