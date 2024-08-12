@@ -7,7 +7,7 @@ const FinishedVote: React.FC = () => {
   const navigate = useNavigate();
 
   const goToVoteList = () => {
-    navigate("/m/voteList");
+    navigate("/m/vote/voteList");
   };
 
   const goToHome = () => {
