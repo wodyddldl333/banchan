@@ -15,7 +15,7 @@ const LogoutButton: React.FC = () => {
       removeCookie('refreshToken');
       localStorage.removeItem('accessToken');
       localStorage.removeItem('refreshToken');
-      navigate('/login'); // 로그인 페이지로 이동
+      navigate('/'); // 첫번째 페이지로 이동
     } catch (error) {
       console.error('Logout failed: ', error);
       // 필요시 사용자에게 로그아웃 실패 알림을 추가할 수 있습니다.
