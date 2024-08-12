@@ -8,3 +8,5 @@ jenkins_home/
 
 nginx/ssl/fullchain.pem
 nginx/ssl/privkey.pem
+nginx/ssl/chain.pem
+nginx/ssl/cert.pem
