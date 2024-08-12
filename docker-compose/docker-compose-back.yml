@@ -19,7 +19,10 @@ services:
         condition: service_healthy
     networks:
       - mynetwork
-
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/uploads:/app/uploads
+      - /home/ubuntu/201-105/S11P12E105/Banchan/recordings:/opt/openvidu/recordings
+      - /home/ubuntu/201-105/S11P12E105/docker-compose/credentials.json:/app/config/credentials.json:ro
   banchan_back2:
     container_name: banchan_back2
     build:
@@ -37,6 +40,10 @@ services:
         condition: service_healthy
     networks:
       - mynetwork
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/uploads:/app/uploads
+      - /home/ubuntu/201-105/S11P12E105/Banchan/recordings:/opt/openvidu/recordings
+      - /home/ubuntu/201-105/S11P12E105/docker-compose/credentials.json:/app/config/credentials.json:ro
 
   mysql:
     image: mysql:8.0
