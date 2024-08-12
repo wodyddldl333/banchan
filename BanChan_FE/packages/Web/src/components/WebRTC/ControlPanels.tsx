@@ -48,7 +48,13 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
         </button>
         <button
           className="bg-gray-800 text-white flex items-center px-4 py-2 rounded-full"
-          onClick={() => handleButtonClick("radio_button_checked")}
+          onClick={() =>
+            handleButtonClick(
+              activeIcons.radio_button_checked
+                ? "radio_button_unchecked"
+                : "radio_button_checked"
+            )
+          }
         >
           <span
             className={`material-symbols-outlined ${
@@ -60,9 +66,10 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
               : "radio_button_unchecked"}
           </span>
           <span className="ml-2">
-            {!activeIcons.radio_button_checked ? "녹화 시작" : "녹화 끄기"}
+            {!activeIcons.radio_button_checked ? "녹화 시작" : "녹화 종료"}
           </span>
         </button>
+
         <button
           className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
             activeIcons.headset_mic ? "text-customRed" : "text-white"
