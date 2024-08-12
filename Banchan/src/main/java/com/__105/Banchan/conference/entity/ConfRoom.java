@@ -1,5 +1,6 @@
 package com.__105.Banchan.conference.entity;
 
+import com.__105.Banchan.user.entity.Apartment;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -21,6 +22,10 @@ public class ConfRoom {
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "host_id", nullable = false)
 //    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apt_code", nullable = false)
+    private Apartment apt;
 
     @Column(name = "room_name", nullable = false)
     private String roomName;
