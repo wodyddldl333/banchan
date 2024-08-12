@@ -5,12 +5,12 @@ import path from "path";
 
 export default defineConfig(({ mode }) => {
   // mode에 따른 환경 변수 로드
-  const env = loadEnv(mode, process.cwd(), '');
+  const env = loadEnv(mode, process.cwd(), "");
 
   return {
     plugins: [react(), tsconfigPaths()],
     define: {
-      'process.env': env, // 환경 변수를 define을 통해 사용
+      "process.env": env, // 환경 변수를 define을 통해 사용
     },
     resolve: {
       alias: {
@@ -29,6 +29,6 @@ export default defineConfig(({ mode }) => {
     build: {
       outDir: "dist",
     },
-    base: '/m/',  // 모든 경로에 /m을 붙이도록 설정
+    base: "/", // 모든 경로에 /m을 붙이도록 설정
   };
 });
