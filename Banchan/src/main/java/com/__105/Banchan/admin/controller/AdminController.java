@@ -45,7 +45,7 @@ public class AdminController {
         return ResponseEntity.ok().body("승인 완료");
     }
 
-    @PostMapping("/users/approval")
+    @GetMapping("/users/approval")
     @Operation(summary = "회원가입 대기 인원 목록", description = "회원가입 대기 인원 목록을 조회합니다.")
     public ResponseEntity<?> getApprovalUserList() {
         String currentUserRole = userService.getMyInfo().getRole();
