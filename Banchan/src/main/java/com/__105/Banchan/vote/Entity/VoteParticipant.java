@@ -28,7 +28,7 @@ public class VoteParticipant {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "is_voted", columnDefinition = "TINYINT(1) DEFAULT 0")
+    @Column(name = "is_voted", columnDefinition = "TINYINT(1) DEFAULT 1")
     private boolean isVoted;
 
     public void changeIsVote() {

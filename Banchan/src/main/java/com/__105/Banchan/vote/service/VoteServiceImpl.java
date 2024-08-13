@@ -1,7 +1,9 @@
 package com.__105.Banchan.vote.service;
 
+import com.__105.Banchan.user.entity.Apartment;
 import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.enums.Role;
+import com.__105.Banchan.user.repository.UserAptRepository;
 import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;
@@ -27,6 +29,7 @@ public class VoteServiceImpl implements VoteService {
     private final VoteOptionRepository voteOptionRepository;
     private final VoteParticipantRepository voteParticipantRepository;
     private final VoteResultRepository voteResultRepository;
+    private final UserAptRepository userAptRepository;
 
     /*
     * 새로운 투표를 생성하고, 해당 투표의 문항, 선택지 및 참가자를 저장하는 메서드입니다.
@@ -45,8 +48,15 @@ public class VoteServiceImpl implements VoteService {
             throw new RuntimeException("Only ADMIN users can regist");
         }
 
+        Apartment apt = user.getUserApartments()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("not found user's apt"))
+                .getApartment();
+
         Vote vote = Vote.builder()
                 .createdUser(user)
+                .apt(apt)
                 .title(voteRequestDto.getTitle())
                 .content(voteRequestDto.getContent())
                 .startDate(voteRequestDto.getStartDate())
@@ -73,24 +83,24 @@ public class VoteServiceImpl implements VoteService {
             }
         }
 
-        List<User> users = userRepository.findUsersInSameApartment(user.getId());
+//        List<User> users = userRepository.findUsersInSameApartment(user.getId());
 //        log.info("Users in same apartment: {}", users.size());
-
-        for (User user1 : users) {
+//
+//        for (User user1 : users) {
 //            log.info("User: {}", user1);
-            VoteParticipantId id = VoteParticipantId.builder()
-                    .vote(vote.getId())
-                    .user(user1.getId())
-                    .build();
-
-            VoteParticipant voteParticipant = VoteParticipant.builder()
-                    .id(id)
-                    .vote(vote)
-                    .user(user1)
-                    .build();
-
-            voteParticipantRepository.save(voteParticipant);
-        }
+//            VoteParticipantId id = VoteParticipantId.builder()
+//                    .vote(vote.getId())
+//                    .user(user1.getId())
+//                    .build();
+//
+//            VoteParticipant voteParticipant = VoteParticipant.builder()
+//                    .id(id)
+//                    .vote(vote)
+//                    .user(user1)
+//                    .build();
+//
+//            voteParticipantRepository.save(voteParticipant);
+//        }
     }
 
     /*
@@ -109,16 +119,27 @@ public class VoteServiceImpl implements VoteService {
      * LAZY를 이용하여 한 번 select 쿼리 실행됨.
      * */
     @Override
+    @Transactional
     public List<VoteListResponseDto> getCurrentVoteList(String username) {
 
         User user = findUserByUsername(username);
         LocalDate currentDate = LocalDate.now();
-        List<Vote> votes = voteParticipantRepository.findVotesByUserId(user.getId(), currentDate);
+
+//        List<Vote> votes = voteParticipantRepository.findVotesByUserId(user.getId(), currentDate);
+
+        String aptCode = user.getUserApartments()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("not found apt"))
+                .getApartment()
+                .getCode();
+
+        List<Vote> votes = voteRepository.findVotesByAptCode(aptCode, currentDate);
 
         return votes.stream()
                 .map(vote -> new VoteListResponseDto(vote,
+                        userAptRepository.countByApartmentCode(aptCode),
                         voteParticipantRepository.findVoteCountByVoteId(vote.getId()),
-                        voteParticipantRepository.findVoteIsVoted(vote.getId()),
                         voteParticipantRepository.existsByIdAndIsVotedTrue(VoteParticipantId.builder()
                                 .user(user.getId())
                                 .vote(vote.getId())
@@ -127,16 +148,26 @@ public class VoteServiceImpl implements VoteService {
     }
 
     @Override
+    @Transactional
     public List<VoteListResponseDto> getlistFinished(String username) {
 
         User user = findUserByUsername(username);
         LocalDate currentDate = LocalDate.now();
-        List<Vote> votes = voteParticipantRepository.findDoneVotesByUserId(user.getId(), currentDate);
+//        List<Vote> votes = voteParticipantRepository.findDoneVotesByUserId(user.getId(), currentDate);
+
+        String aptCode = user.getUserApartments()
+                .stream()
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("not found apt"))
+                .getApartment()
+                .getCode();
+
+        List<Vote> votes = voteRepository.findDoneVotesByUserId(aptCode, currentDate);
 
         return votes.stream()
                 .map(vote -> new VoteListResponseDto(vote,
+                        userAptRepository.countByApartmentCode(aptCode),
                         voteParticipantRepository.findVoteCountByVoteId(vote.getId()),
-                        voteParticipantRepository.findVoteIsVoted(vote.getId()),
                         voteParticipantRepository.existsByIdAndIsVotedTrue(VoteParticipantId.builder()
                                 .user(user.getId())
                                 .vote(vote.getId())
@@ -166,15 +197,19 @@ public class VoteServiceImpl implements VoteService {
 
         VoteParticipantId vpId = new VoteParticipantId(vote.getId(), user.getId());
 
-        VoteParticipant vp = voteParticipantRepository.findById(vpId)
-                .orElseThrow(() -> new RuntimeException("Vote participant does not exist"));
-
-        // 투표 완료 시 투표 완료 Check!
-        if (!vp.isVoted()) {
-            vp.changeIsVote();
-        } else {
-            throw new RuntimeException("Vote participant is already voted");
+        if(voteParticipantRepository.existsByIdAndIsVotedTrue(vpId)) {
+            throw new RuntimeException("Vote participant already exists");
         }
+
+        VoteParticipant participant = VoteParticipant
+                .builder()
+                .id(vpId)
+                .vote(vote)
+                .user(user)
+                .isVoted(true)
+                .build();
+
+        voteParticipantRepository.save(participant);
 
         List<DoVoteRequestDto.ResponseDto> responseDtos = doVoteRequestDto.getResponses();
 

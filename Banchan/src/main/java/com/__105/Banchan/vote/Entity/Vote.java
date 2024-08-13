@@ -1,5 +1,6 @@
 package com.__105.Banchan.vote.Entity;
 
+import com.__105.Banchan.user.entity.Apartment;
 import com.__105.Banchan.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -26,6 +27,10 @@ public class Vote {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "created_user", nullable = false)
     private User createdUser;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "apt_code", nullable = false)
+    private Apartment apt;
 
     @Column(name = "title", nullable = false)
     private String title;
