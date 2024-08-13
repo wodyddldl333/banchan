@@ -37,7 +37,7 @@ const WriteContent = () => {
         formData.append("title", title);
         formData.append("content", content);
         if (file) {
-          formData.append("file", file);
+          formData.append("files", file);
           console.log('gi')
           console.log(file)
         }
@@ -66,7 +66,6 @@ const WriteContent = () => {
     }
     
     CreateCommunity(cookies.Token,data)
-
 
     console.log(data)
   }

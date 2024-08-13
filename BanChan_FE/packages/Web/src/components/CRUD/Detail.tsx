@@ -18,6 +18,29 @@ const Detail: React.FC = () => {
   const [cookies] = useCookies(['Token']);
   const navigate = useNavigate()
 
+  const downloadHandler = (fileid:number) => {
+    const download = async () => {
+      const response = await axios.get(`${baseUrl}/api/notice/download/${fileid}`,{
+        headers : {
+          Authorization: `Bearer ${cookies.Token}`, // Use response data here
+        },
+        responseType: 'blob',
+      })
+
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', `${post?.files[0].originalFilename}`);  // 파일명 설정
+      document.body.appendChild(link);
+      link.click();
+
+      // 사용 후 URL 객체 해제
+      window.URL.revokeObjectURL(url);
+      return response
+    }
+    console.log('hi')
+    console.log(download())
+  }
   const DetailContent: React.FC<{ post: Post }> = ({ post }) => {
     return (
       <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">
@@ -49,7 +72,12 @@ const Detail: React.FC = () => {
                       file:text-sm file:font-semibold
                       file:bg-blue-50 file:text-blue-700
                       hover:file:bg-blue-100"
-            ></div>
+                onClick={() => downloadHandler(post.files[0].id)}
+              >
+              <button>
+                {post.files[0].originalFilename}
+              </button>
+            </div>
           </div>
           <div className="flex justify-end mt-[40px]">
             <div className="mr-3"></div>
