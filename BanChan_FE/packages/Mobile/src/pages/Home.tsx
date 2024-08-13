@@ -1,10 +1,20 @@
-// import React, { useEffect, useState } from "react";
-// import bgImage from "@assets/Mobile_main.jpg";
-// import { NavLink, useNavigate } from "react-router-dom";
-// import axios from "axios";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import bgImage from "@assets/Mobile_main.jpg";
 import { NavLink, useNavigate } from "react-router-dom";
+import axios from "axios";
+
+interface UserApartment {
+  id: number;
+  buildingNo: string;
+  unitNo: string;
+  granted: boolean;
+}
+
+interface UserInfo {
+  realname: string;
+  phone: string;
+  userApartments: UserApartment[];
+}
 
 const items = [
   { icon: "person", text: "마이페이지", to: "/m/mypage" },
@@ -25,28 +35,35 @@ const announcements = [
 ];
 
 const Home: React.FC = () => {
-  // const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/user/myinfo")
-  //     .then((response) => {
-  //       setUserInfo(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching user info:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    axios
+      .get("/api/user/myinfo")
+      .then((response) => {
+        const userData: UserInfo = response.data;
+        setUserInfo(userData);
+
+        if (
+          !userData ||
+          !userData.realname ||
+          !userData.phone ||
+          (userData.userApartments && userData.userApartments.length === 0)
+        ) {
+          navigate("/m/mypage");
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching user info:", error);
+      });
+  }, [navigate]);
 
   const gotoHomeInfo = () => {
     navigate("/m/homeInfo");
   };
 
-  const userAPT = 0;
-  // const hasUserApartments =
-  //   userInfo.userApartments && userInfo.userApartments.length > 0;
+  const userAPT = userInfo?.userApartments?.length ? 1 : 0;
 
   return (
     <div className="flex flex-col justify-center items-center h-full">
@@ -79,8 +96,7 @@ const Home: React.FC = () => {
       </div>
 
       <div className="relative w-[320px] h-[160px] mt-[30px] flex flex-col bg-[#F0F8FF] border rounded-[20px] justify-center items-center z-10 font-semibold">
-        {/* {hasUserApartments && userInfo.userApartments[0].granted ? ( */}
-        {userAPT == 0 ? (
+        {userAPT === 0 ? (
           <>
             <div>세대 정보 기입 이후 정상 이용이 가능합니다. </div>
             <button
@@ -91,26 +107,24 @@ const Home: React.FC = () => {
             </button>
           </>
         ) : (
-          <>
-            <div className="relative w-[320px] p-4 bg-[#F0F8FF] border rounded-[10px]">
-              <div className="flex justify-between items-center mb-2">
-                <span className="font-bold text-lg">공지사항</span>
-                <NavLink to="/more" className="text-gray-500">
-                  더보기
-                </NavLink>
-              </div>
-              {announcements.map((announcement, index) => (
-                <div key={index} className="mb-2">
-                  <div className="font-semibold text-black">
-                    {announcement.title}
-                  </div>
-                  <div className="text-gray-500 text-sm">
-                    {announcement.date}
-                  </div>
-                </div>
-              ))}
+          <div className="relative w-[320px] p-4 bg-[#F0F8FF] border rounded-[10px]">
+            <div className="flex justify-between items-center mb-2">
+              <span className="font-bold text-lg">공지사항</span>
+              <NavLink to="/more" className="text-gray-500">
+                더보기
+              </NavLink>
             </div>
-          </>
+            {announcements.map((announcement, index) => (
+              <div key={index} className="mb-2">
+                <div className="font-semibold text-black">
+                  {announcement.title}
+                </div>
+                <div className="text-gray-500 text-sm">
+                  {announcement.date}
+                </div>
+              </div>
+            ))}
+          </div>
         )}
       </div>
     </div>
@@ -118,11 +132,3 @@ const Home: React.FC = () => {
 };
 
 export default Home;
-
-// import React from "react";
-
-// const Home: React.FC = () => {
-//   return <div>Home</div>;
-// };
-
-// export default Home;
