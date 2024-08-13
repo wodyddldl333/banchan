@@ -60,7 +60,11 @@ export interface Post {
   likes: number;
   createdAt: string;
   admin: boolean;
-  writer: boolean;
+  writer : boolean;
+  files : {
+    id : number;
+    originalFilename : string;
+  }[]
 }
 
 export interface Meeting {

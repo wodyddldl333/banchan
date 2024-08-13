@@ -17,6 +17,7 @@ import AskWrite from "../components/Community/Ask/AskWrite";
 import KakaoCallback from "../components/oauthlogin/KakaoCallback"; // KakaoCallback 컴포넌트 임포트
 import SessionJoinPage from "../components/Meeting/SessionJoinPage";
 import MeetingPage from "../components/Meeting/MeetingPage";
+import AskDetail from "../components/Community/Ask/AskDetail";
 
 const router: React.FC = () => {
   return (
