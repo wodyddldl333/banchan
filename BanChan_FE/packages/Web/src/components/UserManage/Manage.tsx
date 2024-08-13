@@ -45,6 +45,7 @@ const DeleteButton = ({ handleDelete }: { handleDelete: () => void }) => {
 
 interface User {
   id: number;
+  username: string;
   name: string;
   phone: string;
   email: string;
@@ -76,7 +77,7 @@ const Manage: React.FC = () => {
     const fetchUserDetails = async (user: User) => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/detail/${encodeURIComponent(user.name)}`,
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/detail/${encodeURIComponent(user.username)}`, // username 사용
           {
             headers: {
               Authorization: `Bearer ${cookies.Token}`,
@@ -142,7 +143,7 @@ const Manage: React.FC = () => {
   const saveChanges = async () => {
     if (editedUser) {
       try {
-        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/modify/${editedUser.id}`;
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/modify/${editedUser.username}`; // username 사용
         await axios.put(apiUrl, editedUser, {
           headers: {
             Authorization: `Bearer ${cookies.Token}`,
@@ -163,7 +164,7 @@ const Manage: React.FC = () => {
 
   const handleDelete = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${user.name}`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${encodeURIComponent(user.username)}`; // username 사용
       await axios.delete(apiUrl, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
