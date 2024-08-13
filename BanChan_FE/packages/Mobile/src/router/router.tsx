@@ -1,5 +1,5 @@
 import React from "react";
-import { Routes, Route,Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import FirstPage from "../pages/FirstPage";
 import Home from "../pages/Home";
 import HomeInfo from "../components/UserSettings/HomeInfo";
@@ -10,14 +10,13 @@ import VoteResult from "../components/Vote/VoteResult";
 import FinishedVote from "../components/Vote/FinishedVote";
 import MeetingList from "../components/Meeting/MeetingList";
 import CalendarApp from "../components/Meeting/CalendarApp";
-import MeetingHome from "../components/Meeting/MeetingHome";
 import NoticeList from "../components/Community/Notice/NoticeList";
 import NoticeDetail from "../components/Community/Notice/NoticeDetail";
 import AskList from "../components/Community/Ask/AskList";
 import AskWrite from "../components/Community/Ask/AskWrite";
 import KakaoCallback from "../components/oauthlogin/KakaoCallback"; // KakaoCallback 컴포넌트 임포트
-import AskDetail from "../components/Community/Ask/AskDetail";
-
+import SessionJoinPage from "../components/Meeting/SessionJoinPage";
+import MeetingPage from "../components/Meeting/MeetingPage";
 
 const router: React.FC = () => {
   return (
@@ -35,7 +34,8 @@ const router: React.FC = () => {
       </Route>
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
-      <Route path="/m/meetingHome" element={<MeetingHome />} />
+      <Route path="/m/meetingPage/:id" element={<MeetingPage />} />
+      <Route path="/m/sessionJoin" element={<SessionJoinPage />} />
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
         <Route path="notice/list" element={<NoticeList />} />
@@ -50,7 +50,7 @@ const router: React.FC = () => {
         element={<KakaoCallback />}
       />{" "}
       {/* 콜백 경로 추가 */}
-      </Routes>
+    </Routes>
   );
 };
 

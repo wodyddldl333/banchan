@@ -5,16 +5,17 @@ import {
   Publisher,
   Subscriber,
   StreamEvent,
-  SignalEvent,
+  // SignalEvent,
 } from "openvidu-browser";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import ControlPanels from "../components/WebRTC/ControlPanels";
-import ThumbnailPlayer from "../components/WebRTC/ThumbnailPlayer";
-import SubscriberList from "../components/WebRTC/SubscribeList";
-import { IconName, LocationState } from "../Type";
+
+import { IconName, LocationState } from "../../Types";
 import { useCookies } from "react-cookie";
-import ChatBox from "../components/WebRTC/ChatBox";
+import ControlPanels from "./ControlPanels";
+import SubscriberList from "./SubscribeList";
+import ThumbnailPlayer from "./ThumbnailPlayer";
+// import ChatBox from "../components/WebRTC/ChatBox";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -27,13 +28,13 @@ const MeetingPage: React.FC = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
-  const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
+  // const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
     Publisher | Subscriber | null
   >(null);
-  const [recordingId, setRecordingId] = useState<string | null>(null);
-  const [stopRecordingRequest, setStopRecordingRequest] = useState(false);
+  // const [recordingId, setRecordingId] = useState<string | null>(null);
+  // const [stopRecordingRequest, setStopRecordingRequest] = useState(false);
 
   const { token, roomName } = location.state as LocationState;
 
@@ -85,18 +86,18 @@ const MeetingPage: React.FC = () => {
           mic: publisher.stream.audioActive,
         }));
 
-        mySession.on("signal:chat", (event: SignalEvent) => {
-          if (event.data) {
-            // event.data가 undefined가 아닌지 확인
-            const newMessage = {
-              id: Date.now(),
-              text: event.data,
-            };
-            setMessages((prevMessages) => [...prevMessages, newMessage]);
-          } else {
-            console.error("Received an undefined message");
-          }
-        });
+        // mySession.on("signal:chat", (event: SignalEvent) => {
+        //   if (event.data) {
+        //     // event.data가 undefined가 아닌지 확인
+        //     const newMessage = {
+        //       id: Date.now(),
+        //       text: event.data,
+        //     };
+        //     setMessages((prevMessages) => [...prevMessages, newMessage]);
+        //   } else {
+        //     console.error("Received an undefined message");
+        //   }
+        // });
 
         console.log("Publisher added to session");
       } catch (error: unknown) {
@@ -186,27 +187,6 @@ const MeetingPage: React.FC = () => {
     };
   }, [sessionId, token, joinSession]);
 
-  useEffect(() => {
-    if (recordingId) {
-      console.log("Recording ID has been updated:", recordingId);
-    }
-  }, [recordingId]);
-
-  useEffect(() => {
-    if (stopRecordingRequest && recordingId) {
-      console.log("Stopping recording with ID:", recordingId);
-      endRecording(sessionId!, recordingId);
-      setStopRecordingRequest(false); // 이 부분이 상태를 재조정
-      setActiveIcons((prevState) => ({
-        ...prevState,
-        radio_button_checked: false,
-        radio_button_unchecked: true,
-      }));
-    } else if (!stopRecordingRequest && recordingId === null) {
-      console.log("Recording has been stopped and ID reset");
-    }
-  }, [stopRecordingRequest, recordingId, sessionId]);
-
   const deleteSession = async (sessionId: string): Promise<void> => {
     try {
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
@@ -221,57 +201,14 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  const startRecording = async (sessionId: string): Promise<void> => {
-    try {
-      const response = await axios.post(
-        `${baseUrl}/api/session/${sessionId}/startRecording`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookies.Token}`,
-          },
-        }
-      );
-
-      const recordId = response.data.id;
-      console.log("Received Recording ID from API:", recordId);
-      setRecordingId(recordId); // recordingId 설정
-    } catch (error) {
-      console.error(`Error starting recording:`, error);
-    }
-  };
-
-  const endRecording = async (
-    sessionId: string,
-    recordId: string
-  ): Promise<void> => {
-    try {
-      await axios.post(
-        `${baseUrl}/api/session/${sessionId}/${recordId}/stopRecording`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookies.Token}`,
-          },
-        }
-      );
-      setRecordingId(null);
-      console.log(`Recording stopped with ID: ${recordId}`);
-    } catch (error) {
-      console.error(`Error ending recording:`, error);
-    }
-  };
-
-  const sendMessage = (message: string) => {
-    if (session) {
-      session.signal({
-        data: message,
-        type: "chat",
-      });
-    }
-  };
+  // const sendMessage = (message: string) => {
+  //   if (session) {
+  //     session.signal({
+  //       data: message,
+  //       type: "chat",
+  //     });
+  //   }
+  // };
 
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
@@ -310,23 +247,6 @@ const MeetingPage: React.FC = () => {
           mic: newPublishMic,
         }));
       }
-    } else if (
-      icon === "radio_button_checked" &&
-      !activeIcons.radio_button_checked
-    ) {
-      console.log("Starting recording...");
-      startRecording(sessionId!);
-      setActiveIcons((prevState) => ({
-        ...prevState,
-        radio_button_checked: true,
-        radio_button_unchecked: false,
-      }));
-    } else if (
-      icon === "radio_button_unchecked" &&
-      activeIcons.radio_button_checked
-    ) {
-      console.log("Stopping recording...");
-      setStopRecordingRequest(true);
     } else {
       setActiveIcons((prevState) => ({
         ...prevState,
@@ -373,11 +293,11 @@ const MeetingPage: React.FC = () => {
               handleButtonClick={handleButtonClick}
             />
           </div>
-          {isChatBoxVisible && (
+          {/* {isChatBoxVisible && (
             <div className="w-[24%] h-full">
               <ChatBox messages={messages} onSendMessage={sendMessage} />
             </div>
-          )}
+          )} */}
         </div>
       </div>
     </div>
