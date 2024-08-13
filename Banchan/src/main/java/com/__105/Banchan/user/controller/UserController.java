@@ -1,9 +1,6 @@
 package com.__105.Banchan.user.controller;
 
-import com.__105.Banchan.user.dto.UserDto;
-import com.__105.Banchan.user.dto.UserResponseDto;
-import com.__105.Banchan.user.dto.SignupRequestDto;
-import com.__105.Banchan.user.dto.UserAptRequestDto;
+import com.__105.Banchan.user.dto.*;
 import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -50,5 +47,17 @@ public class UserController {
         User currentUser = userService.getMyInfo().toEntity();
         UserResponseDto userResponseDto = userService.setUserApt(currentUser, requestDto);
         return ResponseEntity.ok(userResponseDto);
+    }
+
+    @PutMapping("/update/userUserResponseDtoInfo")
+    @Operation(summary = "회원 정보 수정", description = "회원 정보 수정")
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserDto userDto,
+                                                          @RequestBody UserUpdateRequest request) {
+
+        // 로그인된 사용자를 가져옴
+        User currentUser = userService.getMyInfo().toEntity();
+        userService.updateUserInfo(currentUser, request);
+
+        return ResponseEntity.ok().body("update successful");
     }
 }

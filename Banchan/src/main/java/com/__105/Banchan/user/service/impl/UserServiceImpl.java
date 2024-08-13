@@ -5,6 +5,7 @@ import com.__105.Banchan.auth.jwt.JwtAuthFilter;
 import com.__105.Banchan.common.exception.CustomException;
 import com.__105.Banchan.common.exception.ErrorCode;
 import com.__105.Banchan.user.dto.UserResponseDto;
+import com.__105.Banchan.user.dto.UserUpdateRequest;
 import com.__105.Banchan.user.entity.Apartment;
 import com.__105.Banchan.user.entity.User;
 import com.__105.Banchan.user.entity.UserApartment;
@@ -107,6 +108,15 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
         return new UserResponseDto(updatedUser);
+    }
+
+    @Override
+    public void updateUserInfo(User currentUser, UserUpdateRequest request) {
+
+        currentUser.changePhone(request.getPhone());
+        currentUser.changeRealname(request.getName());
+
+        userRepository.save(currentUser);
     }
 
     // 유닛 번호 유효성 검증 메서드 (유닛 번호는 숫자 형식이어야 함)
