@@ -194,10 +194,6 @@ public class NoticeServiceImpl implements NoticeService {
         Specification<Notice> spec = Specification.where(null);
         spec = spec.and(NoticeSpecification.whereApt(aptCode));
 
-        if (user.getRole() != Role.ADMIN) {
-            spec = spec.and(NoticeSpecification.whereUser(user.getId()));
-        }
-
         if (requestDTO.getKeyword() != null && !requestDTO.getKeyword().isEmpty()) {
             spec = spec.and(NoticeSpecification.containsKeyword(requestDTO.getKeyword()));
         }
