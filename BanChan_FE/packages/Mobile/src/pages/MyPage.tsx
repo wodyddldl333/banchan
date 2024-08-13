@@ -18,17 +18,17 @@ const MyPage = () => {
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get("/api/user/myinfo", {
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
           headers: {
             Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 가져온 토큰 사용
           },
         });
         const userInfo = response.data;
-        setApartmentCode(userInfo.apartmentCode);
-        setDongHo(userInfo.dongHo);
-        setPhoneNumber(userInfo.phoneNumber);
-        setLinkedAccount(userInfo.linkedAccount);
-        setName(userInfo.name);
+        setApartmentCode(userInfo.userApartments[0]?.buildingNo + "/" + userInfo.userApartments[0]?.unitNo || "");
+        setDongHo(userInfo.userApartments[0]?.unitNo || "");
+        setPhoneNumber(userInfo.phone);
+        setLinkedAccount(userInfo.socialType || "");
+        setName(userInfo.realname);
       } catch (error) {
         console.error("사용자 정보 가져오기 오류:", error);
       }
@@ -42,12 +42,9 @@ const MyPage = () => {
 
     try {
       // 수정된 정보를 서버에 저장하는 요청을 보냅니다.
-      const response = await axios.put("/api/user/update", {
-        apartmentCode,
-        dongHo,
-        phoneNumber,
-        linkedAccount,
+      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/api/user/update/userUserResponseDtoInfo`, {
         name,
+        phone: phoneNumber,
       }, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 가져온 토큰 사용
@@ -87,6 +84,7 @@ const MyPage = () => {
                 value={apartmentCode}
                 onChange={(e) => setApartmentCode(e.target.value)}
                 className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
+                disabled
               />
             ) : (
               <div className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none">
@@ -107,6 +105,7 @@ const MyPage = () => {
                 value={dongHo}
                 onChange={(e) => setDongHo(e.target.value)}
                 className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
+                disabled
               />
             ) : (
               <div className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none">
@@ -147,6 +146,7 @@ const MyPage = () => {
                 value={linkedAccount}
                 onChange={(e) => setLinkedAccount(e.target.value)}
                 className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none"
+                disabled
               />
             ) : (
               <div className="block w-full px-4 text-[14px] py-4 mt-2 mb-10 border rounded-xl shadow-sm focus:ring focus:ring-opacity-50 focus:ring-blue-300 focus:outline-none">
