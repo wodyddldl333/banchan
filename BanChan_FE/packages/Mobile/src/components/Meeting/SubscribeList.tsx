@@ -1,14 +1,11 @@
 import { Subscriber } from "openvidu-browser";
 import React, { useState } from "react";
 
-
 interface SubscriberListProps {
   subscribers: Subscriber[];
 }
 
 const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
-
-  
   const [currentPage, setCurrentPage] = useState(0);
   const subscribersPerPage = 3; // 한 페이지에 표시할 구독자 수
 
@@ -51,7 +48,7 @@ const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
             }}
             autoPlay
             playsInline
-            className="w-[90px] h-[90px] object-cover bg-black mx-4 my-4 rounded-[12px]"
+            className="w-[120px] h-[120px] object-cover bg-black mx-2 my-4 rounded-[12px]"
           ></video>
         ))}
       </div>

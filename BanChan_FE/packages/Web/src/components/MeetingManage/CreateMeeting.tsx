@@ -36,7 +36,7 @@ const CreateMeeting: React.FC = () => {
       );
       Swal.fire({
         title: "회의 생성 완료",
-        text: "회의가 성공적으로 생성되었1습니다.",
+        text: "회의가 성공적으로 생성되었습니다.",
         icon: "success",
         confirmButtonText: "확인",
       });
