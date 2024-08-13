@@ -74,23 +74,33 @@ export const reissueToken = async () => {
 };
 
 // 로그아웃
-
 export const logout = async () => {
-  const accessToken = cookies.get('Token');
+  try {
+    const accessToken = cookies.get('Token');
 
-  if (!accessToken) {
-    throw new Error('Access token not found');
-  }
-
-  await axios.post(`${BACKEND_URL}/api/auth/token/logout`, {}, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`
+    if (!accessToken) {
+      throw new Error('Access token not found');
     }
-  });
 
-  // 로그아웃 후 쿠키와 로컬 스토리지에서 토큰 제거
-  cookies.remove('Token', { path: '/' });
-  localStorage.removeItem('refreshToken');
+    // 서버에 로그아웃 요청을 보냄
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/token/logout`, {}, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      withCredentials: true, // 쿠키 인증이 필요하면 사용
+    });
+
+    // 로그아웃 후 쿠키와 로컬 스토리지에서 토큰 제거
+    cookies.remove('Token', { path: '/', domain: '.i11e105.p.ssafy.io' }); // 도메인 설정에 맞게 쿠키 삭제
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
+
+    // 로그아웃 후 페이지 이동
+    window.location.href = '/m'; // 로그인 페이지로 리다이렉트
+  } catch (error) {
+    console.error('Logout failed: ', error);
+    alert('로그아웃에 실패했습니다.');
+  }
 };
 
 
