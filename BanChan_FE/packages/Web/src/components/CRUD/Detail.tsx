@@ -72,10 +72,10 @@ const Detail: React.FC = () => {
                       file:text-sm file:font-semibold
                       file:bg-blue-50 file:text-blue-700
                       hover:file:bg-blue-100"
-                onClick={() => downloadHandler(post.files[0].id)}
+                onClick={() => downloadHandler(post.files[0]?.id)}
               >
               <button>
-                {post.files[0].originalFilename}
+                {post.files[0]?.originalFilename}
               </button>
             </div>
           </div>
