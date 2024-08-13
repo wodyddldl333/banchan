@@ -3,11 +3,11 @@ import Header from "../../Header";
 import { useParams} from "react-router-dom";
 import { useCookies } from "react-cookie";
 import { getCommunityDetails } from "../../../mobileapi/CommunityAPI";
-const NoticeDetail: React.FC = () => {
+const AskDetail: React.FC = () => {
 
   const { id } = useParams();
   const [post, setPost] = useState({
-    title:'Notice',
+    title:'Ask',
     content:'',
     createdAt:'',
     id:'',
@@ -17,7 +17,7 @@ const NoticeDetail: React.FC = () => {
   
   useEffect(() => {
     const fetchPostDetail = async () => {
-      const data = await getCommunityDetails(cookies.Token,`api/notice/detail/${id}`);
+      const data = await getCommunityDetails(cookies.Token,`api/ask/detail/${id}`);
       console.log(data);
       setPost({
         content : data.content,
@@ -37,7 +37,7 @@ const NoticeDetail: React.FC = () => {
 
   return (
     <div className="min-h-screen">
-      <Header>공지사항</Header>
+      <Header>건의함</Header>
       <div className="max-w-md mx-2 p-6 bg-white border rounded-lg my-2 ">
         <h1 className="text-xl font-bold mb-2 mt-4">{post.title}</h1>
         <p className="text-gray-500 mb-4">{post.createdAt}</p>
@@ -62,4 +62,4 @@ const NoticeDetail: React.FC = () => {
   );
 };
 
-export default NoticeDetail;
+export default AskDetail;

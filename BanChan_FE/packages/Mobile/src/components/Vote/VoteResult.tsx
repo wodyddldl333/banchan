@@ -1,11 +1,8 @@
 import React from "react";
 import Header from "../Header";
 import SwipeableResults from "./SwipeableResult";
-import { useLocation } from "react-router-dom";
 
 const VoteResult: React.FC = () => {
-  const location = useLocation();
-  const { item } = location.state || { item: { title: "투표 결과" } }; // 기본값 설정
 
   const voteItems = [
     {
@@ -37,7 +34,7 @@ const VoteResult: React.FC = () => {
       <Header>투표 결과</Header>
       <div className="p-4">
         <h3 className="text-[20px] font-bold mb-4 flex justify-center mt-10">
-          {item.title}
+          대충 제목
         </h3>
         <SwipeableResults items={voteItems} />
       </div>
