@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
-import { SwipeableContentProps } from "../../Types";
+import { SwipeableResultProps } from "../../Types";
 
-const SwipeableResults: React.FC<SwipeableContentProps> = ({ items }) => {
+const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
 

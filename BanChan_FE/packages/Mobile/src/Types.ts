@@ -13,6 +13,11 @@ export interface QuestionOptionItems {
 export interface SwipeableContentProps {
   items: Array<{ questionId:number; questionText: string; options: QuestionOptionItems[] }>;
 }
+
+export interface SwipeableResultProps{
+  items: Array<{ question: string; options: string[] }>;
+}
+
 export interface DrawerProps {
   title: string;
   items: Array<{
