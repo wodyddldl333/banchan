@@ -4,6 +4,8 @@ import com.__105.Banchan.notice.dto.*;
 import com.__105.Banchan.notice.entitiy.Notice;
 import com.__105.Banchan.notice.entitiy.NoticeComment;
 import com.__105.Banchan.notice.entitiy.NoticeImage;
+import com.__105.Banchan.notice.exception.NoticeErrorCode;
+import com.__105.Banchan.notice.exception.NoticeException;
 import com.__105.Banchan.notice.repository.NoticeCommentRepository;
 import com.__105.Banchan.notice.repository.NoticeImageRepository;
 import com.__105.Banchan.notice.repository.NoticeRepository;
@@ -50,12 +52,12 @@ public class NoticeServiceImpl implements NoticeService {
     public void registerNotice(NoticePostRequest requestDto, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.USER_NOT_FOUND));
 
         Apartment apt = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElse(null)
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.APARTMENT_NOT_FOUND))
                 .getApartment();
 
         Notice notice = Notice.builder()
@@ -94,7 +96,7 @@ public class NoticeServiceImpl implements NoticeService {
             Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
             return storedFileName;
         } catch (IOException e) {
-            throw new RuntimeException("Failed to store file", e);
+            throw new NoticeException(NoticeErrorCode.FILE_STORAGE_FAILED);
         }
     }
 
@@ -102,7 +104,7 @@ public class NoticeServiceImpl implements NoticeService {
     public NoticeDetailResponse detailNotice(Long noticeId, String username, boolean isAdmin, boolean isViewed) {
 
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.NOTICE_NOT_FOUND));
 
         if (!isViewed) {
             notice.increaseViews();
@@ -138,10 +140,10 @@ public class NoticeServiceImpl implements NoticeService {
     public void deleteNotice(Long noticeId, boolean isAdmin, String username) {
 
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.NOTICE_NOT_FOUND));
 
         if (!notice.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to delete because you are not the author or administrator");
+            throw new NoticeException(NoticeErrorCode.UNAUTHORIZED_ACTION);
         }
 
         List<NoticeComment> comments = noticeCommentRepository.findAllByNotice(notice);
@@ -162,10 +164,10 @@ public class NoticeServiceImpl implements NoticeService {
     public void updateNotice(Long noticeId, NoticePostRequest updateRequestDTO, boolean isAdmin, String username) {
 
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(()-> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.NOTICE_NOT_FOUND));
 
         if (!notice.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to update because you are not the author or administrator");
+            throw new NoticeException(NoticeErrorCode.UNAUTHORIZED_ACTION);
         }
 
         notice = notice.toBuilder()
@@ -180,15 +182,16 @@ public class NoticeServiceImpl implements NoticeService {
     public Page<NoticeListResponse> getListNotice(SearchCondition requestDTO, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.USER_NOT_FOUND));
 
         Set<UserApartment> ua = user.getUserApartments();
 
         if (ua.isEmpty()) {
-            throw new RuntimeException("User has no Apartment");
+            throw new NoticeException(NoticeErrorCode.APARTMENT_NOT_FOUND);
         }
 
-        String aptCode = ua.stream().findFirst().orElseThrow(() -> new RuntimeException("aptCode is invalid"))
+        String aptCode = ua.stream().findFirst()
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.APARTMENT_NOT_FOUND))
                 .getApartment().getCode();
 
         Specification<Notice> spec = Specification.where(null);
@@ -221,10 +224,10 @@ public class NoticeServiceImpl implements NoticeService {
     public void registerNoticeComment(Long noticeId, NoticeCommentRequest requestDto, String username) {
 
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.NOTICE_NOT_FOUND));
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new NoticeException(NoticeErrorCode.USER_NOT_FOUND));
 
         NoticeComment noticeComment = NoticeComment.builder()
                 .notice(notice)
@@ -237,11 +240,12 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public List<NoticeCommentResponse> getListNoticeComment(Long noticeId, String username, boolean isAdmin) {
+
         Notice notice = noticeRepository.findById(noticeId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.NOTICE_NOT_FOUND));
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(()-> new RuntimeException("User not found"));
+                .orElseThrow(()-> new NoticeException(NoticeErrorCode.USER_NOT_FOUND));
 
         List<NoticeComment> comments = noticeCommentRepository.findAllByNotice(notice);
 
@@ -259,11 +263,12 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void deleteNoticeComment(Long commentId, boolean isAdmin, String username) {
+
         NoticeComment noticeComment = noticeCommentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.COMMENT_NOT_FOUND));
 
         if(!noticeComment.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to delete because you are not the author or administrator");
+            throw new NoticeException(NoticeErrorCode.UNAUTHORIZED_ACTION);
         }
 
         noticeCommentRepository.delete(noticeComment);
@@ -271,11 +276,12 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void updateNoticeComment(Long commentId, NoticeCommentRequest requestDto, String username, boolean isAdmin) {
-        NoticeComment noticeComment = noticeCommentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("Not found Notice"));
 
-        if(!noticeComment.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to update because you are not the author or administrator");
+        NoticeComment noticeComment = noticeCommentRepository.findById(commentId)
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.COMMENT_NOT_FOUND));
+
+        if (!noticeComment.getUser().getUsername().equals(username) && !isAdmin) {
+            throw new NoticeException(NoticeErrorCode.UNAUTHORIZED_ACTION);
         }
 
         noticeComment = noticeComment.toBuilder()
@@ -288,7 +294,7 @@ public class NoticeServiceImpl implements NoticeService {
     @Override
     public NoticeImage getNoticeFileById(Long fileId) {
         return noticeImageRepository.findById(fileId)
-                .orElseThrow(() -> new RuntimeException("not fount file"));
+                .orElseThrow(() -> new NoticeException(NoticeErrorCode.FILE_NOT_FOUND));
     }
 
     @Override
@@ -300,11 +306,10 @@ public class NoticeServiceImpl implements NoticeService {
             if (resource.exists()) {
                 return resource;
             } else {
-                throw new RuntimeException("File not found " + noticeFile.getStoredFilename());
+                throw new NoticeException(NoticeErrorCode.FILE_NOT_FOUND);
             }
         } catch (IOException ex) {
-            throw new RuntimeException("File not found " + noticeFile.getStoredFilename(), ex);
+            throw new NoticeException(NoticeErrorCode.FILE_NOT_FOUND);
         }
     }
-
 }

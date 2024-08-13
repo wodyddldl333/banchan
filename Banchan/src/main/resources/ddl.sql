@@ -1,3 +1,5 @@
+use banchan;
+
 create table apt
 (
     apt_code       varchar(50)  not null
