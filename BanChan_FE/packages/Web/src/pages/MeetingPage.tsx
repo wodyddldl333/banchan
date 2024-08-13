@@ -50,6 +50,7 @@ const MeetingPage: React.FC = () => {
     notifications: false,
     radio_button_checked: false,
     radio_button_unchecked: false,
+    mail: false,
   });
 
   const joinSession = useCallback(
@@ -335,38 +336,50 @@ const MeetingPage: React.FC = () => {
   };
 
   return (
-    <div
-      className={`flex ${
-        isChatBoxVisible ? "justify-between" : "justify-center"
-      } items-center w-full h-screen bg-customTextColor`}
-    >
-      <div
-        className={`flex flex-col items-center justify-center ${
-          isChatBoxVisible ? "w-3/4" : "w-full"
-        }`}
-      >
-        {roomName && <h1 className="text-2xl mb-4">회의명: {roomName}</h1>}
-        <div className="flex flex-col items-center">
-          <div className="flex justify-center items-center mb-4">
-            {thumbnailPlayer && (
-              <ThumbnailPlayer
-                stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
-              />
-            )}
+    <div className="flex flex-col w-full h-screen">
+      <div className="bg-[#4285F4] opacity-70 absolute inset-0"></div>
+      <div className="relative flex flex-col w-full h-screen">
+        {/* 최상단에 회의명을 배치 */}
+        {roomName && (
+          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white">
+            <h1 className="text-xl">회의명: {roomName}</h1>
           </div>
-          <SubscriberList subscribers={subscribers} />
+        )}
+
+        {/* 나머지 콘텐츠 */}
+        <div
+          className={`flex ${
+            isChatBoxVisible ? "justify-between" : "justify-center"
+          } items-center w-full h-full`}
+        >
+          <div
+            className={`flex flex-col items-center justify-center ${
+              isChatBoxVisible ? "w-3/4" : "w-full"
+            }`}
+          >
+            <div className="flex flex-col items-center">
+              <div className="flex justify-center items-center mb-4">
+                {thumbnailPlayer && (
+                  <ThumbnailPlayer
+                    stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
+                  />
+                )}
+              </div>
+              <SubscriberList subscribers={subscribers} />
+            </div>
+            <ControlPanels
+              onChatToggle={handleChatToggle}
+              activeIcons={activeIcons}
+              handleButtonClick={handleButtonClick}
+            />
+          </div>
+          {isChatBoxVisible && (
+            <div className="w-[24%] h-full">
+              <ChatBox messages={messages} onSendMessage={sendMessage} />
+            </div>
+          )}
         </div>
-        <ControlPanels
-          onChatToggle={handleChatToggle}
-          activeIcons={activeIcons}
-          handleButtonClick={handleButtonClick}
-        />
       </div>
-      {isChatBoxVisible && (
-        <div className="w-1/4 h-full">
-          <ChatBox messages={messages} onSendMessage={sendMessage} />
-        </div>
-      )}
     </div>
   );
 };
