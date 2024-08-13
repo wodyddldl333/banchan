@@ -1,7 +1,14 @@
+import { Subscriber } from "openvidu-browser";
 import React, { useState } from "react";
-import { SubscriberListProps } from "../../Types";
+
+
+interface SubscriberListProps {
+  subscribers: Subscriber[];
+}
 
 const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
+
+  
   const [currentPage, setCurrentPage] = useState(0);
   const subscribersPerPage = 3; // 한 페이지에 표시할 구독자 수
 
