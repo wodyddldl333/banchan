@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { ThumbnailPlayerProps } from "../../Type";
+import { ThumbnailPlayerProps } from "../../Types";
 
 const ThumbnailPlayer: React.FC<ThumbnailPlayerProps> = ({
   stream,
@@ -16,7 +16,7 @@ const ThumbnailPlayer: React.FC<ThumbnailPlayerProps> = ({
   return (
     <video
       ref={videoRef}
-      className={`w-[1000px] h-[600px] bg-black object-cover rounded-[30px] ${className}`}
+      className={`w-[330px] h-[330px] bg-black object-cover rounded-[12px] ${className}`}
       autoPlay
       playsInline
       muted

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../Table";
 import Nav from "../Nav";
 import NavItem from "../NavItem";
@@ -64,6 +64,7 @@ const NavElements = () => {
 
 const Manage: React.FC = () => {
   const [cookies] = useCookies(["Token"]);
+  const navigate = useNavigate();
   const location = useLocation();
   const newUser: User | undefined = location.state?.user;
 
@@ -91,6 +92,20 @@ const Manage: React.FC = () => {
 
     const fetchData = async () => {
       try {
+        // Fetch user information to check role
+        const userInfoResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
+          headers: {
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        });
+
+        const currentUser = userInfoResponse.data;
+        if (currentUser.role !== "ADMIN") {
+          alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+          navigate("/home");
+          return;
+        }
+
         const response = await axios.get(
           `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/list`,
           {
@@ -105,11 +120,13 @@ const Manage: React.FC = () => {
         setUsers(usersWithDetails);
       } catch (error) {
         console.error("Error fetching data:", error);
+        alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+        navigate("/home");  // 권한이 없는 경우 홈페이지로 리다이렉트
       }
     };
 
     fetchData();
-  }, [cookies.Token]);
+  }, [cookies.Token, navigate]);
 
   useEffect(() => {
     if (newUser) {
@@ -146,7 +163,7 @@ const Manage: React.FC = () => {
 
   const handleDelete = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${encodeURIComponent(user.name)}`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${user.name}`;
       await axios.delete(apiUrl, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
@@ -171,56 +188,58 @@ const Manage: React.FC = () => {
 
   const headers = ["번호", "이름", "연락처", "이메일", "신청일", "동/호수", "수정", "삭제"];
 
-  const rows = users.map((user) =>
-    editingId === user.id ? (
-      [
-        user.id,
-        <input
-          type="text"
-          name="name"
-          value={editedUser?.name}
-          onChange={handleChange}
-        />,
-        <input
-          type="text"
-          name="phone"
-          value={editedUser?.phone}
-          onChange={handleChange}
-        />,
-        <input
-          type="text"
-          name="email"
-          value={editedUser?.email}
-          onChange={handleChange}
-        />,
-        <input
-          type="text"
-          name="date"
-          value={editedUser?.date}
-          onChange={handleChange}
-        />,
-        <input
-          type="text"
-          name="address"
-          value={editedUser?.address}
-          onChange={handleChange}
-        />,
-        <SaveButton handleSave={saveChanges} />,
-        <DeleteButton handleDelete={() => handleDelete(user)} />,
-      ]
-    ) : (
-      [
-        user.id,
-        user.name,
-        user.phone,
-        user.email,
-        user.date,
-        user.address,
-        <ModifyButton handleModify={() => startEditing(user)} />,
-        <DeleteButton handleDelete={() => handleDelete(user)} />,
-      ]
-    )
-  );
+  const rows = users
+    .filter((user) => user.approved) // 승인된 유저만 필터링
+    .map((user) =>
+      editingId === user.id ? (
+        [
+          user.id,
+          <input
+            type="text"
+            name="name"
+            value={editedUser?.name}
+            onChange={handleChange}
+          />,
+          <input
+            type="text"
+            name="phone"
+            value={editedUser?.phone}
+            onChange={handleChange}
+          />,
+          <input
+            type="text"
+            name="email"
+            value={editedUser?.email}
+            onChange={handleChange}
+          />,
+          <input
+            type="text"
+            name="date"
+            value={editedUser?.date}
+            onChange={handleChange}
+          />,
+          <input
+            type="text"
+            name="address"
+            value={editedUser?.address}
+            onChange={handleChange}
+          />,
+          <SaveButton handleSave={saveChanges} />,
+          <DeleteButton handleDelete={() => handleDelete(user)} />,
+        ]
+      ) : (
+        [
+          user.id,
+          user.name,
+          user.phone,
+          user.email,
+          user.date,
+          user.address,
+          <ModifyButton handleModify={() => startEditing(user)} />,
+          <DeleteButton handleDelete={() => handleDelete(user)} />,
+        ]
+      )
+    );
 
   return (
     <>
