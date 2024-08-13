@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
-// console.log("Base URL:", baseUrl);
 
 const CreateMeeting: React.FC = () => {
   const [roomName, setRoomName] = useState("");
@@ -29,7 +28,6 @@ const CreateMeeting: React.FC = () => {
         },
         {
           headers: {
-            // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
             Authorization: `Bearer ${token}`,
           },
         }
