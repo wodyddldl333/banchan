@@ -2,6 +2,8 @@ package com.__105.Banchan.ask.servie;
 
 import com.__105.Banchan.ask.dto.*;
 import com.__105.Banchan.ask.entity.*;
+import com.__105.Banchan.ask.exception.AskErrorCode;
+import com.__105.Banchan.ask.exception.AskException;
 import com.__105.Banchan.ask.repository.*;
 import com.__105.Banchan.notice.dto.SearchCondition;
 import com.__105.Banchan.user.entity.Apartment;
@@ -35,17 +37,17 @@ public class AskServiceImpl implements AskService {
     public void registAsk(AskPostRequest requestDto, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         Set<UserApartment> ua = user.getUserApartments();
 
         if (ua.isEmpty()) {
-            throw new RuntimeException("User has no Apartment");
+            throw new AskException(AskErrorCode.APARTMENT_NOT_FOUND);
         }
 
         Apartment apt = ua.stream()
                 .findFirst()
-                .orElse(null)
+                .orElseThrow(() -> new AskException(AskErrorCode.APARTMENT_NOT_FOUND))
                 .getApartment();
 
         Ask ask = Ask.builder()
@@ -62,7 +64,7 @@ public class AskServiceImpl implements AskService {
     public AskDetailResponse detailAsk(Long askId, String username, boolean isAdmin, boolean isViewed) {
 
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         if (!isViewed) {
             ask.updateViews();
@@ -88,10 +90,10 @@ public class AskServiceImpl implements AskService {
     public void deleteAsk(Long askId, boolean isAdmin, String username) {
 
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         if (!ask.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to delete because you are not the author or administrator");
+            throw new AskException(AskErrorCode.UNAUTHORIZED_ACTION);
         }
 
         List<AskImage> images = askImageRepository.findAllByAsk(ask);
@@ -109,10 +111,10 @@ public class AskServiceImpl implements AskService {
     public void updateAsk(Long askId, AskPostRequest requestDto, boolean isAdmin, String username) {
 
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         if (!ask.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to update because you are not the author or administrator");
+            throw new AskException(AskErrorCode.UNAUTHORIZED_ACTION);
         }
 
         ask = ask.toBuilder()
@@ -127,17 +129,17 @@ public class AskServiceImpl implements AskService {
     public Page<AskListResponse> getListAsk(SearchCondition searchCondition, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         Set<UserApartment> ua = user.getUserApartments();
 
         if (ua.isEmpty()) {
-            throw new RuntimeException("User has no Apartment");
+            throw new AskException(AskErrorCode.APARTMENT_NOT_FOUND);
         }
 
         String aptCode = ua.stream()
                 .findFirst()
-                .orElse(null)
+                .orElseThrow(() -> new AskException(AskErrorCode.APARTMENT_NOT_FOUND))
                 .getApartment().getCode();
 
         Specification<Ask> spec = Specification.where(null);
@@ -187,10 +189,10 @@ public class AskServiceImpl implements AskService {
     public void registAskComment(Long askId, AskCommentRequest requestDto, String username) {
 
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         AskComment askComment = AskComment.builder()
                 .ask(ask)
@@ -203,11 +205,12 @@ public class AskServiceImpl implements AskService {
 
     @Override
     public List<AskCommentResponse> getListAskComment(Long askId, String username, boolean isAdmin) {
+
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         List<AskComment> comments = askCommentRepository.findAllByAsk(ask);
 
@@ -225,11 +228,12 @@ public class AskServiceImpl implements AskService {
 
     @Override
     public void deleteAskComment(Long commentId, boolean isAdmin, String username) {
+
         AskComment askComment = askCommentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("askComment not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.COMMENT_NOT_FOUND));
 
         if (!askComment.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to delete because you are not the author or administrator");
+            throw new AskException(AskErrorCode.UNAUTHORIZED_ACTION);
         }
 
         askCommentRepository.delete(askComment);
@@ -238,11 +242,12 @@ public class AskServiceImpl implements AskService {
 
     @Override
     public void updateAskComment(Long commentId, AskCommentRequest requestDto, String username, boolean isAdmin) {
+
         AskComment askComment = askCommentRepository.findById(commentId)
-                .orElseThrow(() -> new RuntimeException("askComment not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.COMMENT_NOT_FOUND));
 
         if (!askComment.getUser().getUsername().equals(username) && !isAdmin) {
-            throw new RuntimeException("Unable to update because you are not the author or administrator");
+            throw new AskException(AskErrorCode.UNAUTHORIZED_ACTION);
         }
 
         askComment = askComment.toBuilder()
@@ -256,10 +261,10 @@ public class AskServiceImpl implements AskService {
     public void likeAsk(Long askId, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         Ask ask = askRepository.findById(askId)
-                .orElseThrow(() -> new RuntimeException("ask not found"));
+                .orElseThrow(() -> new AskException(AskErrorCode.ASK_NOT_FOUND));
 
         AskLikeId askLikeId = AskLikeId.builder()
                 .user(user.getId())
@@ -283,7 +288,7 @@ public class AskServiceImpl implements AskService {
     public void unlikeAsk(Long askId, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not fount"));
+                .orElseThrow(() -> new AskException(AskErrorCode.USER_NOT_FOUND));
 
         AskLikeId askLikeId = AskLikeId.builder()
                 .user(user.getId())
