@@ -1,6 +1,6 @@
-// import React from "react";
-import { NavLink } from "react-router-dom";
-import logo from "@assets/logo.png";
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+import logo from '@assets/logo.png';
 import LogoutButton from './Buttons/LogoutButton'; // 로그아웃 버튼 import
 
 interface SidebarItemProps {
@@ -15,7 +15,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({ icon, text, to }) => {
       to={to}
       className={({ isActive }) =>
         `flex items-center w-full text-customSideBarTextColor focus:text-customBlue hover:text-customBlue hover:border-l-4 hover:border-customBlue ${
-          isActive ? "border-l-4 border-customBlue text-customBlue" : ""
+          isActive ? 'border-l-4 border-customBlue text-customBlue' : ''
         }`
       }
     >
@@ -56,8 +56,9 @@ const MainSideBar: React.FC = () => {
           <SidebarItem icon="HandyMan" text="기타 관리" to="/others" />
         </nav>
 
-        <div className="mt-[220px]"></div>
-        <LogoutButton /> {/* 로그아웃 버튼 추가 */}
+        <div className="mt-auto flex justify-center mb-6">
+          <LogoutButton /> {/* 로그아웃 버튼 추가 */}
+        </div>
       </div>
     </div>
   );
