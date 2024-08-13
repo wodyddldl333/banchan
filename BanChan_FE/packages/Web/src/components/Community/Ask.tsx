@@ -40,7 +40,7 @@ const Ask: React.FC = () => {
         id: item.id,
         title: item.title,
         writer: item.username,
-        createdAt: item.createdAt.replace("T", " ").slice(0, -7),
+        createdAt: item.createdAt.replace("T", " ").slice(0, 10),
         views: item.views,
         likes: item.likes,
       }));
