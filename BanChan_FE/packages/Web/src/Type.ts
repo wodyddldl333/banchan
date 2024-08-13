@@ -60,6 +60,10 @@ export interface Post {
   createdAt: string;
   admin: boolean;
   writer : boolean;
+  files : {
+    id : number;
+    originalFilename : string;
+  }[]
 }
 
 export interface Meeting {

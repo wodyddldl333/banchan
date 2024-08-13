@@ -19,16 +19,42 @@ const WriteContent = () => {
   const CreateCommunity = async (Token:string,data:{title:string,content:string}) => {
     try {
       console.log(data)
-      const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
-        {
-          ...data
-        }, {
-        headers: {
-          'Authorization': `Bearer ${Token}`, // Use response data here
+      if(boardType == 'ask'){
+
+        const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
+          {
+            ...data
+          }, {
+            headers: {
+              'Authorization': `Bearer ${Token}`, // Use response data here
+            }
+          });
+
+          console.log(response);
+          return response.data; // content 배열만 반환
+      } else {
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        if (file) {
+          formData.append("files", file);
+          console.log('gi')
+          console.log(file)
         }
-      });
-      console.log(response);
-      return response.data; // content 배열만 반환
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}:`, value);
+        }
+        const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
+          formData, {
+            headers: {
+              'Authorization': `Bearer ${Token}`, // Use response data here
+              "Content-Type": "multipart/form-data",
+            }
+          });
+          console.log('hi')
+          console.log(response);
+          return response.data; // content 배열만 반환
+      }
     } catch (error) {
       console.error("생성 중 오류가 발생하였습니다", error);
     }
@@ -40,7 +66,6 @@ const WriteContent = () => {
     }
     
     CreateCommunity(cookies.Token,data)
-
 
     console.log(data)
   }
