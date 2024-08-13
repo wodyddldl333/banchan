@@ -18,6 +18,7 @@ import KakaoCallback from "../components/oauthlogin/KakaoCallback"; // KakaoCall
 import SessionJoinPage from "../components/Meeting/SessionJoinPage";
 import MeetingPage from "../components/Meeting/MeetingPage";
 import AskDetail from "../components/Community/Ask/AskDetail";
+import Test from "../components/Meeting/Test";
 
 const router: React.FC = () => {
   return (
@@ -36,6 +37,7 @@ const router: React.FC = () => {
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingPage/:id" element={<MeetingPage />} />
+      <Route path="/m/test" element={<Test />} />
       <Route path="/m/sessionJoin" element={<SessionJoinPage />} />
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
