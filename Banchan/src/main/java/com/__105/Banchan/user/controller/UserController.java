@@ -51,8 +51,7 @@ public class UserController {
 
     @PutMapping("/update/userUserResponseDtoInfo")
     @Operation(summary = "회원 정보 수정", description = "회원 정보 수정")
-    public ResponseEntity<?> updateUserInfo(@RequestBody UserDto userDto,
-                                                          @RequestBody UserUpdateRequest request) {
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserUpdateRequest request) {
 
         // 로그인된 사용자를 가져옴
         User currentUser = userService.getMyInfo().toEntity();
