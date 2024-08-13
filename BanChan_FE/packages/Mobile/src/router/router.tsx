@@ -25,10 +25,13 @@ const router: React.FC = () => {
       <Route path="/m/home" element={<Home />} />
       <Route path="/m/homeInfo" element={<HomeInfo />} />
       <Route path="/m/mypage" element={<MyPage />} />
-      <Route path="/m/showVote" element={<ShowVote />} />
-      <Route path="/m/voteList" element={<VoteList />} />
-      <Route path="/m/voteResult" element={<VoteResult />} />
-      <Route path="/m/finishedVote" element={<FinishedVote />} />
+      <Route path="/m/vote">
+        <Route index element={<Navigate to="voteList" />} />
+        <Route path="showVote/:id" element={<ShowVote />} />
+        <Route path="voteList" element={<VoteList />} />
+        <Route path="voteResult/:id" element={<VoteResult />} />
+        <Route path="finishedVote/:id" element={<FinishedVote />} />
+      </Route>
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingPage/:id" element={<MeetingPage />} />
@@ -36,7 +39,8 @@ const router: React.FC = () => {
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
         <Route path="notice/list" element={<NoticeList />} />
-        <Route path="notice/detail" element={<NoticeDetail />} />
+        <Route path="notice/detail/:id" element={<NoticeDetail />} />
+        <Route path="ask/detail/:id" element={<AskDetail />} />
         <Route path="ask/list" element={<AskList />} />
         <Route path="ask/write" element={<AskWrite />} />
       </Route>

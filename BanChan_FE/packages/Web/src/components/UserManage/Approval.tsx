@@ -14,7 +14,7 @@ interface User {
   email: string;
   date: string;
   address: string;
-  status: string;
+  role: string;
 }
 
 const approve = (handleApprove: () => void) => {
@@ -61,7 +61,22 @@ const Approval: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/list`, {
+        // Fetch user information to check role
+        const userInfoResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
+          headers: {
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        });
+
+        const currentUser = userInfoResponse.data;
+        if (currentUser.role !== "ADMIN") {
+          alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+          navigate("/home");
+          return;
+        }
+
+        // Fetch approval list
+        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/approval`, {
           headers: {
             Authorization: `Bearer ${cookies.Token}`,
           },
@@ -88,22 +103,23 @@ const Approval: React.FC = () => {
           Authorization: `Bearer ${cookies.Token}`,
         },
       });
-      navigate("/userManage/manage", { state: { user } });
+      setData((prevData) => prevData.filter((u) => u.id !== user.id));
+      alert("사용자가 승인되었습니다.");
     } catch (error) {
       console.error("Error approving user:", error);
       alert("사용자 승인이 실패했습니다. 다시 시도해주세요.");
     }
   };
 
-  const handleReject = async (id: number) => {
+  const handleReject = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${id}`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${user.id}`;
       await axios.post(apiUrl, {}, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
         },
       });
-      setData((prevData) => prevData.filter(user => user.id !== id));
+      setData((prevData) => prevData.filter((u) => u.id !== user.id));
       alert("사용자가 거절되었습니다.");
     } catch (error) {
       console.error("Error rejecting user:", error);
@@ -111,18 +127,16 @@ const Approval: React.FC = () => {
     }
   };
 
-  const rows = data
-    .filter(user => user.status === 'pending')
-    .map(user => [
-      user.id,
-      user.name,
-      user.phone,
-      user.email,
-      user.date,
-      user.address,
-      approve(() => handleApprove(user)),
-      reject(() => handleReject(user.id)),
-    ]);
+  const rows = data.map((user) => [
+    user.id,
+    user.name,
+    user.phone,
+    user.email,
+    user.date,
+    user.address,
+    approve(() => handleApprove(user)),
+    reject(() => handleReject(user)),
+  ]);
 
   if (loading) {
     return <div>로딩 중...</div>;
@@ -132,7 +146,6 @@ const Approval: React.FC = () => {
     <>
       <NavElements />
       <div className="container mx-auto p-4 mt-3">
-        <div className="flex justify-end items-center mb-6 mr-6"></div>
         <Table headers={headers} data={rows} />
       </div>
     </>
