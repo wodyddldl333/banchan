@@ -18,7 +18,7 @@ const SessionJoinPage: React.FC = () => {
 
       console.log("Token created: ", token); // Token 확인 로그
 
-      navigate(`/m/meetingHome/${sessionId}`, {
+      navigate(`/m/meetingPage/${sessionId}`, {
         state: { token, sessionId, roomName },
       });
     } catch (error) {
