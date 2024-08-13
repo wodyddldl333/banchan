@@ -1,4 +1,42 @@
 import { ReactNode } from "react";
+import { Subscriber } from "openvidu-browser";
+
+export interface ThumbnailPlayerProps {
+  stream: MediaStream | null;
+  className?: string;
+}
+
+export interface SubscriberListProps {
+  subscribers: Subscriber[];
+}
+
+export type IconName =
+  | "record_voice_over"
+  | "mic"
+  | "videocam"
+  | "radio_button_checked"
+  | "radio_button_unchecked"
+  | "headset_mic"
+  | "exit_to_app"
+  | "book"
+  | "group"
+  | "chat_bubble"
+  | "notifications"
+  | "mail";
+
+export interface ControlPanelsProps {
+  onChatToggle: () => void;
+  activeIcons: Record<IconName, boolean>;
+  handleButtonClick: (icon: IconName) => void;
+}
+
+export interface LocationState {
+  token: string;
+  roomName: string;
+  date: string;
+  startTime: string;
+  active: boolean;
+}
 export interface SidebarItemProps {
   icon: string;
   text: string;
@@ -59,7 +97,6 @@ export interface Items {
 
 // 이 밑은 type것
 
-
 export interface LargeButtonProps {
   title: string;
   to?: string;
@@ -83,7 +120,7 @@ export interface Post {
   likes: number;
   createdAt: string;
   admin: boolean;
-  writer : boolean;
+  writer: boolean;
 }
 
 export interface VoteGetType {
@@ -101,34 +138,34 @@ export interface VoteListType {
 }
 
 export interface VoteDetailType {
-  id : number,
-  title : string,
-  content : string,
-  imageUrl : string|null,
-  startDate : string,
-  endDate : string,
-  createdAt : string,
-  questions : voteQuestion[]
+  id: number;
+  title: string;
+  content: string;
+  imageUrl: string | null;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  questions: voteQuestion[];
 }
 
 interface voteQuestion {
-  questionId : number,
-  questionText : string,
-  options : voteOption[]
+  questionId: number;
+  questionText: string;
+  options: voteOption[];
 }
 interface voteOption {
-  id : number,
-  optionText : string
+  id: number;
+  optionText: string;
 }
 
 export interface VoteType {
-  voteId : number,
-  responses : OptionType[]
+  voteId: number;
+  responses: OptionType[];
 }
 
 interface OptionType {
-  questionId : number
-  optionId : number
+  questionId: number;
+  optionId: number;
 }
 
 export interface CommunityGetType {
@@ -194,16 +231,15 @@ export interface VoteFormProps {
   };
 }
 interface VoteResultItems {
-    questionId: number;
-    questionText: string;
-    optionResults: VoteItemForm[];
+  questionId: number;
+  questionText: string;
+  optionResults: VoteItemForm[];
 }
 export interface VoteResultType {
-
-  voteId : number;
-  content : string;
-  title : string;
-  questionResults: VoteResultItems[]
+  voteId: number;
+  content: string;
+  title: string;
+  questionResults: VoteResultItems[];
 }
 
 export interface SidebarItemProps {
@@ -260,6 +296,6 @@ export interface ChatBoxProps {
 }
 
 export interface UpdateProps {
-  title:string
-  content : string
+  title: string;
+  content: string;
 }
