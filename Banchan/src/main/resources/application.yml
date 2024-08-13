@@ -4,7 +4,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # MySQL JDBC 드라이버 클래스 이름
-    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?serverTimezone=Asia/Seoul # MySQL 데이터베이스 URL
+    url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=UTC # MySQL 데이터베이스 URL
     username: ${MYSQL_ROOT_USER} # MySQL 데이터베이스 사용자 이름
     password: ${MYSQL_ROOT_PASSWORD} # MySQL 데이터베이스 비밀번호
 
