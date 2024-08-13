@@ -1,5 +1,5 @@
 import React,{useEffect,useState} from "react";
-import Drawer from "./Drawer";
+import NewDrawer from "./newDrawer";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
 import { getVote } from "../../mobileapi/VoteAPI";
@@ -52,7 +52,7 @@ const VoteList: React.FC = () => {
       }));
       setOngoingVote(crt_data);
 
-      const endVote = await getVote(cookies.Token,'api/votes/list/finish');
+      const endVote = await getVote(cookies.Token,'api/votes/list/finished');
       const end_data = endVote.data.map((item) => ({
         id: item.id,
         title: item.title,
@@ -77,7 +77,7 @@ const VoteList: React.FC = () => {
       {/* 상단 네비게이션 */}
       <Header>나의 투표</Header>
       {/* 진행 중인 투표 */}
-      <Drawer
+      <NewDrawer
         title="진행중인 투표"
         items={ongoingItems.map((item) => ({
           ...item,
@@ -85,7 +85,7 @@ const VoteList: React.FC = () => {
         }))}
       />
       {/* 완료된 투표 */}
-      <Drawer
+      <NewDrawer
         title="완료된 투표"
         items={completedItems.map((item) => ({
           ...item,

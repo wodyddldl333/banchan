@@ -6,11 +6,26 @@ export interface SidebarItemProps {
   children?: ReactNode;
 }
 
+export interface QuestionOptionItems {
+  id:number;
+  optionText:string;
+}
 export interface SwipeableContentProps {
-  items: Array<{ question: string; options: string[] }>;
+  items: Array<{ questionId:number; questionText: string; options: QuestionOptionItems[] }>;
+}
+export interface DrawerProps {
+  title: string;
+  items: Array<{
+    title: string;
+    date: string;
+    buttonText: string;
+    statusText: string;
+    onClick: () => void;
+  }>;
 }
 
-export interface DrawerProps {
+
+export interface newDrawerProps {
   title: string;
   items: Array<{
     id: number;

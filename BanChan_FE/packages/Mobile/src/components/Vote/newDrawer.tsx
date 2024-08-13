@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { DrawerProps } from "../../Types";
+import { newDrawerProps } from "../../Types";
 
-const Drawer: React.FC<DrawerProps> = ({ title, items }) => {
+const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = () => {
@@ -34,8 +34,8 @@ const Drawer: React.FC<DrawerProps> = ({ title, items }) => {
       </h3>
       <hr className="my-2 border-black" />
       <div
-        className={`overflow-hidden transition-all duration-500 ${
-          isOpen ? "max-h-screen" : "max-h-0"
+        className={`overflow-y-auto transition-all duration-500 ${
+          isOpen ? "max-h-[400px]" : "max-h-0"
         }`}
       >
         {items.map((item, index) => (
@@ -51,10 +51,11 @@ const Drawer: React.FC<DrawerProps> = ({ title, items }) => {
                   onClick={item.onClick}
                   className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
                 >
-                  {item.buttonText}
+                  {title == "진행중인 투표"?
+                  ('투표하기') :('결과보기')}
                 </button>
                 <button className="py-2 px-4 bg-gray-200 text-blue-500 font-semibold rounded-full">
-                  {item.statusText}
+                  투표율 : {item.voteRate}
                 </button>
               </div>
             </div>
@@ -65,4 +66,4 @@ const Drawer: React.FC<DrawerProps> = ({ title, items }) => {
   );
 };
 
-export default Drawer;
+export default NewDrawer;
