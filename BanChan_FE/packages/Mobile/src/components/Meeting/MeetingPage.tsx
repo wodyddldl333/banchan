@@ -28,6 +28,7 @@ const MeetingPage: React.FC = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
+  console.log(sessionId);
   // const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
