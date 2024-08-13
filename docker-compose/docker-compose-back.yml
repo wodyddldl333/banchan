@@ -53,6 +53,9 @@ services:
     expose:
       - "3306"
     <<: *default
+    command: # 명령어 실행
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_ci
     volumes:
       - /home/ubuntu/201-105/S11P12E105/Banchan/mysql_data:/var/lib/mysql
     networks:
