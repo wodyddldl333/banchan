@@ -5,7 +5,9 @@ spring:
   http:
     encoding:
       charset: UTF-8
-      
+      enabled: true
+      force: true
+
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # MySQL JDBC 드라이버 클래스 이름
     url: jdbc:mysql://${MYSQL_HOST}:${MYSQL_PORT}/${MYSQL_DATABASE}?useUnicode=true&characterEncoding=utf8&characterSetResults=utf8&serverTimezone=UTC # MySQL 데이터베이스 URL
