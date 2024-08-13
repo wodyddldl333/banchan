@@ -108,19 +108,19 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
         {menuOpen && (
           <div
             className="absolute right-[-16px] mt-2 w-[200px] bg-white border rounded shadow-lg 
-               text-center h-[708px] transition-transform duration-700 transform z-50"
+               text-center h-[663px] transition-transform duration-700 transform z-50"
           >
-            <div className="mt-[100px]"></div>
+            <div className="mt-[60px]"></div>
             <SidebarItem
-              icon="calendar_today"
+              icon="home"
               text="홈"
               to="/m/home"
             />
 
 
-            <div className="mt-[50px]"></div>
+            <div className="mt-[60px]"></div>
             <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
-            <div className="mt-[40px]"></div>
+            <div className="mt-[30px]"></div>
 
             <SidebarItem
               icon="forum"
@@ -139,9 +139,9 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
               />
             </SidebarItem>
 
-            <div className="mt-[40px]"></div>
+            <div className="mt-[30px]"></div>
 
-            <SidebarItem icon="how_to_vote" text="투표" to="/m/voteList" />
+            <SidebarItem icon="how_to_vote" text="투표" to="/m/vote" />
             <div className="mt-[40px]"></div>
 
             <SidebarItem
@@ -149,7 +149,7 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
               text="회의"
               to="/m/meetingList"
             />
-            <div className="mt-[150px]"></div>
+            <div className="mt-[100px]"></div>
             <SidebarItem icon="logout" text="로그아웃" to="/m" />
           </div>
         )}
