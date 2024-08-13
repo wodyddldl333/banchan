@@ -77,19 +77,25 @@ export const logout = async (accessToken: string) => {
       },
     });
 
-
     if (response.status !== 200) {
       throw new Error('Failed to logout');
     }
 
     // 로그아웃 후 클라이언트 측 상태 초기화
+    document.cookie = 'Token=; Max-Age=-99999999; path=/';
+    document.cookie = 'refreshToken=; Max-Age=-99999999; path=/';
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+//쿠키 maxage에 음수 넣으면 즉시 삭제
+    // 로그아웃 후 루트 페이지로 이동
+    window.location.href = '/'; 
   } catch (error) {
     console.error('Logout failed: ', error);
     throw error;
   }
 };
+
+
 
 
 // 내 정보 초기 설정

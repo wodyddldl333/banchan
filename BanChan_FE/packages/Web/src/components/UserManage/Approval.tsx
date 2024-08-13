@@ -113,7 +113,7 @@ const Approval: React.FC = () => {
 
   const handleReject = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${user.id}`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${user.name}`;
       await axios.post(apiUrl, {}, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
