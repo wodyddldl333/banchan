@@ -11,7 +11,7 @@ services:
       - "8080"
     <<: *default
     environment:
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_JPA_HIBERNATE_DDL_AUTO: create
       GOOGLE_APPLICATION_CREDENTIALS: /app/config/credentials.json
     depends_on:
       mysql:
