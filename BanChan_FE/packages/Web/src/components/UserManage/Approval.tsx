@@ -14,7 +14,7 @@ interface User {
   email: string;
   date: string;
   address: string;
-  approved: boolean;
+  role: string;
 }
 
 const approve = (handleApprove: () => void) => {
@@ -61,6 +61,21 @@ const Approval: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // Fetch user information to check role
+        const userInfoResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
+          headers: {
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        });
+
+        const currentUser = userInfoResponse.data;
+        if (currentUser.role !== "ADMIN") {
+          alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+          navigate("/home");
+          return;
+        }
+
+        // Fetch approval list
         const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/admin/users/approval`, {
           headers: {
             Authorization: `Bearer ${cookies.Token}`,
