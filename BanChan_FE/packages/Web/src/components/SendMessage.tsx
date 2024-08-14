@@ -77,7 +77,7 @@ const SendMessage: React.FC = () => {
           {
             to: after,
             from: "01020983066",
-            subject: `https://i11e105.p.ssafy.io/m/joinSession/${sessionId}`,
+            subject: ``,
             text: contents,
             autoTypeDetect: true, // 자동 타입 감지 활성화
           },
