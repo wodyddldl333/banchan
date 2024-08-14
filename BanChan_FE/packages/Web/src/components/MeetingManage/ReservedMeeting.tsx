@@ -74,8 +74,6 @@ const ReservedMeeting: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.Token}`,
-
-          // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
         },
       }
     );
