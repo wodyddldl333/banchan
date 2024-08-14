@@ -50,10 +50,10 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
         >
           <span
             className={`material-symbols-outlined text-xl ${
-              activeIcons.chat_bubble ? "text-white" : "text-gray-700"
+              !activeIcons.chat_bubble ? "text-white" : "text-gray-700"
             }`}
           >
-            {activeIcons.chat_bubble ? "chat_bubble" : "chat_bubble"}
+            chat_bubble
           </span>
         </button>
 
