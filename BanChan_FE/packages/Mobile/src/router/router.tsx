@@ -37,6 +37,7 @@ const router: React.FC = () => {
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
+      <Route path="/m/joinSession/:id" element={<MeetingHome />} />
       <Route path="/m/test" element={<Test />} />
       <Route path="/m/sessionJoin" element={<SessionJoinPage />} />
       <Route path="/m/community">
