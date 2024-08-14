@@ -46,7 +46,7 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
           className={`flex justify-center items-center w-10 h-10 rounded-full ${
             !activeIcons.chat_bubble ? "bg-gray-700" : "bg-white"
           }`}
-          onClick={() => handleButtonClick("videocam")}
+          onClick={() => handleButtonClick("chat_bubble")}
         >
           <span className="material-symbols-outlined text-white text-xl">
             chat_bubble
