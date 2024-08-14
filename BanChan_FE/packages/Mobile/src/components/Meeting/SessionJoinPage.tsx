@@ -13,13 +13,17 @@ const SessionJoinPage: React.FC = () => {
 
   useEffect(() => {
     if (sessionIdFromUrl) {
+      console.log("Extracted sessionId from URL:", sessionIdFromUrl);
       setSessionId(sessionIdFromUrl); // sessionId를 URL에서 가져와 상태로 설정
+    } else {
+      console.error("No sessionId found in URL.");
     }
   }, [sessionIdFromUrl]);
 
   const handleJoinSession = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!sessionId) {
+      console.log("Tq");
       console.error("Session ID is missing.");
       return;
     }
