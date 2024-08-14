@@ -333,6 +333,9 @@ const MeetingPage: React.FC = () => {
         ];
         sendSMS(messages);
       });
+
+      navigate(`m/joinSession/${sessionId}`, { state: { token, sessionId } });
+
       Swal.fire({
         title: "Success",
         text: "SMS sent successfully.",
