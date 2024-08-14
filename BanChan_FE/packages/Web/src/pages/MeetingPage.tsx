@@ -293,7 +293,7 @@ const MeetingPage: React.FC = () => {
           },
         }
       );
-      return response.data.token;
+      return response.data;
     } catch (error) {
       console.error("Failed to create token", error);
       throw error; // 에러가 발생하면 함수가 종료됩니다.
