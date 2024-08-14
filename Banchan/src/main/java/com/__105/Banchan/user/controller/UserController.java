@@ -7,6 +7,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,13 +51,12 @@ public class UserController {
         return ResponseEntity.ok(userResponseDto);
     }
 
-    @PutMapping("/update/userUserResponseDtoInfo")
+    @PutMapping("/update/userInfo")
     @Operation(summary = "회원 정보 수정", description = "회원 정보 수정")
-    public ResponseEntity<?> updateUserInfo(@RequestBody UserUpdateRequest request) {
+    public ResponseEntity<?> updateUserInfo(@RequestBody UserUpdateRequest request,
+                                            @AuthenticationPrincipal UserDetails userDetails) {
 
-        // 로그인된 사용자를 가져옴
-        User currentUser = userService.getMyInfo().toEntity();
-        userService.updateUserInfo(currentUser, request);
+        userService.updateUserInfo(userDetails.getUsername(), request);
 
         return ResponseEntity.ok().body("update successful");
     }

@@ -1,5 +1,8 @@
 package com.__105.Banchan.conference;
 
+import com.__105.Banchan.conference.exception.ConfErrorCode;
+import com.__105.Banchan.conference.exception.ConfException;
+import lombok.extern.slf4j.Slf4j;
 import ws.schild.jave.Encoder;
 import ws.schild.jave.MultimediaObject;
 import ws.schild.jave.encode.AudioAttributes;
@@ -9,9 +12,11 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.MessageFormat;
 import java.util.Optional;
 
 // webm to wav code
+@Slf4j
 public class AudioConvertor {
 
     private static final String RECORDINGS_PATH = "/opt/openvidu/recordings/";
@@ -35,7 +40,8 @@ public class AudioConvertor {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
+            throw new ConfException(ConfErrorCode.FAIL_CONVERT_FILE);
         }
 
         return Optional.empty();
@@ -59,11 +65,10 @@ public class AudioConvertor {
         Encoder encoder = new Encoder();
         try {
             encoder.encode(new MultimediaObject(source), target, attrs);
-            System.out.println("Converted: " + source.getName() + " to " + target.getName());
+            log.info(MessageFormat.format("Converted: {0} to {1}", source.getName(), target.getName()));
             return true;
         } catch (Exception e) {
-            System.err.println("Error converting " + source.getName());
-            e.printStackTrace();
+            log.error(MessageFormat.format("Error converting {0}", source.getName()));
             return false;
         }
     }

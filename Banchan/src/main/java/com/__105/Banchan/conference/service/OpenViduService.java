@@ -5,6 +5,8 @@ import com.__105.Banchan.conference.dto.ConfInfoResponse;
 import com.__105.Banchan.conference.dto.ConfRequest;
 import com.__105.Banchan.conference.dto.ConfRoomResponse;
 import com.__105.Banchan.conference.entity.ConfRoom;
+import com.__105.Banchan.conference.exception.ConfErrorCode;
+import com.__105.Banchan.conference.exception.ConfException;
 import com.__105.Banchan.conference.repository.ConfRoomRepository;
 import com.__105.Banchan.user.entity.Apartment;
 import com.__105.Banchan.user.entity.User;
@@ -13,6 +15,7 @@ import com.__105.Banchan.user.enums.Role;
 import com.__105.Banchan.user.repository.UserRepository;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class OpenViduService {
 
     private final ConfRoomRepository confRoomRepository;
@@ -30,10 +34,11 @@ public class OpenViduService {
 
         SessionProperties properties = new SessionProperties.Builder().build();
         Session session = openVidu.createSession(properties);
-        ConfRoom room = confRoomRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("not fount ConfRoom"));
 
-        if (room.getSession() != null) throw new RuntimeException("Session already exist");
+        ConfRoom room = confRoomRepository.findById(id)
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
+
+        if (room.getSession() != null) throw new ConfException(ConfErrorCode.SESSION_ALREADY_EXISTS);
 
         room = room.toBuilder()
                 .session(session.getSessionId())
@@ -48,12 +53,12 @@ public class OpenViduService {
     public String createToken(String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
 
         ConfRoom room = confRoomRepository.findBySession(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND_BY_SESSION));
 
         Session session = openVidu.getActiveSessions().stream()
                 .filter(s -> s.getSessionId().equals(sessionId))
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("Session invalid"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.SESSION_NOT_FOUND));
 
         ConnectionProperties properties = new ConnectionProperties.Builder()
                 .type(ConnectionType.WEBRTC)
@@ -66,16 +71,16 @@ public class OpenViduService {
     public void createRoom(ConfRequest request, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("user not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.USER_NOT_FOUND));
 
         if (user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("not admin");
+            throw new ConfException(ConfErrorCode.UNAUTHORIZED);
         }
 
         Apartment apt = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("user not found"))
+                .orElseThrow(() -> new ConfException(ConfErrorCode.APT_NOT_FOUND))
                 .getApartment();
 
         ConfRoom confRoom = ConfRoom.builder()
@@ -92,12 +97,12 @@ public class OpenViduService {
     public List<ConfRoomResponse> getRooms(String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.USER_NOT_FOUND));
 
         Apartment apt = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("user not found"))
+                .orElseThrow(() -> new ConfException(ConfErrorCode.APT_NOT_FOUND))
                 .getApartment();
 
         List<ConfRoom> confRooms = confRoomRepository.findAllByApt(apt);
@@ -118,7 +123,7 @@ public class OpenViduService {
     public void deleteSession(String sessionId) throws OpenViduJavaClientException, OpenViduHttpException {
 
         ConfRoom room = confRoomRepository.findBySession(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
 
         Session session = openVidu.getActiveSessions().stream()
                 .filter(s -> s.getSessionId().equals(sessionId))
@@ -129,15 +134,14 @@ public class OpenViduService {
             try {
                 session.close();
             } catch (OpenViduHttpException e) {
-                if (e.getStatus() == 404) {
-                    // 세션이 이미 종료된 경우
-                    System.out.println("Session not found on OpenVidu server: " + sessionId);
-                } else {
+                // 세션이 이미 종료된 경우
+                if (e.getStatus() == 404) log.error("Session not found on OpenVidu server: {}", sessionId);
+                else {
                     throw e; // 다른 예외는 다시 던짐
                 }
             }
         } else {
-            System.out.println("Session is already inactive or not found: " + sessionId);
+            log.error("Session is already inactive or not found: {}", sessionId);
         }
 
         room = room.toBuilder()
@@ -150,7 +154,7 @@ public class OpenViduService {
     public void deleteRoom(Long roomId) {
 
         ConfRoom room = confRoomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
 
         confRoomRepository.delete(room);
     }
@@ -159,7 +163,7 @@ public class OpenViduService {
     public void saveRecord(String sessionId, String recordingId) {
 
         ConfRoom room = confRoomRepository.findBySession(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND_BY_SESSION));
 
         room.saveRecordInfo(recordingId);
 
@@ -169,7 +173,7 @@ public class OpenViduService {
     public void saveSummuryRecord(Long roomId, String text) {
 
         ConfRoom room = confRoomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Not found conference room"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
 
         room.saveSummury(text);
 
@@ -179,14 +183,14 @@ public class OpenViduService {
     public ConfDetailResponse getDetailRoom(Long roomId, String username) {
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.USER_NOT_FOUND));
 
         if (user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("not admin");
+            throw new ConfException(ConfErrorCode.UNAUTHORIZED);
         }
 
         ConfRoom room = confRoomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
 
         return ConfDetailResponse.builder()
                 .id(room.getId())
@@ -200,7 +204,7 @@ public class OpenViduService {
     public ConfInfoResponse getRoomName(String sessionId) {
 
         ConfRoom room = confRoomRepository.findBySession(sessionId)
-                .orElseThrow(() -> new RuntimeException("Session not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND_BY_SESSION));
 
         return ConfInfoResponse.builder()
                 .id(room.getId())

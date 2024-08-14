@@ -111,12 +111,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserInfo(User currentUser, UserUpdateRequest request) {
+    public void updateUserInfo(String username, UserUpdateRequest request) {
 
-        currentUser.changePhone(request.getPhone());
-        currentUser.changeRealname(request.getName());
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
-        userRepository.save(currentUser);
+        user.changeRealname(request.getName());
+        user.changePhone(request.getPhone());
+
+        userRepository.save(user);
     }
 
     // 유닛 번호 유효성 검증 메서드 (유닛 번호는 숫자 형식이어야 함)

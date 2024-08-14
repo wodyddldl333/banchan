@@ -2,6 +2,8 @@ package com.__105.Banchan.conference.service;
 
 import com.__105.Banchan.conference.AudioConvertor;
 import com.__105.Banchan.conference.entity.ConfRoom;
+import com.__105.Banchan.conference.exception.ConfErrorCode;
+import com.__105.Banchan.conference.exception.ConfException;
 import com.__105.Banchan.conference.repository.ConfRoomRepository;
 import com.google.cloud.speech.v1.*;
 import com.google.protobuf.ByteString;
@@ -37,7 +39,7 @@ public class SpeechService {
     public String summaryConf(Long roomId) {
 
         ConfRoom room = confRoomRepository.findById(roomId)
-                .orElseThrow(() -> new RuntimeException("Room not found"));
+                .orElseThrow(() -> new ConfException(ConfErrorCode.CONFERENCE_NOT_FOUND));
 
         // convert to wav
         File audioFile = convertFile(room.getRecordingPath());
@@ -87,13 +89,13 @@ public class SpeechService {
                     .orElseThrow(() -> new RuntimeException("Audio file not found"));
 
         } catch (Exception e) {
-            e.printStackTrace();
             log.error(e.getMessage());
-            throw new RuntimeException(e);
+            throw new ConfException(ConfErrorCode.FAIL_CONVERT_FILE);
         }
     }
 
     private void saveTranscriptionToFile(String transcriptionText, String rpath) {
+
         try {
             String recordingPath = openviduUrl + rpath;
             String fileName = rpath + ".txt";
@@ -101,11 +103,13 @@ public class SpeechService {
             Files.write(path, transcriptionText.getBytes());
             System.out.println("Transcription saved to file: " + path.toString());
         } catch (IOException e) {
-            throw new RuntimeException("Error saving transcription to file", e);
+            log.error(e.getMessage());
+            throw new ConfException(ConfErrorCode.FAIL_SAVE_TEXTFILE);
         }
     }
 
     private List<byte[]> splitAudioFile(File audioFile) {
+
         List<byte[]> audioChunks = new ArrayList<>();
 
         try (AudioInputStream audioStream = AudioSystem.getAudioInputStream(audioFile)) {
@@ -127,8 +131,8 @@ public class SpeechService {
                 }
             }
         } catch (UnsupportedAudioFileException | IOException e) {
-            e.printStackTrace();
-            throw new RuntimeException("Error splitting audio file", e);
+            log.error(e.getMessage());
+            throw new ConfException(ConfErrorCode.FAIL_SPLIT_AUDIO);
         }
 
         return audioChunks;

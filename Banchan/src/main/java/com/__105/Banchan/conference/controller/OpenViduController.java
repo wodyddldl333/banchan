@@ -1,9 +1,12 @@
 package com.__105.Banchan.conference.controller;
 
 import com.__105.Banchan.conference.dto.*;
+import com.__105.Banchan.conference.exception.ConfErrorCode;
+import com.__105.Banchan.conference.exception.ConfException;
 import com.__105.Banchan.conference.service.OpenViduService;
 import io.openvidu.java.client.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -17,6 +20,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/session")
 @RequiredArgsConstructor
+@Slf4j
 public class OpenViduController {
 
     private final OpenVidu openVidu;
@@ -29,7 +33,7 @@ public class OpenViduController {
         try {
             return ResponseEntity.ok().body(openViduService.createSession(roomId));
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
-            throw new RuntimeException(e);
+            throw new ConfException(ConfErrorCode.OPENVIDU_CLIENT_ERROR);
         }
     }
 
@@ -40,7 +44,7 @@ public class OpenViduController {
         try {
             return ResponseEntity.ok().body(openViduService.createToken(sessionId));
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
-            throw new RuntimeException(e);
+            throw new ConfException(ConfErrorCode.OPENVIDU_CLIENT_ERROR);
         }
     }
 
@@ -69,7 +73,7 @@ public class OpenViduController {
         try {
             openViduService.deleteSession(sessionId);
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
-            throw new RuntimeException(e);
+            throw new ConfException(ConfErrorCode.INTERNAL_SERVER_ERROR);
         }
 
         return ResponseEntity.ok().body("successfully deleted room");
@@ -97,8 +101,8 @@ public class OpenViduController {
             Recording recording = openVidu.startRecording(sessionId, properties);
             return ResponseEntity.ok().body(recording);
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
-            e.printStackTrace();
-            // 예외 메시지를 포함하여 더 구체적인 오류 정보를 제공
+            // e.printStackTrace();
+            log.error("Failed to start recording : {}", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Error starting recording: " + e.getMessage());
         }
@@ -114,7 +118,7 @@ public class OpenViduController {
             openViduService.saveRecord(sessionId, recording.getId());
             return ResponseEntity.ok().body(recording);
         } catch (OpenViduJavaClientException | OpenViduHttpException e) {
-            throw new RuntimeException(e);
+            throw new ConfException(ConfErrorCode.OPENVIDU_HTTP_ERROR);
         }
     }
 
