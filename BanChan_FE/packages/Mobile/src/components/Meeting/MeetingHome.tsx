@@ -183,19 +183,19 @@ const MeetingPage: React.FC = () => {
     };
   }, [sessionId, token, joinSession]);
 
-  const deleteSession = async (sessionId: string): Promise<void> => {
-    try {
-      await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.Token}`,
-        },
-      });
-      navigate("/meeting/reservedMeeting");
-    } catch (error) {
-      console.error(`Error deleting session ${sessionId}:`, error);
-    }
-  };
+  // const deleteSession = async (sessionId: string): Promise<void> => {
+  //   try {
+  //     await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${cookies.Token}`,
+  //       },
+  //     });
+  //     navigate("/meeting/reservedMeeting");
+  //   } catch (error) {
+  //     console.error(`Error deleting session ${sessionId}:`, error);
+  //   }
+  // };
 
   const sendMessage = (message: string) => {
     if (session) {
@@ -225,7 +225,7 @@ const MeetingPage: React.FC = () => {
     } else if (icon === "exit_to_app") {
       if (session) {
         session.disconnect();
-        deleteSession(sessionId!);
+        navigate("/m/meetingList"); // 원하는 페이지로 리다이렉트
       } else {
         console.error("Session is null or undefined.");
       }
