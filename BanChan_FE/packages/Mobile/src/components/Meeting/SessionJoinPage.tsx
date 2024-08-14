@@ -76,9 +76,9 @@ const SessionJoinPage: React.FC = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="bg-white p-8 rounded-lg shadow-lg w-[330px] max-w-md">
-        <h2 className="text-2xl font-bold mb-6">
-          회의명: {roomName ? roomName : "로딩 중..."}
-        </h2>
+        <h2 className="text-2xl font-bold mb-6">회의명:</h2>
+        <p> {roomName ? roomName : "로딩 중..."}</p>
+
         <form onSubmit={handleJoinSession}>
           <button
             type="submit"
