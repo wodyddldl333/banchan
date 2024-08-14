@@ -289,13 +289,14 @@ const MeetingPage: React.FC = () => {
 
         {/* 채팅 박스 */}
         {isChatBoxVisible && (
-          <div className="absolute bottom-20 w-full">
-            <Chat
-              messages={messages}
-              onSendMessage={sendMessage}
-              onClose={handleCloseChat}
-              className="w-[300px] h-[200px]" // Chat 컴포넌트에 스타일 추가
-            />
+          <div className="absolute bottom-0 left-0 w-full flex justify-center">
+            <div className="w-[300px] h-[200px]">
+              <Chat
+                messages={messages}
+                onSendMessage={sendMessage}
+                onClose={handleCloseChat}
+              />
+            </div>
           </div>
         )}
       </div>
