@@ -9,6 +9,7 @@ const SessionJoinPage: React.FC = () => {
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
   const { sessionId: sessionIdFromUrl } = useParams<{ sessionId: string }>(); // URL에서 sessionId 추출
+  let roomName = "";
   // const [cookies] = useCookies();
 
   useEffect(() => {
@@ -66,7 +67,7 @@ const SessionJoinPage: React.FC = () => {
       }
     );
 
-    const roomName = roomNameResponse.data.roomName;
+    roomName = roomNameResponse.data.roomName;
     console.log(roomName);
 
     return { token, roomName };
@@ -74,14 +75,14 @@ const SessionJoinPage: React.FC = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
-        <h2 className="text-2xl font-bold mb-6">Join a Session</h2>
+      <div className="bg-white p-8 rounded-lg shadow-lg w-[330px] max-w-md">
+        <h2 className="text-2xl font-bold mb-6">회의명: {roomName}</h2>
         <form onSubmit={handleJoinSession}>
           <button
             type="submit"
             className="w-full bg-blue-500 text-white px-4 py-2 rounded-md"
           >
-            Join Session
+            회의에 참가하시겠습니까?
           </button>
         </form>
       </div>
