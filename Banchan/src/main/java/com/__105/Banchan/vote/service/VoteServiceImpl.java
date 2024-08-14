@@ -7,6 +7,8 @@ import com.__105.Banchan.user.repository.UserAptRepository;
 import com.__105.Banchan.user.repository.UserRepository;
 import com.__105.Banchan.vote.Dto.*;
 import com.__105.Banchan.vote.Entity.*;
+import com.__105.Banchan.vote.exception.VoteErrorCode;
+import com.__105.Banchan.vote.exception.VoteException;
 import com.__105.Banchan.vote.repository.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -45,13 +47,13 @@ public class VoteServiceImpl implements VoteService {
         User user = findUserByUsername(username);
 
         if (user.getRole() != Role.ADMIN) {
-            throw new RuntimeException("Only ADMIN users can regist");
+            throw new VoteException(VoteErrorCode.UNAUTHORIZED);
         }
 
         Apartment apt = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("not found user's apt"))
+                .orElseThrow(() -> new VoteException(VoteErrorCode.UNAUTHORIZED))
                 .getApartment();
 
         Vote vote = Vote.builder()
@@ -109,7 +111,7 @@ public class VoteServiceImpl implements VoteService {
     @Override
     public VoteResponseDto getVoteWithDetails(Long voteId) {
         Vote vote = voteRepository.findById(voteId)
-                .orElseThrow(() -> new RuntimeException("Invalid vote ID"));
+                .orElseThrow(() -> new VoteException(VoteErrorCode.VOTE_NOT_FOUND));
         return new VoteResponseDto(vote);
     }
 
@@ -130,7 +132,7 @@ public class VoteServiceImpl implements VoteService {
         String aptCode = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("not found apt"))
+                .orElseThrow(() -> new VoteException(VoteErrorCode.APT_NOT_FOUND))
                 .getApartment()
                 .getCode();
 
@@ -158,7 +160,7 @@ public class VoteServiceImpl implements VoteService {
         String aptCode = user.getUserApartments()
                 .stream()
                 .findFirst()
-                .orElseThrow(() -> new RuntimeException("not found apt"))
+                .orElseThrow(() -> new VoteException(VoteErrorCode.APT_NOT_FOUND))
                 .getApartment()
                 .getCode();
 
@@ -190,15 +192,13 @@ public class VoteServiceImpl implements VoteService {
 
         Long voteId = doVoteRequestDto.getVoteId();
 
-        System.out.println(voteId);
-
         Vote vote = voteRepository.findById(voteId)
-                .orElseThrow(() -> new RuntimeException("Invalid vote ID"));
+                .orElseThrow(() -> new VoteException(VoteErrorCode.VOTE_NOT_FOUND));
 
         VoteParticipantId vpId = new VoteParticipantId(vote.getId(), user.getId());
 
         if(voteParticipantRepository.existsByIdAndIsVotedTrue(vpId)) {
-            throw new RuntimeException("Vote participant already exists");
+            throw new VoteException(VoteErrorCode.VOTE_ALREADY_EXISTS);
         }
 
         VoteParticipant participant = VoteParticipant
@@ -215,9 +215,9 @@ public class VoteServiceImpl implements VoteService {
 
         for (DoVoteRequestDto.ResponseDto responseDto : responseDtos) {
             VoteQuestion question = voteQuestionRepository.findById(responseDto.getQuestionId())
-                    .orElseThrow(() -> new RuntimeException("Invalid question ID"));
+                    .orElseThrow(() -> new VoteException(VoteErrorCode.QUESTION_NOT_FOUND));
             VoteOption option = voteOptionRepository.findById(responseDto.getOptionId())
-                    .orElseThrow(() -> new RuntimeException("Invalid option ID"));
+                    .orElseThrow(() -> new VoteException(VoteErrorCode.OPTION_NOT_FOUND));
             VoteResult result = VoteResult.builder()
                     .vote(vote)
                     .user(user)
@@ -241,7 +241,7 @@ public class VoteServiceImpl implements VoteService {
     public VoteResultDto getResult(Long voteId) {
 
         Vote vote = voteRepository.findById(voteId)
-                .orElseThrow(() -> new RuntimeException("Invalid vote ID"));
+                .orElseThrow(() -> new VoteException(VoteErrorCode.VOTE_NOT_FOUND));
 
         List<VoteQuestion> voteQuestions = vote.getQuestions();
 
@@ -271,7 +271,7 @@ public class VoteServiceImpl implements VoteService {
     public void deleteVote(Long voteId) {
 
         Vote vote = voteRepository.findById(voteId)
-                .orElseThrow(() -> new RuntimeException("Invalid vote ID"));
+                .orElseThrow(() -> new VoteException(VoteErrorCode.VOTE_NOT_FOUND));
 
         voteRepository.delete(vote);
     }
@@ -279,6 +279,6 @@ public class VoteServiceImpl implements VoteService {
     private User findUserByUsername(String username) {
 
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("Invalid username"));
+                .orElseThrow(() -> new VoteException(VoteErrorCode.USER_NOT_FOUND));
     }
 }

@@ -12,5 +12,5 @@ public interface UserService {
 
     UserResponseDto setUserApt(User user, UserAptRequestDto requestDto);
 
-    void updateUserInfo(User currentUser, UserUpdateRequest request);
+    void updateUserInfo(String username, UserUpdateRequest request);
 }
