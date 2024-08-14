@@ -68,7 +68,7 @@ const MyPage = () => {
     };
 
     fetchUserInfo();
-  }, [ensureValidAccessToken]);
+  }, [cookies.Token]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
