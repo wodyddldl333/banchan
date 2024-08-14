@@ -5,17 +5,16 @@ import {
   Publisher,
   Subscriber,
   StreamEvent,
-  // SignalEvent,
+  SignalEvent,
 } from "openvidu-browser";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import { IconName, LocationState } from "../../Types";
 import { useCookies } from "react-cookie";
 import ControlPanels from "./ControlPanels";
 import SubscriberList from "./SubscribeList";
 import ThumbnailPlayer from "./ThumbnailPlayer";
-// import ChatBox from "../components/WebRTC/ChatBox";
+import Chat from "./Chat";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -27,15 +26,13 @@ const MeetingPage: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  // const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
+  const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
   console.log(sessionId);
-  // const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
     Publisher | Subscriber | null
   >(null);
-  // const [recordingId, setRecordingId] = useState<string | null>(null);
-  // const [stopRecordingRequest, setStopRecordingRequest] = useState(false);
 
   const { token, roomName } = location.state as LocationState;
 
@@ -87,18 +84,18 @@ const MeetingPage: React.FC = () => {
           mic: publisher.stream.audioActive,
         }));
 
-        // mySession.on("signal:chat", (event: SignalEvent) => {
-        //   if (event.data) {
-        //     // event.data가 undefined가 아닌지 확인
-        //     const newMessage = {
-        //       id: Date.now(),
-        //       text: event.data,
-        //     };
-        //     setMessages((prevMessages) => [...prevMessages, newMessage]);
-        //   } else {
-        //     console.error("Received an undefined message");
-        //   }
-        // });
+        mySession.on("signal:chat", (event: SignalEvent) => {
+          if (event.data) {
+            // event.data가 undefined가 아닌지 확인
+            const newMessage = {
+              id: Date.now(),
+              text: event.data,
+            };
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+          } else {
+            console.error("Received an undefined message");
+          }
+        });
 
         console.log("Publisher added to session");
       } catch (error: unknown) {
@@ -202,17 +199,17 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  // const sendMessage = (message: string) => {
-  //   if (session) {
-  //     session.signal({
-  //       data: message,
-  //       type: "chat",
-  //     });
-  //   }
-  // };
+  const sendMessage = (message: string) => {
+    if (session) {
+      session.signal({
+        data: message,
+        type: "chat",
+      });
+    }
+  };
 
   const handleChatToggle = () => {
-    // setIsChatBoxVisible((prevState) => !prevState);
+    setIsChatBoxVisible((prevState) => !prevState);
   };
 
   const handleButtonClick = (icon: IconName) => {
@@ -289,11 +286,11 @@ const MeetingPage: React.FC = () => {
         </div>
 
         {/* 채팅 박스 */}
-        {/* {isChatBoxVisible && (
-        <div className="w-full h-40 mt-4">
-          <ChatBox messages={messages} onSendMessage={sendMessage} />
-        </div>
-      )} */}
+        {isChatBoxVisible && (
+          <div className="w-full h-40 mt-4">
+            <Chat messages={messages} onSendMessage={sendMessage} />
+          </div>
+        )}
       </div>
     </div>
   );
