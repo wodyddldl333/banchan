@@ -63,5 +63,4 @@ import React from "react";
 const Test: React.FC = () => {
   return <div>Test:React.FC</div>;
 };
-
 export default Test;
