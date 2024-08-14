@@ -86,7 +86,6 @@ const MeetingPage: React.FC = () => {
 
         mySession.on("signal:chat", (event: SignalEvent) => {
           if (event.data) {
-            // event.data가 undefined가 아닌지 확인
             const newMessage = {
               id: Date.now(),
               text: event.data,
@@ -212,6 +211,10 @@ const MeetingPage: React.FC = () => {
     setIsChatBoxVisible((prevState) => !prevState);
   };
 
+  const handleCloseChat = () => {
+    setIsChatBoxVisible(false);
+  };
+
   const handleButtonClick = (icon: IconName) => {
     console.log("handleButtonClick triggered with icon:", icon);
     if (icon === "chat_bubble") {
@@ -287,8 +290,12 @@ const MeetingPage: React.FC = () => {
 
         {/* 채팅 박스 */}
         {isChatBoxVisible && (
-          <div className="w-full h-40 mt-4">
-            <Chat messages={messages} onSendMessage={sendMessage} />
+          <div className="absolute bottom-20 w-full">
+            <Chat
+              messages={messages}
+              onSendMessage={sendMessage}
+              onClose={handleCloseChat}
+            />
           </div>
         )}
       </div>
