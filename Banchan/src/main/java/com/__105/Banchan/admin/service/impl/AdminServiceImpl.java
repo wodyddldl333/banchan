@@ -73,7 +73,6 @@ public class AdminServiceImpl implements AdminService {
         userAptRepository.save(userApt);
 
         log.info("승인 완료");
-
     }
 
     @Override
