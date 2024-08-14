@@ -76,7 +76,7 @@ export const reissueToken = async () => {
 // 로그아웃
 export const logout = async () => {
   try {
-    const accessToken = cookies.get('Token');
+    const accessToken = localStorage.getItem('accessToken');
 
     if (!accessToken) {
       throw new Error('Access token not found');
@@ -90,10 +90,21 @@ export const logout = async () => {
       withCredentials: true, // 쿠키 인증이 필요하면 사용
     });
 
-    // 로그아웃 후 쿠키와 로컬 스토리지에서 토큰 제거
-    cookies.remove('Token', { path: '/', domain: '.i11e105.p.ssafy.io' }); // 도메인 설정에 맞게 쿠키 삭제
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    // 모든 쿠키를 삭제하는 함수
+    const deleteAllCookies = () => {
+      const cookies = document.cookie.split(';');
+
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.i11e105.p.ssafy.io';
+      }
+    };
+
+    // 쿠키와 로컬 스토리지에서 토큰 제거
+    deleteAllCookies();
+    localStorage.clear();
 
     // 로그아웃 후 페이지 이동
     window.location.href = '/m'; // 로그인 페이지로 리다이렉트

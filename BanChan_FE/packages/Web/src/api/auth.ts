@@ -69,29 +69,43 @@ export const reissueToken = async () => {
 };
 
 // 로그아웃
-export const logout = async (accessToken: string) => {
+export const logout = async () => {
   try {
-    const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/token/logout`, {}, { 
-      headers: {
-        Authorization: `Bearer ${accessToken}`, // Authorization 헤더에 accessToken을 포함
-      },
-    });
+    const accessToken = localStorage.getItem('accessToken');
 
-    if (response.status !== 200) {
-      throw new Error('Failed to logout');
+    if (!accessToken) {
+      throw new Error('Access token not found');
     }
 
-    // 로그아웃 후 클라이언트 측 상태 초기화
-    document.cookie = 'Token=; Max-Age=-99999999; path=/';
-    document.cookie = 'refreshToken=; Max-Age=-99999999; path=/';
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
-//쿠키 maxage에 음수 넣으면 즉시 삭제
-    // 로그아웃 후 루트 페이지로 이동
-    window.location.href = '/'; 
+    // 서버에 로그아웃 요청을 보냄
+    await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/auth/token/logout`, {}, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+      withCredentials: true, // 쿠키 인증이 필요하면 사용
+    });
+
+    // 모든 쿠키를 삭제하는 함수
+    const deleteAllCookies = () => {
+      const cookies = document.cookie.split(';');
+
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i];
+        const eqPos = cookie.indexOf('=');
+        const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        document.cookie = name + '=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/;domain=.i11e105.p.ssafy.io';
+      }
+    };
+
+    // 쿠키와 로컬 스토리지에서 토큰 제거
+    deleteAllCookies();
+    localStorage.clear();
+
+    // 로그아웃 후 페이지 이동
+    window.location.href = '/m'; // 로그인 페이지로 리다이렉트
   } catch (error) {
     console.error('Logout failed: ', error);
-    throw error;
+    alert('로그아웃에 실패했습니다.');
   }
 };
 
