@@ -313,9 +313,6 @@ const MeetingPage: React.FC = () => {
     }
 
     try {
-      // const token = await createToken(sessionId);
-      // console.log(token);
-
       const phone = ["010-3968-7742"];
       phone.forEach((number) => {
         const formattedNumber = number.replace(/-/g, "");
