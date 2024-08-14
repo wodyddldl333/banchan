@@ -39,7 +39,7 @@ const router: React.FC = () => {
       <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
       <Route path="/m/joinSession/:id" element={<MeetingHome />} />
       <Route path="/m/test" element={<Test />} />
-      <Route path="/m/sessionJoin/:id" element={<SessionJoinPage />} />
+      <Route path="/m/sessionJoin/:sessionId" element={<SessionJoinPage />} />
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
         <Route path="notice/list" element={<NoticeList />} />
