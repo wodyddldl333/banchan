@@ -5,7 +5,6 @@ import { useCookies } from "react-cookie";
 import Swal from "sweetalert2";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
-// console.log("Base URL:", baseUrl);
 
 const CreateMeeting: React.FC = () => {
   const [roomName, setRoomName] = useState("");
@@ -29,14 +28,13 @@ const CreateMeeting: React.FC = () => {
         },
         {
           headers: {
-            // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
             Authorization: `Bearer ${token}`,
           },
         }
       );
       Swal.fire({
         title: "회의 생성 완료",
-        text: "회의가 성공적으로 생성되었1습니다.",
+        text: "회의가 성공적으로 생성되었습니다.",
         icon: "success",
         confirmButtonText: "확인",
       });
