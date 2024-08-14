@@ -38,7 +38,6 @@ const router: React.FC = () => {
       <Route path="/m/calendar" element={<CalendarApp />} />
       <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
       <Route path="/m/test" element={<Test />} />
-      <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
       <Route path="/m/sessionJoin" element={<SessionJoinPage />} />
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
