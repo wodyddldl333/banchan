@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Table from "../Table";
 import Nav from "../Nav";
@@ -73,11 +73,11 @@ const Manage: React.FC = () => {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [editedUser, setEditedUser] = useState<User | null>(null);
 
-  useEffect(() => {
-    const fetchUserDetails = async (user: User) => {
+  const fetchUserDetails = useCallback(
+    async (user: User) => {
       try {
         const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/detail/${encodeURIComponent(user.username)}`, // username 사용
+          `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/detail/${encodeURIComponent(user.username)}`, 
           {
             headers: {
               Authorization: `Bearer ${cookies.Token}`,
@@ -87,47 +87,49 @@ const Manage: React.FC = () => {
         return { ...user, ...response.data };
       } catch (error) {
         console.error("Error fetching user details:", error);
-        return user; // fallback to basic user info if detailed fetch fails
+        return user; 
       }
-    };
+    },
+    [cookies.Token]
+  );
 
-    const fetchData = async () => {
-      try {
-        // Fetch user information to check role
-        const userInfoResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
+  const fetchData = useCallback(async () => {
+    try {
+      const userInfoResponse = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/user/myinfo`, {
+        headers: {
+          Authorization: `Bearer ${cookies.Token}`,
+        },
+      });
+
+      const currentUser = userInfoResponse.data;
+      if (currentUser.role !== "ADMIN") {
+        alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+        navigate("/home");
+        return;
+      }
+
+      const response = await axios.get(
+        `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/list`,
+        {
           headers: {
             Authorization: `Bearer ${cookies.Token}`,
           },
-        });
-
-        const currentUser = userInfoResponse.data;
-        if (currentUser.role !== "ADMIN") {
-          alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
-          navigate("/home");
-          return;
         }
+      );
+      const usersWithDetails = await Promise.all(
+        response.data.map((user: User) => fetchUserDetails(user))
+      );
+      setUsers(usersWithDetails);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
+      navigate("/home");  
+    }
+  }, [cookies.Token, fetchUserDetails, navigate]);
 
-        const response = await axios.get(
-          `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/list`,
-          {
-            headers: {
-              Authorization: `Bearer ${cookies.Token}`,
-            },
-          }
-        );
-        const usersWithDetails = await Promise.all(
-          response.data.map((user: User) => fetchUserDetails(user))
-        );
-        setUsers(usersWithDetails);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        alert("권한이 없습니다. 관리자만 접근할 수 있습니다.");
-        navigate("/home");  // 권한이 없는 경우 홈페이지로 리다이렉트
-      }
-    };
-
+  useEffect(() => {
     fetchData();
-  }, [cookies.Token, navigate]);
+  }, [fetchData]);
 
   useEffect(() => {
     if (newUser) {
@@ -143,7 +145,7 @@ const Manage: React.FC = () => {
   const saveChanges = async () => {
     if (editedUser) {
       try {
-        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/modify/${editedUser.username}`; // username 사용
+        const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/modify/${editedUser.username}`; 
         await axios.put(apiUrl, editedUser, {
           headers: {
             Authorization: `Bearer ${cookies.Token}`,
@@ -164,7 +166,7 @@ const Manage: React.FC = () => {
 
   const handleDelete = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${encodeURIComponent(user.username)}`; // username 사용
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/revoke/${encodeURIComponent(user.username)}`; 
       await axios.delete(apiUrl, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
@@ -190,7 +192,7 @@ const Manage: React.FC = () => {
   const headers = ["번호", "이름", "연락처", "이메일", "신청일", "동/호수", "수정", "삭제"];
 
   const rows = users
-    .filter((user) => user.approved) // 승인된 유저만 필터링
+    .filter((user) => user.approved)
     .map((user) =>
       editingId === user.id ? (
         [
