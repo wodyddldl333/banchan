@@ -258,10 +258,10 @@ const MeetingPage: React.FC = () => {
   return (
     <div className="flex flex-col items-center justify-center w-full h-screen max-w-[360px] max-h-[710px] mx-auto bg-gray-100 relative">
       <div className="bg-[#4285F4] opacity-70 absolute inset-0"></div>
-      <div className="relative flex flex-col items-center justify-center w-full h-full p-4">
+      <div className="relative flex flex-col items-center justify-center w-full h-full">
         {/* 최상단에 회의명을 배치 */}
         {roomName && (
-          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white mb-4">
+          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white mb-2">
             <h1 className="text-lg">회의명: {roomName}</h1>
           </div>
         )}
@@ -289,7 +289,7 @@ const MeetingPage: React.FC = () => {
 
         {/* 채팅 박스 */}
         {isChatBoxVisible && (
-          <div className="absolute bottom-0 left-0 w-full flex justify-center">
+          <div className="absolute bottom-0 left-0 w-full flex justify-center p-4">
             <div className="w-[300px] h-[200px]">
               <Chat
                 messages={messages}
