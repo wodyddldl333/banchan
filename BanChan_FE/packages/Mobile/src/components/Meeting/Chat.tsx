@@ -9,9 +9,15 @@ interface ChatBoxProps {
   onSendMessage: (message: string) => void;
   messages: Message[];
   onClose: () => void; // 닫기 버튼을 처리하기 위한 콜백
+  className?: string; // 스타일을 받을 수 있도록 수정
 }
 
-const Chat: React.FC<ChatBoxProps> = ({ onSendMessage, messages, onClose }) => {
+const Chat: React.FC<ChatBoxProps> = ({
+  onSendMessage,
+  messages,
+  onClose,
+  className,
+}) => {
   const [inputValue, setInputValue] = useState<string>("");
 
   const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -27,10 +33,10 @@ const Chat: React.FC<ChatBoxProps> = ({ onSendMessage, messages, onClose }) => {
   };
 
   return (
-    <div className="flex justify-center items-center">
-      <div className="w-[340px] bg-blue-100 rounded-[16px] p-4 shadow-lg relative">
+    <div className={`flex justify-center items-center ${className}`}>
+      <div className="w-full bg-blue-100 rounded-[16px] p-4 shadow-lg relative h-full">
         {/* 메시지 리스트 영역 */}
-        <div className="flex-1 mb-4 overflow-y-auto border border-gray-200 p-4 rounded">
+        <div className="flex-1 mb-4 overflow-y-auto border border-gray-200 p-4 rounded h-[120px]">
           {messages.map((message) => (
             <div key={message.id} className="mb-2 p-2 bg-gray-100 rounded">
               <div className="font-bold">{"동대표"}</div>

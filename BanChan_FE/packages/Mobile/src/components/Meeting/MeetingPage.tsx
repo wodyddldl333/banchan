@@ -27,7 +27,6 @@ const MeetingPage: React.FC = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
-  console.log(sessionId);
   const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
@@ -295,6 +294,7 @@ const MeetingPage: React.FC = () => {
               messages={messages}
               onSendMessage={sendMessage}
               onClose={handleCloseChat}
+              className="w-[300px] h-[200px]" // Chat 컴포넌트에 스타일 추가
             />
           </div>
         )}
