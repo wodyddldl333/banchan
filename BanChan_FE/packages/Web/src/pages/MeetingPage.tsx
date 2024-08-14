@@ -224,8 +224,11 @@ const MeetingPage: React.FC = () => {
         await session.signal({
           type: "session-closed",
           data: "회의가 종료되었습니다.",
+          to: [], // 모든 사용자에게 보내기
         });
       }
+
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
         headers: {
