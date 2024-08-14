@@ -15,6 +15,7 @@ interface User {
   date: string;
   address: string;
   role: string;
+  username: string;
 }
 
 const approve = (handleApprove: () => void) => {
@@ -96,7 +97,7 @@ const Approval: React.FC = () => {
 
   const handleApprove = async (user: User) => {
     try {
-      const encodedUsername = encodeURIComponent(user.name);
+      const encodedUsername = encodeURIComponent(user.username);
       const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/approval/${encodedUsername}`;
       await axios.post(apiUrl, {}, {
         headers: {
@@ -113,7 +114,7 @@ const Approval: React.FC = () => {
 
   const handleReject = async (user: User) => {
     try {
-      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${user.name}`;
+      const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/reject/${user.username}`;
       await axios.post(apiUrl, {}, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
@@ -134,6 +135,7 @@ const Approval: React.FC = () => {
     user.email,
     user.date,
     user.address,
+    user.username,
     approve(() => handleApprove(user)),
     reject(() => handleReject(user)),
   ]);

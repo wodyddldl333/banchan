@@ -16,9 +16,9 @@ import AskList from "../components/Community/Ask/AskList";
 import AskWrite from "../components/Community/Ask/AskWrite";
 import KakaoCallback from "../components/oauthlogin/KakaoCallback"; // KakaoCallback 컴포넌트 임포트
 import SessionJoinPage from "../components/Meeting/SessionJoinPage";
-import MeetingPage from "../components/Meeting/MeetingPage";
 import AskDetail from "../components/Community/Ask/AskDetail";
 import Test from "../components/Meeting/Test";
+import MeetingHome from "../components/Meeting/MeetingHome";
 
 const router: React.FC = () => {
   return (
@@ -36,8 +36,9 @@ const router: React.FC = () => {
       </Route>
       <Route path="/m/meetingList" element={<MeetingList />} />
       <Route path="/m/calendar" element={<CalendarApp />} />
-      <Route path="/m/meetingPage/:id" element={<MeetingPage />} />
+      <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
       <Route path="/m/test" element={<Test />} />
+      <Route path="/m/meetingHome/:id" element={<MeetingHome />} />
       <Route path="/m/sessionJoin" element={<SessionJoinPage />} />
       <Route path="/m/community">
         <Route index element={<Navigate to="notice/list" />} />
