@@ -322,7 +322,7 @@ const MeetingPage: React.FC = () => {
         const messages = [
           {
             to: formattedNumber,
-            from: "01039687742",
+            from: "01020983066",
             subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
             text: `
             안녕안녕
