@@ -289,7 +289,7 @@ const MeetingPage: React.FC = () => {
 
         {/* 채팅 박스 */}
         {isChatBoxVisible && (
-          <div className="absolute bottom-0 left-0 w-full flex justify-center p-4">
+          <div className="absolute bottom-0 left-0 w-full flex justify-center p-4 z-20">
             <div className="w-[300px] h-[300px]">
               <Chat
                 messages={messages}
