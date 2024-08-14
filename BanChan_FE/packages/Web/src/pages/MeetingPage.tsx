@@ -326,15 +326,13 @@ const MeetingPage: React.FC = () => {
             subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
             text: `
             안녕안녕
-            https://i11e105.p.ssafy.io/m/joinSession/${sessionId}
+            https://i11e105.p.ssafy.io/m/joinSession/${sessionId}?token=${token}
             `,
             autoTypeDetect: true,
           },
         ];
         sendSMS(messages);
       });
-
-      navigate(`m/joinSession/${sessionId}`, { state: { token, sessionId } });
 
       Swal.fire({
         title: "Success",
