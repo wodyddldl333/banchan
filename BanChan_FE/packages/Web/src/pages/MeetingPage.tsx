@@ -15,6 +15,7 @@ import SubscriberList from "../components/WebRTC/SubscribeList";
 import { IconName, LocationState } from "../Type";
 import { useCookies } from "react-cookie";
 import ChatBox from "../components/WebRTC/ChatBox";
+import Swal from "sweetalert2";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -214,6 +215,12 @@ const MeetingPage: React.FC = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.Token}`,
         },
+      });
+      Swal.fire({
+        title: "회의 종료",
+        text: "회의가 성공적으로 종료되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
       });
       navigate("/meeting/reservedMeeting");
     } catch (error) {
