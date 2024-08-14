@@ -27,7 +27,7 @@ const MeetingPage: React.FC = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
-  const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
+  // const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
   console.log(sessionId);
   // const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
@@ -212,7 +212,7 @@ const MeetingPage: React.FC = () => {
   // };
 
   const handleChatToggle = () => {
-    setIsChatBoxVisible((prevState) => !prevState);
+    // setIsChatBoxVisible((prevState) => !prevState);
   };
 
   const handleButtonClick = (icon: IconName) => {
@@ -257,49 +257,43 @@ const MeetingPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col items-center justify-center w-full h-screen max-w-[360px] max-h-[710px] mx-auto bg-gray-100 relative">
       <div className="bg-[#4285F4] opacity-70 absolute inset-0"></div>
-      <div className="relative flex flex-col w-full h-screen">
+      <div className="relative flex flex-col items-center justify-center w-full h-full p-4">
         {/* 최상단에 회의명을 배치 */}
         {roomName && (
-          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white">
-            <h1 className="text-xl">회의명: {roomName}</h1>
+          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white mb-4">
+            <h1 className="text-lg">회의명: {roomName}</h1>
           </div>
         )}
 
         {/* 나머지 콘텐츠 */}
         <div
-          className={`flex ${
-            isChatBoxVisible ? "justify-between" : "justify-center"
-          } items-center w-full h-full`}
+          className={`flex flex-col items-center justify-center w-full h-full`}
         >
-          <div
-            className={`flex flex-col items-center justify-center ${
-              isChatBoxVisible ? "w-3/4" : "w-full"
-            }`}
-          >
-            <div className="flex flex-col items-center">
-              <div className="flex justify-center items-center mb-4">
-                {thumbnailPlayer && (
-                  <ThumbnailPlayer
-                    stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
-                  />
-                )}
-              </div>
-              <SubscriberList subscribers={subscribers} />
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex justify-center items-center mb-4">
+              {thumbnailPlayer && (
+                <ThumbnailPlayer
+                  stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
+                />
+              )}
             </div>
-            <ControlPanels
-              onChatToggle={handleChatToggle}
-              activeIcons={activeIcons}
-              handleButtonClick={handleButtonClick}
-            />
+            <SubscriberList subscribers={subscribers} />
           </div>
-          {/* {isChatBoxVisible && (
-            <div className="w-[24%] h-full">
-              <ChatBox messages={messages} onSendMessage={sendMessage} />
-            </div>
-          )} */}
+          <ControlPanels
+            onChatToggle={handleChatToggle}
+            activeIcons={activeIcons}
+            handleButtonClick={handleButtonClick}
+          />
         </div>
+
+        {/* 채팅 박스 */}
+        {/* {isChatBoxVisible && (
+        <div className="w-full h-40 mt-4">
+          <ChatBox messages={messages} onSendMessage={sendMessage} />
+        </div>
+      )} */}
       </div>
     </div>
   );

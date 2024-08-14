@@ -2,39 +2,40 @@ import React, { useEffect } from "react";
 import { ControlPanelsProps } from "../../Types";
 
 const ControlPanels: React.FC<ControlPanelsProps> = ({
-  // onChatToggle,
   activeIcons,
   handleButtonClick,
 }) => {
   useEffect(() => {
     console.log(activeIcons);
   }, [activeIcons]);
+
   return (
-    <div className="px-4 flex items-center mt-10">
-      <div className="flex space-x-8 ml-[210px]">
+    <div className="flex justify-center items-center bg-blue-200 rounded-full py-2 px-4 mt-10 w-[320px] mx-auto">
+      <div className="flex space-x-4">
         <button
-          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
-            !activeIcons.mic ? "text-customRed" : "text-white"
+          className={`flex justify-center items-center w-10 h-10 rounded-full ${
+            !activeIcons.mic ? "bg-gray-700" : "bg-white"
           }`}
           onClick={() => handleButtonClick("mic")}
         >
           <span
-            className={`material-symbols-outlined ${
-              !activeIcons.mic ? "text-customRed" : "text-white"
+            className={`material-symbols-outlined text-xl ${
+              !activeIcons.mic ? "text-white" : "text-gray-700"
             }`}
           >
             {!activeIcons.mic ? "mic_off" : "mic"}
           </span>
         </button>
+
         <button
-          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
-            !activeIcons.videocam ? "text-customRed" : "text-white"
+          className={`flex justify-center items-center w-10 h-10 rounded-full ${
+            !activeIcons.videocam ? "bg-gray-700" : "bg-white"
           }`}
           onClick={() => handleButtonClick("videocam")}
         >
           <span
-            className={`material-symbols-outlined ${
-              !activeIcons.videocam ? "text-customRed" : "text-white"
+            className={`material-symbols-outlined text-xl ${
+              !activeIcons.videocam ? "text-white" : "text-gray-700"
             }`}
           >
             {!activeIcons.videocam ? "videocam_off" : "videocam"}
@@ -42,52 +43,40 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
         </button>
 
         <button
-          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
-            activeIcons.headset_mic ? "text-customRed" : "text-white"
+          className={`flex justify-center items-center w-10 h-10 rounded-full ${
+            !activeIcons.chat_bubble ? "bg-gray-700" : "bg-white"
+          }`}
+          onClick={() => handleButtonClick("videocam")}
+        >
+          <span className="material-symbols-outlined text-white text-xl">
+            chat_bubble
+          </span>
+        </button>
+
+        <button
+          className={`flex justify-center items-center w-10 h-10 rounded-full ${
+            activeIcons.headset_mic ? "bg-gray-700" : "bg-white"
           }`}
           onClick={() => handleButtonClick("headset_mic")}
         >
           <span
-            className={`material-symbols-outlined ${
-              activeIcons.headset_mic ? "text-customRed" : "text-white"
+            className={`material-symbols-outlined text-xl ${
+              activeIcons.headset_mic ? "text-white" : "text-gray-700"
             }`}
           >
             {activeIcons.headset_mic ? "headset_off" : "headset_mic"}
           </span>
         </button>
+
         <button
-          className="bg-red-500 text-white flex items-center px-4 py-2 rounded-full"
+          className="flex justify-center items-center w-10 h-10 rounded-full bg-red-500"
           onClick={() => handleButtonClick("exit_to_app")}
         >
-          <span className={`material-symbols-outlined`}>exit_to_app</span>
-          <span className="ml-2">회의 종료하기</span>
+          <span className="material-symbols-outlined text-white text-xl">
+            exit_to_app
+          </span>
         </button>
       </div>
-
-      {/* <div className="flex space-x-10 ml-[100px]">
-        <span className="cursor-pointer material-symbols-outlined text-white">
-          book
-        </span>
-        <span className="cursor-pointer material-symbols-outlined text-white">
-          group
-        </span>
-        <span
-          className={`cursor-pointer material-symbols-outlined ${
-            activeIcons.chat_bubble ? "text-blue-500" : "text-white"
-          }`}
-          onClick={() => handleButtonClick("chat_bubble")}
-        >
-          chat_bubble
-        </span>
-        <div className="relative">
-          <span className="cursor-pointer material-symbols-outlined text-yellow-500">
-            notifications
-          </span>
-          <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full text-xs w-4 h-4 flex items-center justify-center">
-            1
-          </span>
-        </div>
-      </div> */}
     </div>
   );
 };
