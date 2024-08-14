@@ -44,13 +44,13 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
 
         <button
           className={`flex justify-center items-center w-10 h-10 rounded-full ${
-            !activeIcons.chat_bubble ? "bg-gray-700" : "bg-white"
+            activeIcons.chat_bubble ? "bg-gray-700" : "bg-white"
           }`}
           onClick={() => handleButtonClick("chat_bubble")}
         >
           <span
             className={`material-symbols-outlined text-xl ${
-              !activeIcons.chat_bubble ? "text-white" : "text-gray-700"
+              activeIcons.chat_bubble ? "text-white" : "text-gray-700"
             }`}
           >
             chat_bubble

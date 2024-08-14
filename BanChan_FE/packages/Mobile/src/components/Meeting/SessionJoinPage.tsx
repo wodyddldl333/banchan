@@ -188,7 +188,7 @@ const SessionJoinPage: React.FC = () => {
         <h2 className="text-2xl mb-6">
           <span className="font-bold">회의명:</span>{" "}
           {roomName ? (
-            <span className="font-normal">{roomName}</span>
+            <span className="text-[12px]">{roomName}</span>
           ) : (
             "로딩 중..."
           )}
