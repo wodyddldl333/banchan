@@ -1,0 +1,106 @@
+x-environments: &default
+  env_file: .env # 기본 환경 파일을 지정합니다.
+
+services:
+  banchan_back1:
+    container_name: banchan_back1
+    build:
+      context: ../Banchan/
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    <<: *default
+    environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      GOOGLE_APPLICATION_CREDENTIALS: /app/config/credentials.json
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - mynetwork
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/uploads:/app/uploads
+      - /opt/openvidu/recordings:/opt/openvidu/recordings
+      - /home/ubuntu/201-105/S11P12E105/docker-compose/credentials.json:/app/config/credentials.json:ro
+  banchan_back2:
+    container_name: banchan_back2
+    build:
+      context: ../Banchan/
+      dockerfile: Dockerfile
+    expose:
+      - "8080"
+    <<: *default
+    environment:
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      GOOGLE_APPLICATION_CREDENTIALS: /app/config/credentials.json
+    depends_on:
+      mysql:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    networks:
+      - mynetwork
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/uploads:/app/uploads
+      - /opt/openvidu/recordings:/opt/openvidu/recordings
+      - /home/ubuntu/201-105/S11P12E105/docker-compose/credentials.json:/app/config/credentials.json:ro
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    expose:
+      - "3306"
+    <<: *default
+    command: # 명령어 실행
+      - --skip-character-set-client-handshake
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/mysql_data:/var/lib/mysql
+    networks:
+      - mynetwork
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h localhost -u${MYSQL_ROOT_USER} -p${MYSQL_ROOT_PASSWORD}",
+        ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:latest
+    command: redis-server /usr/local/etc/redis/redis.conf --requirepass banchan201105
+    container_name: redis
+    expose:
+      - "6379"
+    <<: *default
+    volumes:
+      - /home/ubuntu/201-105/S11P12E105/Banchan/redis_data:/data
+      - /home/ubuntu/201-105/S11P12E105/Banchan/redis_data/redis.conf:/usr/local/etc/redis/redis.conf
+    networks:
+      - mynetwork
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ubuntu/201-105/S11P12E105/Banchan/mysql_data
+      o: bind
+  redis_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/ubuntu/201-105/S11P12E105/Banchan/redis_data
+      o: bind
+
+networks:
+  mynetwork:
+    external: true
