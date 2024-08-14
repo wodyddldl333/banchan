@@ -16,44 +16,13 @@ const MyPage = () => {
 
   const API_URL = import.meta.env.VITE_BACKEND_URL;
 
-  // AccessToken 유효성 검증 및 갱신 함수
-  const ensureValidAccessToken = async () => {
-    const accessToken = localStorage.getItem("accessToken");
-    const tokenExpiry = Number(localStorage.getItem("tokenExpiry"));
-    const now = new Date().getTime();
-
-    if (!accessToken || !tokenExpiry || now >= tokenExpiry) {
-      try {
-        const response = await axios.post(
-          `${API_URL}/api/auth/token/refresh`,
-          {},
-          {
-            headers: {
-              Authorization: `Bearer ${cookies.refreshToken}`, // refreshToken을 쿠키에서 가져옴
-            },
-            withCredentials: true, // 쿠키 인증이 필요하면 사용
-          }
-        );
-
-        // 갱신된 토큰과 만료 시간 저장
-        localStorage.setItem("accessToken", response.data.accessToken);
-        localStorage.setItem("tokenExpiry", String(now + response.data.expiresIn * 1000));
-      } catch (error) {
-        console.error("토큰 갱신 오류:", error);
-        // 토큰 갱신 실패 시 로그인 페이지로 이동
-        navigate("/m");
-      }
-    }
-  };
-
   // 페이지가 로드될 때 사용자 정보를 가져옵니다.
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        await ensureValidAccessToken();
         const response = await axios.get(`${API_URL}/api/user/myinfo`, {
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 로컬 스토리지에서 토큰 사용
+            Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 토큰 사용
           },
         });
         const userInfo = response.data;
@@ -74,13 +43,12 @@ const MyPage = () => {
     e.preventDefault();
 
     try {
-      await ensureValidAccessToken(); // 정보 저장 전 토큰 유효성 검증 및 갱신
-      const response = await axios.put(`${API_URL}/api/user/update/userUserResponseDtoInfo`, {
-        name,
+      const response = await axios.post(`${API_URL}/api/user/setmyinfo`, {
+        realname: name,
         phone: phoneNumber,
       }, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem("accessToken")}`, // 로컬 스토리지에서 토큰 사용
+          Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 토큰 사용
         },
       });
 
