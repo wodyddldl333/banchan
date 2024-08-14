@@ -281,24 +281,24 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  const createToken = async (sessionId: string): Promise<string> => {
-    try {
-      const response = await axios.post(
-        `${baseUrl}/api/session/${sessionId}/token`,
-        {},
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${cookies.Token}`,
-          },
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Failed to create token", error);
-      throw error; // 에러가 발생하면 함수가 종료됩니다.
-    }
-  };
+  // const createToken = async (sessionId: string): Promise<string> => {
+  //   try {
+  //     const response = await axios.post(
+  //       `${baseUrl}/api/session/${sessionId}/token`,
+  //       {},
+  //       {
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: `Bearer ${cookies.Token}`,
+  //         },
+  //       }
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Failed to create token", error);
+  //     throw error; // 에러가 발생하면 함수가 종료됩니다.
+  //   }
+  // };
 
   const sendNotice = useCallback(async () => {
     if (!sessionId) {
@@ -313,8 +313,8 @@ const MeetingPage: React.FC = () => {
     }
 
     try {
-      const token = await createToken(sessionId);
-      console.log(token);
+      // const token = await createToken(sessionId);
+      // console.log(token);
 
       const phone = ["010-3968-7742"];
       phone.forEach((number) => {
@@ -326,7 +326,7 @@ const MeetingPage: React.FC = () => {
             subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
             text: `
             안녕안녕
-            https://i11e105.p.ssafy.io/m/joinSession/${sessionId}?token=${token}
+            https://i11e105.p.ssafy.io/m/joinSession/${sessionId}
             `,
             autoTypeDetect: true,
           },
@@ -348,7 +348,7 @@ const MeetingPage: React.FC = () => {
         confirmButtonText: "OK",
       });
     }
-  }, [sessionId, cookies.Token]);
+  }, [sessionId]);
 
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
