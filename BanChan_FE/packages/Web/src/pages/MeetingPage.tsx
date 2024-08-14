@@ -313,7 +313,7 @@ const MeetingPage: React.FC = () => {
     }
 
     try {
-      const phone = ["010-3968-7742"];
+      const phone = ["010-2098-3066"];
       phone.forEach((number) => {
         const formattedNumber = number.replace(/-/g, "");
         const messages = [
