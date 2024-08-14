@@ -41,7 +41,7 @@ const MyPage = () => {
       } catch (error) {
         console.error("토큰 갱신 오류:", error);
         // 토큰 갱신 실패 시 로그인 페이지로 이동
-        navigate("/login");
+        navigate("/m");
       }
     }
   };
