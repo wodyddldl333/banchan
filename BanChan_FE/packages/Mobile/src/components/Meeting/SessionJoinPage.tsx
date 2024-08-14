@@ -23,7 +23,6 @@ const SessionJoinPage: React.FC = () => {
   const handleJoinSession = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!sessionId) {
-      console.log("Tq");
       console.error("Session ID is missing.");
       return;
     }
@@ -33,7 +32,7 @@ const SessionJoinPage: React.FC = () => {
 
       console.log("Token created: ", token); // Token 확인 로그
 
-      navigate(`/m/meetingPage/${sessionId}`, {
+      navigate(`/m/meetingHome/${sessionId}`, {
         state: { token, sessionId, roomName },
       });
     } catch (error) {
