@@ -281,25 +281,73 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  const sendNotice = () => {
-    const phone = ["010-2098-3066"];
-    phone.map((number) => {
-      const after = number.replace(/-/gi, "");
-      const messages = [
+  const createToken = async (sessionId: string): Promise<string> => {
+    try {
+      const response = await axios.post(
+        `${baseUrl}/api/session/${sessionId}/token`,
+        {},
         {
-          to: after,
-          from: "01020983066",
-          subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
-          text: `
-          안녕안녕
-          https://i11e105.p.ssafy.io/m/joinSession/${sessionId}
-          `,
-          autoTypeDetect: true,
-        },
-      ];
-      sendSMS(messages);
-    });
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${cookies.Token}`,
+          },
+        }
+      );
+      return response.data.token;
+    } catch (error) {
+      console.error("Failed to create token", error);
+      throw error; // 에러가 발생하면 함수가 종료됩니다.
+    }
   };
+
+  const sendNotice = useCallback(async () => {
+    if (!sessionId) {
+      console.error("Session ID is undefined!");
+      Swal.fire({
+        title: "Error",
+        text: "Session ID is missing.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+      return;
+    }
+
+    try {
+      const token = await createToken(sessionId);
+      console.log(token);
+
+      const phone = ["010-3968-7742"];
+      phone.forEach((number) => {
+        const formattedNumber = number.replace(/-/g, "");
+        const messages = [
+          {
+            to: formattedNumber,
+            from: "01039687742",
+            subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
+            text: `
+            안녕안녕
+            https://i11e105.p.ssafy.io/m/joinSession/${sessionId}
+            `,
+            autoTypeDetect: true,
+          },
+        ];
+        sendSMS(messages);
+      });
+      Swal.fire({
+        title: "Success",
+        text: "SMS sent successfully.",
+        icon: "success",
+        confirmButtonText: "OK",
+      });
+    } catch (error) {
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send SMS.",
+        icon: "error",
+        confirmButtonText: "OK",
+      });
+    }
+  }, [sessionId, cookies.Token]);
 
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
@@ -316,6 +364,7 @@ const MeetingPage: React.FC = () => {
     } else if (icon === "mail") {
       if (session) {
         sendNotice(); // mail 아이콘 클릭 시 sendNotice 함수 호출
+        console.log("mail has sent successfully");
       } else {
         console.error("Session is null or undefined.");
       }
