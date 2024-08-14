@@ -281,9 +281,7 @@ const MeetingPage: React.FC = () => {
     }
   };
 
-  const sendNotice = (e: React.FormEvent<HTMLFormElement>) => {
-    navigate(-1);
-    e.preventDefault();
+  const sendNotice = () => {
     const phone = ["010-2098-3066"];
     phone.map((number) => {
       const after = number.replace(/-/gi, "");
@@ -296,7 +294,7 @@ const MeetingPage: React.FC = () => {
           안녕안녕
           https://i11e105.p.ssafy.io/m/joinSession/${sessionId}
           `,
-          autoTypeDetect: true, // 자동 타입 감지 활성화
+          autoTypeDetect: true,
         },
       ];
       sendSMS(messages);
@@ -317,7 +315,7 @@ const MeetingPage: React.FC = () => {
       }));
     } else if (icon === "mail") {
       if (session) {
-        sendNotice;
+        sendNotice(); // mail 아이콘 클릭 시 sendNotice 함수 호출
       } else {
         console.error("Session is null or undefined.");
       }
