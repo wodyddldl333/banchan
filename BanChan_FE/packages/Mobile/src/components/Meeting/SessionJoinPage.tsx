@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { useCookies } from "react-cookie";
+// import { useCookies } from "react-cookie";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -9,7 +9,7 @@ const SessionJoinPage: React.FC = () => {
   const [sessionId, setSessionId] = useState<string | undefined>(undefined);
   const navigate = useNavigate();
   const { sessionId: sessionIdFromUrl } = useParams<{ sessionId: string }>(); // URL에서 sessionId 추출
-  const [cookies] = useCookies();
+  // const [cookies] = useCookies();
 
   useEffect(() => {
     if (sessionIdFromUrl) {
@@ -49,7 +49,7 @@ const SessionJoinPage: React.FC = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.Token}`,
+          // Authorization: `Bearer ${cookies.Token}`,
         },
       }
     );
@@ -61,7 +61,7 @@ const SessionJoinPage: React.FC = () => {
       {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.Token}`,
+          // Authorization: `Bearer ${cookies.Token}`,
         },
       }
     );
