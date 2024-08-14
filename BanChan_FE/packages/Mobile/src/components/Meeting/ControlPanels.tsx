@@ -29,7 +29,7 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
 
         <button
           className={`flex justify-center items-center w-10 h-10 rounded-full ${
-            !activeIcons.videocam ? "bg-white" : "bg-gray-700"
+            !activeIcons.videocam ? "bg-gray-700" : "bg-white"
           }`}
           onClick={() => handleButtonClick("videocam")}
         >
