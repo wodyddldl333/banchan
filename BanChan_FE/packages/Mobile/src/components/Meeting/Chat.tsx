@@ -34,7 +34,7 @@ const Chat: React.FC<ChatBoxProps> = ({
 
   return (
     <div className={`flex justify-center items-center ${className}`}>
-      <div className="w-full bg-blue-100 rounded-[16px] p-4 shadow-lg relative h-full">
+      <div className=" bg-blue-100 rounded-[16px] p-4 shadow-lg relative h-full">
         {/* 메시지 리스트 영역 */}
         <div className="flex-1 mb-4 overflow-y-auto border border-gray-200 p-4 rounded h-[120px]">
           {messages.map((message) => (
