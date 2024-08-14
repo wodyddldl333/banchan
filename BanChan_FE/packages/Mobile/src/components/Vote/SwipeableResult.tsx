@@ -1,7 +1,23 @@
 import React, { useState } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
-import { SwipeableResultProps } from "../../Types";
+
+interface OptionResult {
+  optionId: number;
+  optionText: string;
+  voteCount: number;
+  percentage?: number;
+}
+
+interface QuestionResult {
+  questionId: number;
+  questionText: string;
+  optionResults: OptionResult[];
+}
+
+interface SwipeableResultProps {
+  items: QuestionResult[];
+}
 
 const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -20,17 +36,26 @@ const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
     navigate("/m/vote/voteList");
   };
 
-  // Generating random percentages for each option
-  const generateRandomPercentages = (options: string[]) => {
-    let remaining = 100;
-    const percentages = options.map((_, index) => {
-      if (index === options.length - 1) return remaining;
-      const percentage = Math.floor(Math.random() * remaining);
-      remaining -= percentage;
-      return percentage;
-    });
-    return percentages;
+  const calculatePercentages = (options: OptionResult[] | undefined) => {
+    if (!options || options.length === 0) {
+      return [];
+    }
+    const total = options.reduce((sum, option) => sum + option.voteCount, 0);
+    return options.map(option => ({
+      ...option,
+      percentage: total > 0 ? Math.round((option.voteCount / total) * 100) : 0
+    }));
   };
+
+  const getMaxPercentageOptions = (options: OptionResult[]) => {
+    if (options.length === 0) return [];
+    const maxPercentage = Math.max(...options.map(o => o.percentage || 0));
+    return options.filter(o => o.percentage === maxPercentage);
+  };
+
+  if (!items || items.length === 0) {
+    return <div>투표 결과가 없습니다.</div>;
+  }
 
   return (
     <div
@@ -45,10 +70,9 @@ const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
         }}
       >
         {items.map((item, index) => {
-          const percentages = generateRandomPercentages(item.options);
-          const maxPercentageIndex = percentages.indexOf(
-            Math.max(...percentages)
-          );
+          const optionsWithPercentages = calculatePercentages(item.optionResults);
+          const maxPercentageOptions = getMaxPercentageOptions(optionsWithPercentages);
+
           return index % 2 === 0 ? (
             <div
               key={index}
@@ -56,16 +80,16 @@ const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
               style={{ width: "100%" }}
             >
               <div className="w-[300px] p-4 border border-black rounded-2xl bg-white m-4">
-                <h4 className="text-lg font-bold">{item.question}</h4>
+                <h4 className="text-lg font-bold">{item.questionText}</h4>
                 <div className="mt-4">
-                  {item.options.map((option, optionIdx) => (
+                  {optionsWithPercentages.map((option, optionIdx) => (
                     <p
                       key={optionIdx}
-                      className={`text-gray-800 p-2 rounded-md bg-white ${
-                        optionIdx === maxPercentageIndex ? "bg-yellow-300" : ""
+                      className={`text-gray-800 p-2 rounded-md ${
+                        maxPercentageOptions.some(o => o.optionId === option.optionId) ? "bg-yellow-300" : "bg-white"
                       }`}
                     >
-                      {option} - {percentages[optionIdx]}%
+                      {option.optionText} - {option.percentage}% ({option.voteCount} votes)
                     </p>
                   ))}
                 </div>
@@ -73,27 +97,23 @@ const SwipeableResults: React.FC<SwipeableResultProps> = ({ items }) => {
               {items[index + 1] && (
                 <div className="w-[300px] p-4 border border-black rounded-2xl bg-white m-4">
                   <h4 className="text-lg font-bold">
-                    {items[index + 1].question}
+                    {items[index + 1].questionText}
                   </h4>
                   <div className="mt-4">
-                    {items[index + 1].options.map((option, optionIdx) => (
-                      <p
-                        key={optionIdx}
-                        className={`text-gray-800 p-2 rounded-md bg-white ${
-                          optionIdx === maxPercentageIndex
-                            ? "bg-yellow-300"
-                            : ""
-                        }`}
-                      >
-                        {option} -{" "}
-                        {
-                          generateRandomPercentages(items[index + 1].options)[
-                            optionIdx
-                          ]
-                        }
-                        %
-                      </p>
-                    ))}
+                    {(() => {
+                      const nextOptionsWithPercentages = calculatePercentages(items[index + 1].optionResults);
+                      const nextMaxPercentageOptions = getMaxPercentageOptions(nextOptionsWithPercentages);
+                      return nextOptionsWithPercentages.map((option, optionIdx) => (
+                        <p
+                          key={optionIdx}
+                          className={`text-gray-800 p-2 rounded-md ${
+                            nextMaxPercentageOptions.some(o => o.optionId === option.optionId) ? "bg-yellow-300" : "bg-white"
+                          }`}
+                        >
+                          {option.optionText} - {option.percentage}% ({option.voteCount} votes)
+                        </p>
+                      ));
+                    })()}
                   </div>
                 </div>
               )}
