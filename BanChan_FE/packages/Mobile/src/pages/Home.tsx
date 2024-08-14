@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import bgImage from "@assets/Mobile_main.jpg";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
+import { useCookies } from "react-cookie";
 
 interface UserApartment {
   id: number;
@@ -37,11 +38,50 @@ const announcements = [
 const Home: React.FC = () => {
   const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const navigate = useNavigate();
+  const [cookies] = useCookies(["refreshToken"]);
+
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
+
+  const ensureValidAccessToken = async () => {
+    const accessToken = localStorage.getItem("accessToken");
+    const tokenExpiry = Number(localStorage.getItem("tokenExpiry"));
+    const now = new Date().getTime();
+
+    if (!accessToken || !tokenExpiry || now >= tokenExpiry) {
+      try {
+        const response = await axios.post(
+          `${API_URL}/api/auth/token/refresh`,
+          {},
+          {
+            headers: {
+              Authorization: `Bearer ${cookies.refreshToken}`,
+            },
+            withCredentials: true,
+          }
+        );
+
+        localStorage.setItem("accessToken", response.data.accessToken);
+        localStorage.setItem("tokenExpiry", String(now + response.data.expiresIn * 1000));
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.error("토큰 갱신 오류:", error.message);
+        } else {
+          console.error("토큰 갱신 오류:", error);
+        }
+        navigate("/m");
+      }
+    }
+  };
 
   useEffect(() => {
-    axios
-      .get("/api/user/myinfo")
-      .then((response) => {
+    const fetchUserInfo = async () => {
+      try {
+        await ensureValidAccessToken();
+        const response = await axios.get(`${API_URL}/api/user/myinfo`, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
+          },
+        });
         const userData: UserInfo = response.data;
         setUserInfo(userData);
 
@@ -53,10 +93,19 @@ const Home: React.FC = () => {
         ) {
           navigate("/m/mypage");
         }
-      })
-      .catch((error) => {
-        console.error("Error fetching user info:", error);
-      });
+      } catch (error) {
+        if (error instanceof AxiosError) {
+          console.error("Error fetching user info:", error.message);
+          if (error.response?.status === 403) {
+            navigate("/m");
+          }
+        } else {
+          console.error("Error fetching user info:", error);
+        }
+      }
+    };
+
+    fetchUserInfo();
   }, [navigate]);
 
   const gotoHomeInfo = () => {
