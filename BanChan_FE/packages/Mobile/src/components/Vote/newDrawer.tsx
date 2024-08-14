@@ -48,11 +48,19 @@ const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
               <p className="text-gray-600">{item.date}</p>
               <div className="mt-4 flex items-center space-x-2">
                 <button
-                  onClick={item.onClick}
-                  className="py-2 px-4 bg-blue-500 text-white font-semibold rounded-full hover:bg-blue-600"
+                  onClick={title === "진행중인 투표" && item.voted ? undefined : item.onClick}
+                  className={`py-2 px-4 font-semibold rounded-full ${
+                    title === "진행중인 투표" && item.voted
+                      ? "bg-gray-400 text-white cursor-default"
+                      : "bg-blue-500 text-white hover:bg-blue-600"
+                  }`}
+                  disabled={title === "진행중인 투표" && item.voted}
                 >
-                  {title == "진행중인 투표"?
-                  ('투표하기') :('결과보기')}
+                  {title === "진행중인 투표"
+                    ? item.voted
+                      ? '투표 완료'
+                      : '투표하기'
+                    : '결과보기'}
                 </button>
                 <button className="py-2 px-4 bg-gray-200 text-blue-500 font-semibold rounded-full">
                   투표율 : {item.voteRate}
