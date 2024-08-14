@@ -165,8 +165,16 @@ const MeetingPage: React.FC = () => {
           );
         };
 
+        const sessionClosedHandler = (event: SignalEvent) => {
+          if (event.type === "signal:session-closed") {
+            alert(event.data || "회의가 종료되었습니다.");
+            navigate("/meeting/reservedMeeting"); // 알림 후 리다이렉트
+          }
+        };
+
         mySession.on("streamCreated", streamCreatedHandler);
         mySession.on("streamDestroyed", streamDestroyedHandler);
+        mySession.on("signal:session-closed", sessionClosedHandler); // 세션 종료 신호 처리
 
         await joinSession(mySession, token);
         setSession(mySession);
@@ -181,6 +189,7 @@ const MeetingPage: React.FC = () => {
       if (session) {
         session.off("streamCreated");
         session.off("streamDestroyed");
+        session.off("signal:session-closed");
         session.disconnect();
         setSubscribers([]);
         subscriberStreams.current.clear();
@@ -211,6 +220,13 @@ const MeetingPage: React.FC = () => {
 
   const deleteSession = async (sessionId: string): Promise<void> => {
     try {
+      if (session) {
+        await session.signal({
+          type: "session-closed",
+          data: "회의가 종료되었습니다.",
+        });
+      }
+
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
         headers: {
           "Content-Type": "application/json",
