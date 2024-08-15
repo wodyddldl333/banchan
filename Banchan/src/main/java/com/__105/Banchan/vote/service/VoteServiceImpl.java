@@ -109,10 +109,16 @@ public class VoteServiceImpl implements VoteService {
     * 투표 정보 상세 조회
     * */
     @Override
+    @Transactional
     public VoteResponseDto getVoteWithDetails(Long voteId) {
+
         Vote vote = voteRepository.findById(voteId)
                 .orElseThrow(() -> new VoteException(VoteErrorCode.VOTE_NOT_FOUND));
-        return new VoteResponseDto(vote);
+
+        int voteCount = userAptRepository.countByApartmentCode(vote.getApt().getCode());
+        int finishedCount = voteParticipantRepository.findVoteCountByVoteId(vote.getId());
+
+        return new VoteResponseDto(vote, voteCount, finishedCount);
     }
 
     /*
