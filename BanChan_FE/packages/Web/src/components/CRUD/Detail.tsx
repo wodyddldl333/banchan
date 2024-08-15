@@ -38,8 +38,7 @@ const Detail: React.FC = () => {
       window.URL.revokeObjectURL(url);
       return response
     }
-    console.log('hi')
-    console.log(download())
+    download()
   }
   const DetailContent: React.FC<{ post: Post }> = ({ post }) => {
     return (

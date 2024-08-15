@@ -50,7 +50,6 @@ const VoteList: React.FC = () => {
         date: `${item.startDate} ~ ${item.endDate}`,
         voted: item.voted
       }));
-      console.log(nowVote)
       setOngoingVote(crt_data);
 
       const endVote = await getVote(cookies.Token,'api/votes/list/finished');

@@ -26,7 +26,6 @@ const ShowVote: React.FC = () => {
     const getData = async () => {
       const nowVote = await getVoteDetail(cookies.Token,`api/votes/detail/${id}`);
       const crt_data = nowVote?.questions
-      console.log(crt_data)
       if(crt_data) (
         setVoteItems(crt_data)
       ) 

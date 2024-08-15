@@ -93,7 +93,6 @@ const FinishedMeeting: React.FC = () => {
         }
       );
       const summary = response.data.summary;
-      console.log(summary);
       Swal.fire({
         title: `회의 ID: ${meetingId}`,
         html: `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>
@@ -112,9 +111,7 @@ const FinishedMeeting: React.FC = () => {
                 formData.append("title", roomName);
                 formData.append("content", summary); // summary를 content로 추가
 
-                for (const pair of formData.entries()) {
-                  console.log(`${pair[0]}: ${pair[1]}`);
-                }
+
 
                 // API 호출
                 const response = await axios.post(
@@ -153,7 +150,7 @@ const FinishedMeeting: React.FC = () => {
         },
       });
     } catch (error) {
-      console.log("error occurred", error);
+      console.error("error occurred", error);
     }
   };
 

@@ -12,7 +12,6 @@ const SessionJoinPage: React.FC = () => {
 
   useEffect(() => {
     if (sessionIdFromUrl) {
-      console.log("Extracted sessionId from URL:", sessionIdFromUrl);
       setSessionId(sessionIdFromUrl); // sessionId를 URL에서 가져와 상태로 설정
       fetchRoomName(sessionIdFromUrl); // roomName 가져오기
     } else {
@@ -48,7 +47,6 @@ const SessionJoinPage: React.FC = () => {
     try {
       const { token } = await createToken(sessionId);
 
-      console.log("Token created: ", token); // Token 확인 로그
 
       navigate(`/m/meetingHome/${sessionId}`, {
         state: { token, sessionId, roomName },

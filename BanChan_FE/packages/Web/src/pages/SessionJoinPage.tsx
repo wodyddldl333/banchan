@@ -4,7 +4,6 @@ import axios from "axios";
 import { useCookies } from "react-cookie";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
-console.log(baseUrl);
 
 const SessionJoinPage: React.FC = () => {
   const [sessionId, setSessionId] = useState("");
@@ -15,8 +14,6 @@ const SessionJoinPage: React.FC = () => {
     e.preventDefault();
     try {
       const token = await createToken(sessionId);
-
-      console.log("Token created: ", token); // Token 확인 로그
 
       navigate(`/meetingPage/${sessionId}`, {
         state: { token, sessionId },

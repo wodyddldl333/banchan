@@ -32,7 +32,6 @@ const VoteResult: React.FC = () => {
           const result = await getVoteResult(cookies.Token, `api/votes/result/${id}`);
           if (result) {
             setVoteData(result as VoteResultData);
-            console.log(result)
           } else {
             console.error("No data returned from getVoteResult");
           }
@@ -41,7 +40,6 @@ const VoteResult: React.FC = () => {
         }
       }
     };
-    console.log('hi')
     fetchVoteResult();
   }, [id, cookies.Token]);
 
