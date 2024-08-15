@@ -52,7 +52,7 @@ const FinishedMeeting: React.FC = () => {
   const meetingSummary = async (meetingId: number) => {
     setLoading(true);
     try {
-      const response = await axios.post(
+      await axios.post(
         `${baseUrl}/api/speech/${meetingId}`,
         {},
         {
@@ -62,7 +62,6 @@ const FinishedMeeting: React.FC = () => {
           },
         }
       );
-      console.log(response.data);
       Swal.fire({
         title: "AI 요약 완료",
         text: "요약본이 성공적으로 생성되었습니다.",

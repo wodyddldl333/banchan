@@ -29,7 +29,7 @@ const KakaoCallback: React.FC = () => {
           expires: new Date(Date.now() + 604800000),
         })
         alert('카카오 로그인 성공')
-        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('accessToken', cookies.Token);
         localStorage.setItem('refreshToken', refreshToken);
 
         // 인증 후 홈으로 이동

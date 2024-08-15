@@ -21,18 +21,47 @@ const WriteContent = () => {
     data: { title: string; content: string }
   ) => {
     try {
-      const response = await axios.post(
-        `${baseUrl}/api/${boardType}/regist`,
-        {
-          ...data,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${Token}`, // Use response data here
+      console.log(data);
+      if (boardType == "ask") {
+        const response = await axios.post(
+          `${baseUrl}/api/${boardType}/regist`,
+          {
+            ...data,
           },
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`, // Use response data here
+            },
+          }
+        );
+
+        return response.data; // content 배열만 반환
+      } else {
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("content", content);
+        if (file) {
+          formData.append("files", file);
+          console.log("gi");
+          console.log(file);
         }
-      );
-      return response.data; // content 배열만 반환
+        for (const [key, value] of formData.entries()) {
+          console.log(`${key}:`, value);
+        }
+        const response = await axios.post(
+          `${baseUrl}/api/${boardType}/regist`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`, // Use response data here
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log("hi");
+        console.log(response);
+        return response.data; // content 배열만 반환
+      }
     } catch (error) {
       console.error("생성 중 오류가 발생하였습니다", error);
     }
@@ -43,7 +72,10 @@ const WriteContent = () => {
       content: content,
     };
 
-    CreateCommunity(cookies.Token, data);
+    CreateCommunity(cookies.Token, data).then(() => {
+      alert("게시글 작성이 완료되었습니다.");
+      window.location.href = `/community/${boardType}`;
+    });
   };
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">
