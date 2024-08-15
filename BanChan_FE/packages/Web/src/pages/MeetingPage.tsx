@@ -221,21 +221,28 @@ const MeetingPage: React.FC = () => {
   const deleteSession = async (sessionId: string): Promise<void> => {
     try {
       // 신호 전송을 별도의 try-catch로 분리하여 오류가 나더라도 세션 삭제가 계속되도록 합니다.
-      if (session && session.connection.connectionId) {
-        try {
-          await session.signal({
-            type: "session-closed",
-            data: "회의가 종료되었습니다.",
-            to: [], // 모든 사용자에게 보내기
-          });
-          console.log("Session closed signal sent successfully.");
-        } catch (signalError) {
-          console.error("Error sending session closed signal:", signalError);
-        }
+      if (!session || !session.connection || !session.connection.connectionId) {
+        console.error("Session is not in a valid state to send signals.");
+        return;
+      }
+
+      try {
+        const connections = session.streamManagers.map(
+          (streamManager) => streamManager.stream.connection
+        );
+
+        await session.signal({
+          type: "session-closed",
+          data: "회의가 종료되었습니다.",
+          to: connections, // 모든 사용자에게 보내기
+        });
+        console.log("Session closed signal sent successfully.");
+      } catch (signalError) {
+        console.error("Error sending session closed signal:", signalError);
       }
 
       // 약간의 지연 추가
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      await new Promise((resolve) => setTimeout(resolve, 200));
 
       // 세션 삭제 요청
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
