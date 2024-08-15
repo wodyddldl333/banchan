@@ -61,12 +61,16 @@ public class UserResponseDto {
     public static class UserApartmentResponseDto {
 
         private Integer id;
+        private String aptCode;
+        private String aptName;
         private String buildingNo;
         private String unitNo;
         private boolean isGranted;
 
         public UserApartmentResponseDto(UserApartment userApartment) {
             this.id = userApartment.getId();
+            this.aptCode = userApartment.getApartment().getCode();
+            this.aptName = userApartment.getApartment().getApartmentName();
             this.buildingNo = userApartment.getBuildingNo();
             this.unitNo = userApartment.getUnitNo();
             this.isGranted = userApartment.isGranted();
