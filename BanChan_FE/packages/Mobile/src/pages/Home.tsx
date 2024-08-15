@@ -21,12 +21,14 @@ const Home: React.FC = () => {
   // const [userInfo, setUserInfo] = useState(null);
   const [announcements,setNotice] = useState( [
     {
+      id:1,
       title: "[공지] 모라 LH 7월 3주차 투표 결과 공지",
-      date: "2024.07.17",
+      createdAt: "2024.07.17",
     },
     {
+      id:2,
       title: "[공지] 단지 내 공사 관련 공지",
-      date: "2024.06.28",
+      createdAt: "2024.06.28",
     },
   ])
   const [userAPT,setUserAPT] = useState(0)
@@ -51,7 +53,8 @@ const Home: React.FC = () => {
         })
         setUserAPT(response.data.userApartments.length)
         const Board = await getCommunityList(cookies.Token,'api/notice/list',params);
-        setNotice(Board)
+        console.log(Board)
+        setNotice(Board.content)
       } catch (error) {
         console.error("Failed to fetch user info:", error);
       }
@@ -113,20 +116,23 @@ const Home: React.FC = () => {
             <div className="relative w-[320px] p-4 bg-[#F0F8FF] border rounded-[10px]">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold text-lg">공지사항</span>
-                <NavLink to="/community/notice" className="text-gray-500">
+                <NavLink to="/m/community/notice" className="text-gray-500">
                   더보기
                 </NavLink>
               </div>
-              {/* {announcements.map((announcement, index) => (
-                <div key={index} className="mb-2">
+              {announcements.map((announcement) => (
+                <NavLink to={`/m/community/notice/detail/${announcement.id}`}>
+
+                <div key={announcement.id} className="mb-2">
                   <div className="font-semibold text-black">
                     {announcement.title}
                   </div>
                   <div className="text-gray-500 text-sm">
-                    {announcement.date}
+                    {announcement.createdAt}
                   </div>
                 </div>
-              ))} */}
+                </NavLink>
+              ))}
             </div>
           </>
         )}
