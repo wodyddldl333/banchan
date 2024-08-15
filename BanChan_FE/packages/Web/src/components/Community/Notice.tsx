@@ -36,7 +36,6 @@ const Notice: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       const askList = await getCommunityList(cookies.Token,'api/notice/list',params);
-      console.log(askList);
       setMaxPage(askList.totalPages)
       const real_data = askList.content.map((item:CommunityListType) => ({
         id: item.id,

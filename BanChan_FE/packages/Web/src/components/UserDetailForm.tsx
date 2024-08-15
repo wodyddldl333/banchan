@@ -26,7 +26,6 @@ const UserDetailForm: React.FC = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      console.log(response.data.message);
       navigate('/home'); // 홈 페이지로 이동
     } catch (error) {
       console.error('사용자 정보 업데이트 실패', error);

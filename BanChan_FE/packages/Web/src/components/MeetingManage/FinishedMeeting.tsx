@@ -62,7 +62,6 @@ const FinishedMeeting: React.FC = () => {
           },
         }
       );
-      console.log(response.data);
       Swal.fire({
         title: "AI 요약 완료",
         text: "요약본이 성공적으로 생성되었습니다.",
@@ -94,7 +93,6 @@ const FinishedMeeting: React.FC = () => {
         }
       );
       const summary = response.data.summary;
-      console.log(summary);
       Swal.fire({
         title: `회의 ID: ${meetingId}`,
         html: `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>`,
@@ -102,7 +100,6 @@ const FinishedMeeting: React.FC = () => {
         confirmButtonText: "확인",
       });
     } catch (error) {
-      console.log("error occuer", error);
     }
   };
 

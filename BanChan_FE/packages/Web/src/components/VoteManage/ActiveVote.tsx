@@ -26,7 +26,6 @@ const ActiveVote = () => {
     const fetchData = async () => {
       try {
         const voteData = await getVote(cookies.Token,'api/votes/list/current');
-        console.log(voteData);
         const fixVote = voteData.data.map((items) => {
           return {
             ...(items),

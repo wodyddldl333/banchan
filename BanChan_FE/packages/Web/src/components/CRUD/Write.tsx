@@ -18,7 +18,6 @@ const WriteContent = () => {
   };
   const CreateCommunity = async (Token:string,data:{title:string,content:string}) => {
     try {
-      console.log(data)
       const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
         {
           ...data
@@ -27,7 +26,6 @@ const WriteContent = () => {
           'Authorization': `Bearer ${Token}`, // Use response data here
         }
       });
-      console.log(response);
       return response.data; // content 배열만 반환
     } catch (error) {
       console.error("생성 중 오류가 발생하였습니다", error);
@@ -42,7 +40,6 @@ const WriteContent = () => {
     CreateCommunity(cookies.Token,data)
 
 
-    console.log(data)
   }
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">
