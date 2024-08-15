@@ -11,7 +11,7 @@ const useCustomNavigation = () => {
   }, [location]);
 
   const goBack = () => {
-    if (previousPath === '/m/community' || previousPath === '/m/vote') {
+    if (previousPath === '/m/community/notice/list' || previousPath === '/m/vote/voteList') {
       navigate(-2);
     } else {
       navigate(-1);
