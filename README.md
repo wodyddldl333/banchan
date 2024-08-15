@@ -118,6 +118,9 @@
 ### 와이어 프레임 Web
 ![와이어프레임](exec/resources/와이어프레임웹.png)
 
+### 시스템 아키텍쳐
+![시스템](exec/resources/시스템.png)
+
 ### 요구사항 정의서
 ![요구사항정의서](exec/resources/요구사항정의서.png)
 
@@ -127,7 +130,7 @@
 
 ## 6. 팀원 소개
 
-| **[최동호]** | **[최재용]** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건]** |
+| **[최동호](https://carpal-butterfly-bd7.notion.site/11-_-1-_E105_-_-_-f7e17ad039c44fcd9824176ec62b8f68?pvs=4)** | **[최재용]** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건](https://fluffy-hippodraco-222.notion.site/201-105-2e4535a37b2b4672951a6e86f655d62b)** |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | ![최동호](exec/resources/최동호.png) | ![최재용](exec/resources/최재용.png) | ![김하휼](exec/resources/김하휼.png) | ![윤동환](exec/resources/윤동환.png) | ![정진우](exec/resources/정진우.png) | ![김동건](exec/resources/김동건.png) |
 | Backend | Backend | Frontend | Frontend | Frontend | Infra |
@@ -135,8 +138,8 @@
 
 
 **Backend**
-- 최동호 : 
-- 최재용 : 
+- 최동호 : 회원 및 인증 관련(OAuth, JWT) 유저, 관리자API / 패스키 구현 / UCC 제작 / 발표
+- 최재용 : ERD 설계 및 DB 구축 / 공지사항, 건의사항, 투표 관련 API / WebRTC 서버 연동 및 화상회의 관련 API / STT와 AI를 활용한 회의 요약 서비스 구현 / 서버 에러 수정
 
 **Frontend**
 - 김하휼 : 
@@ -144,4 +147,4 @@
 - 정진우 : 
 
 **Infra**
-- 김동건 : 개발환경 구축(프론트엔드&백엔드 도커 설정) / 배포환경 구축(리버스프록시 및 openvidu서버) / CI/CD자동배포-젠킨스 / 수동배포-쉘코드 
+- 김동건 : 개발환경 구축(프론트엔드&백엔드 도커 설정) / 배포환경 구축(리버스프록시 및 openvidu서버) / CI/CD자동배포-젠킨스 / 수동배포-쉘코드 / 포팅매뉴얼 및 기타 산출물 관리
