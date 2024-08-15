@@ -60,24 +60,29 @@ const Detail: React.FC = () => {
               {post.content}
             </div>
           </div>
+          {boardType == 'notice' ? (
           <div className="mb-4">
             <label className="block text-gray-700 text-lg font-bold mb-2">
               첨부 파일
             </label>
             <div
               className="block w-full text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-full file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-blue-50 file:text-blue-700
-                      hover:file:bg-blue-100"
-                onClick={() => downloadHandler(post.files[0]?.id)}
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
+              onClick={() => downloadHandler(post.files[0]?.id)}
               >
               <button>
                 {post.files[0]?.originalFilename}
               </button>
             </div>
           </div>
+              ) : (
+                <></>
+              )}
+
           <div className="flex justify-end mt-[40px]">
             <div className="mr-3"></div>
             {post.writer ? 
