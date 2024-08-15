@@ -30,15 +30,13 @@ const AskWrite: React.FC = () => {
 
 
     try {
-      const response = await axios.post(`${API_URL}/api/ask/regist`, {
+      await axios.post(`${API_URL}/api/ask/regist`, {
         title,content
       }, {
         headers: {
           Authorization: `Bearer ${cookies.Token}`,
         },
       });
-
-      console.log(response);
 
       alert("파일이 성공적으로 전송되었습니다.");
     } catch (error) {

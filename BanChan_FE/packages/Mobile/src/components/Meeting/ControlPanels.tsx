@@ -6,7 +6,7 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
   handleButtonClick,
 }) => {
   useEffect(() => {
-    console.log(activeIcons);
+    
   }, [activeIcons]);
 
   return (

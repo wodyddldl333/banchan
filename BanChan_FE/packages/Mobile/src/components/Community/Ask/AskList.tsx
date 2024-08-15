@@ -41,7 +41,6 @@ const AskList: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       const askList = await getCommunityList(cookies.Token,'api/ask/list',params);
-      console.log(askList);
       setTotal(askList.totalElements)
       setTotalPage(askList.totalPages)
       const real_data = askList.content.map((item:CommunityListType) => ({

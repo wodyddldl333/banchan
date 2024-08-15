@@ -18,7 +18,6 @@ const AskDetail: React.FC = () => {
   useEffect(() => {
     const fetchPostDetail = async () => {
       const data = await getCommunityDetails(cookies.Token,`api/ask/detail/${id}`);
-      console.log(data);
       setPost({
         content : data.content,
         title : data.title,

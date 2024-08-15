@@ -99,12 +99,12 @@ const LoginPage = () => {
             }
             navigate("/home");
           } catch (err) {
-            console.log(err);
+            console.error(err);
             alert("유저 정보를 들고오는데 실패하였습니다");
           }
         }, 100);
       } catch (err) {
-        console.log(err);
+        console.error(err);
         alert("로그인에 실패하였습니다 아이디,비밀번호를 확인해주세요");
       }
     }

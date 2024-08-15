@@ -100,7 +100,6 @@ const MeetingPage: React.FC = () => {
           }
         });
 
-        console.log("Publisher added to session");
       } catch (error: unknown) {
         console.error("Error connecting to session:", error);
 
@@ -108,7 +107,6 @@ const MeetingPage: React.FC = () => {
           error instanceof Error &&
           error.message.includes("Token not valid")
         ) {
-          console.log("Token expired, requesting a new token...");
           try {
             const response = await axios.get(
               `${baseUrl}/api/session/newToken/${sessionId}`,
@@ -121,7 +119,6 @@ const MeetingPage: React.FC = () => {
             );
 
             const newToken = response.data.token;
-            console.log("Received new token:", newToken);
 
             await joinSession(mySession, newToken);
           } catch (tokenError) {
@@ -205,7 +202,6 @@ const MeetingPage: React.FC = () => {
 
   useEffect(() => {
     if (stopRecordingRequest && recordingId) {
-      console.log("Stopping recording with ID:", recordingId);
       endRecording(sessionId!, recordingId);
       setStopRecordingRequest(false); // 이 부분이 상태를 재조정
       setActiveIcons((prevState) => ({
@@ -220,31 +216,6 @@ const MeetingPage: React.FC = () => {
 
   const deleteSession = async (sessionId: string): Promise<void> => {
     try {
-      // 신호 전송을 별도의 try-catch로 분리하여 오류가 나더라도 세션 삭제가 계속되도록 합니다.
-      // if (!session || !session.connection || !session.connection.connectionId) {
-      //   console.error("Session is not in a valid state to send signals.");
-      //   return;
-      // }
-
-      // try {
-      //   // const connections = session.streamManagers.map(
-      //   //   (streamManager) => streamManager.stream.connection
-      //   // );
-
-      //   await session.signal({
-      //     type: "session-closed",
-      //     data: "회의가 종료되었습니다.",
-      //     to: connections, // 모든 사용자에게 보내기
-      //   });
-      //   console.log("Session closed signal sent successfully.");
-      // } catch (signalError) {
-      //   console.error("Error sending session closed signal:", signalError);
-      // }
-
-      // 약간의 지연 추가
-      // await new Promise((resolve) => setTimeout(resolve, 500));
-
-      // 세션 삭제 요청
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
         headers: {
           "Content-Type": "application/json",
@@ -285,7 +256,6 @@ const MeetingPage: React.FC = () => {
       );
 
       const recordId = response.data.id;
-      console.log("Received Recording ID from API:", recordId);
       setRecordingId(recordId); // recordingId 설정
     } catch (error) {
       console.error(`Error starting recording:`, error);
@@ -308,7 +278,6 @@ const MeetingPage: React.FC = () => {
         }
       );
       setRecordingId(null);
-      console.log(`Recording stopped with ID: ${recordId}`);
     } catch (error) {
       console.error(`Error ending recording:`, error);
     }
@@ -322,25 +291,6 @@ const MeetingPage: React.FC = () => {
       });
     }
   };
-
-  // const createToken = async (sessionId: string): Promise<string> => {
-  //   try {
-  //     const response = await axios.post(
-  //       `${baseUrl}/api/session/${sessionId}/token`,
-  //       {},
-  //       {
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //           Authorization: `Bearer ${cookies.Token}`,
-  //         },
-  //       }
-  //     );
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error("Failed to create token", error);
-  //     throw error; // 에러가 발생하면 함수가 종료됩니다.
-  //   }
-  // };
 
   const sendNotice = useCallback(async () => {
     if (!sessionId) {
@@ -394,7 +344,6 @@ const MeetingPage: React.FC = () => {
   };
 
   const handleButtonClick = (icon: IconName) => {
-    console.log("handleButtonClick triggered with icon:", icon);
     if (icon === "chat_bubble") {
       handleChatToggle();
       setActiveIcons((prevState) => ({
@@ -404,7 +353,6 @@ const MeetingPage: React.FC = () => {
     } else if (icon === "mail") {
       if (session) {
         sendNotice(); // mail 아이콘 클릭 시 sendNotice 함수 호출
-        console.log("mail has sent successfully");
       } else {
         console.error("Session is null or undefined.");
       }
@@ -437,7 +385,6 @@ const MeetingPage: React.FC = () => {
       icon === "radio_button_checked" &&
       !activeIcons.radio_button_checked
     ) {
-      console.log("Starting recording...");
       startRecording(sessionId!);
       setActiveIcons((prevState) => ({
         ...prevState,
@@ -448,7 +395,6 @@ const MeetingPage: React.FC = () => {
       icon === "radio_button_unchecked" &&
       activeIcons.radio_button_checked
     ) {
-      console.log("Stopping recording...");
       setStopRecordingRequest(true);
     } else {
       setActiveIcons((prevState) => ({

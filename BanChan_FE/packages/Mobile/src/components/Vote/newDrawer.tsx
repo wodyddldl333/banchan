@@ -122,7 +122,6 @@ const OTPModal: React.FC<{
           Authorization: `Bearer ${Token}`
         }
       });
-      console.log(user)
       if (user.data.phone.replace(/-/gi, "") != phoneNumber ) {
         alert('내 정보에 등록된 번호와 다릅니다.')
       }
@@ -156,7 +155,6 @@ const OTPModal: React.FC<{
           setResendTimer(5); // 5초 재전송 대기 시간
           setOtpValidTimer(120); // 120초 OTP 유효 시간
           // 성공 메시지 표시
-          console.log(response.data.message);
         } else {
           // 실패 시 에러 메시지 표시
           console.error("OTP 생성 실패");
@@ -182,7 +180,6 @@ const OTPModal: React.FC<{
 
       if (response.data.success) {
         alert('OTP 인증에 성공하였습니다.')
-        console.log(response.data.message);
         onSuccess();
       } else {
         // 실패 시 에러 메시지 표시
