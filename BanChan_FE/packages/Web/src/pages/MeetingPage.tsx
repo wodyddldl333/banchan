@@ -99,7 +99,6 @@ const MeetingPage: React.FC = () => {
             console.error("Received an undefined message");
           }
         });
-
       } catch (error: unknown) {
         console.error("Error connecting to session:", error);
 
@@ -305,17 +304,25 @@ const MeetingPage: React.FC = () => {
     }
 
     try {
-      const phone = ["010-2098-3066",'010-3665-9445','010-4607-4629','010-7132-4405','010-2733-1034','010-3968-7742'];
+      const phone = [
+        "010-2098-3066",
+        "010-3665-9445",
+        "010-4607-4629",
+        "010-7132-4405",
+        "010-2733-1034",
+        "010-3968-7742",
+      ];
       phone.forEach((number) => {
         const formattedNumber = number.replace(/-/g, "");
         const messages = [
           {
             to: formattedNumber,
             from: "01020983066",
-            subject: "회의 URL 주소입니다. 들어오세요 ~~ ",
+            subject: "반상회 URL 주소입니다. ",
             text: `
-            안녕안녕
+            안녕하세요 동대표입니다. 
             https://i11e105.p.ssafy.io/m/sessionJoin/${sessionId}
+            위 링크를 통해 회의에 접속해주시면 감사하겠습니다. 
             `,
             autoTypeDetect: true,
           },

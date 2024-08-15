@@ -113,7 +113,7 @@ const FinishedMeeting: React.FC = () => {
               try {
                 const formData = new FormData();
                 formData.append("title", roomName);
-                formData.append("content", summary.replace(/\n/g, "<br>")); // 여기서는 줄바꿈 문자를 그대로 서버로 전송
+                formData.append("content", summary); // 여기서는 줄바꿈 문자를 그대로 서버로 전송
 
                 // API 호출
                 const response = await axios.post(
