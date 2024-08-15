@@ -106,7 +106,7 @@
 
 | **[최동호]** | **[최재용]** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건]** |
 |:----------------------------:|:----------------------------:|:----------------------------:|:----------------------------:|:----------------------------:|:----------------------------:|
-| <img src="exec/resources/최동호.png" width="100"> | <img src="exec/resources/최재용.png" width="100"> | <img src="exec/resources/김하휼.png" width="100"> | <img src="exec/resources/윤동환.png" width="100"> | <img src="exec/resources/정진우.png" width="100"> | <img src="exec/resources/김동건.png" width="450"> |
+| <img src="exec/resources/최동호.png" width="100"> | <img src="exec/resources/최재용.png" width="100"> | <img src="exec/resources/김하휼.png" width="100"> | <img src="exec/resources/윤동환.png" width="100"> | <img src="exec/resources/정진우.png" width="100"> | <img src="exec/resources/김동건.png" width="100"> |
 | Backend | Backend | Frontend | Frontend | Frontend | Infra |
 
 
