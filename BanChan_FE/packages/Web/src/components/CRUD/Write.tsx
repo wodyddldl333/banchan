@@ -67,7 +67,7 @@ const WriteContent = () => {
     
     CreateCommunity(cookies.Token,data)
 
-    console.log(data)
+
   }
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">
