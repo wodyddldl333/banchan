@@ -51,11 +51,6 @@ const AskDetail: React.FC = () => {
 
         <div className="border-b-2 border-black mb-4"></div>
 
-        <div className="text-gray-600 mb-4">
-          <p className="font-semibold text-gray-300">첨부파일</p>
-          <p className="text-blue-500 underline">7월 모라 LH 공사 일정.hwp</p>
-        </div>
-        <div className="border-b-2 border-black"></div>
       </div>
     </div>
   );
