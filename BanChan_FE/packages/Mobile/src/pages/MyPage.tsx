@@ -27,7 +27,7 @@ const MyPage = () => {
         });
         const userInfo = response.data;
         setDongHo(userInfo.userApartments[0]?.buildingNo + "동/" + userInfo.userApartments[0]?.unitNo +"호"|| "");
-        setApartmentCode(userInfo.userApartments[0]?.unitNo || "");
+        setApartmentCode(userInfo.userApartments[0]?.aptName + "(" + userInfo.userApartments[0]?.aptCode +")" || "");
         setPhoneNumber(userInfo.phone);
         setLinkedAccount(userInfo.socialType || "");
         setName(userInfo.realname);
