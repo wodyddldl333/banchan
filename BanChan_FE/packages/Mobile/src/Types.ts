@@ -74,7 +74,7 @@ export interface newDrawerProps {
     id: number;
     title: string;
     date: string;
-    voteRate: string;
+    voteRate: number;
     voted :boolean;
     onClick: () => void;
   }>;
@@ -145,6 +145,8 @@ export interface VoteDetailType {
   startDate: string;
   endDate: string;
   createdAt: string;
+  voteCount:number;
+  finishCount: number;
   questions: voteQuestion[];
 }
 

@@ -73,7 +73,6 @@ const VoteCreatePage: React.FC = () => {
       }))
         
     }
-    console.log(data);
     // 서브밋 이벤트 방지
     e.preventDefault();
     // 백엔드로 POST 요청 보내는 로직 필요(axios)
@@ -81,7 +80,7 @@ const VoteCreatePage: React.FC = () => {
 
       navigate('/vote/active')
     }).catch((e) => {
-      console.log(e)
+      console.error(e)
     })
   };
 

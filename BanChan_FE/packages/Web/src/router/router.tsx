@@ -18,7 +18,7 @@ import VoteCreatePage from "../components/VoteManage/VoteCreate";
 import VoteDetail from "../components/VoteManage/VoteDetail";
 import ActiveVote from "../components/VoteManage/ActiveVote";
 import FinishedVote from "../components/VoteManage/FinishedVote";
-// import SendMessage from "../components/SendMessage";
+import SendMessage from "../components/SendMessage";
 import CommunityPage from "../pages/CommunityPage";
 import MeetingManagePage from "../pages/MeetingManagePage";
 import UserManagePage from "../pages/UserManagePage";
@@ -27,7 +27,6 @@ import CreateMeeting from "../components/MeetingManage/CreateMeeting";
 import MyPage from "../pages/MyPage";
 import VoteEnd from "../components/VoteManage/VoteEnd";
 import SessionJoinPage from "../pages/SessionJoinPage";
-import OpenViduSession from "../OpenviduSession";
 import Kakaocallback from "../pages/KakaoCallback";
 import KakaoLoginButton from "../components/Buttons/KakaoLoginButton"; // KakaoLoginButton 컴포넌트 임포트
 import UserDetailForm from "../components/UserDetailForm"; // UserDetailForm 컴포넌트 임포트
@@ -39,7 +38,6 @@ function AppRoutes() {
       <Route path="/" element={<SocialLoginPage />} />
       <Route path="/login" element={<LoginPage />} />
       <Route path="/meetingPage/:id" element={<MeetingPage />} />
-      <Route path="/openvidu" element={<OpenViduSession />} />
       <Route path="/login/oauth2/code/kakao" element={<Kakaocallback />} />
       <Route path="/kakao-login" element={<KakaoLoginButton />} />
       {/* 메인레이아웃 - 상단 툴바 및 좌측 메뉴바 */}
@@ -86,7 +84,7 @@ function AppRoutes() {
           <Route path="finish/detail/:id" element={<VoteEnd />} />
         </Route>
         {/* 메세지 전송 */}
-        {/* <Route path="/message" element={<SendMessage />} /> */}
+        <Route path="/message" element={<SendMessage />} />
         {/* 마이페이지 */}
         <Route path="/user" element={<MyPage />}></Route>
         {/* 기타 관리 */}

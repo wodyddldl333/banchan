@@ -6,9 +6,9 @@ import { useCookies } from "react-cookie";
 import { useParams } from "react-router-dom";
 import { getVoteDetail } from "../../mobileapi/VoteAPI";
 const ShowVote: React.FC = () => {
-
   const [cookies] = useCookies()
   const {id} = useParams()
+  const [title,setTitle] = useState<string>('제목')
   const [voteItems,setVoteItems] = useState([
     {
       questionId:1,
@@ -25,8 +25,8 @@ const ShowVote: React.FC = () => {
   useEffect(() => {
     const getData = async () => {
       const nowVote = await getVoteDetail(cookies.Token,`api/votes/detail/${id}`);
+      setTitle(nowVote?.title as string);
       const crt_data = nowVote?.questions
-      console.log(crt_data)
       if(crt_data) (
         setVoteItems(crt_data)
       ) 
@@ -39,9 +39,9 @@ const ShowVote: React.FC = () => {
       <Header>투표</Header>
       <div className="p-4">
         <h3 className="text-[20px] font-bold mb-4 flex justify-center mt-10">
-          대충제목
+          {title}
         </h3>
-        <SwipeableContent items={voteItems} />
+        <SwipeableContent items={voteItems}/>
       </div>
     </div>
   );
