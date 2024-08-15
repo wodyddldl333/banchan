@@ -17,8 +17,6 @@ const KakaoCallback: React.FC = () => {
           throw new Error('카카오 인증 코드가 없습니다.');
         }
 
-        console.log(`Received code: ${code}`);
-
         // 백엔드에 카카오 코드 전달하여 JWT 토큰 받기
         const response = await axios.get(`${BACKEND_URL}/api/auth/kakao/login`, { 
           params: { code }
@@ -31,7 +29,6 @@ const KakaoCallback: React.FC = () => {
           expires: new Date(Date.now() + 604800000),
         })
         alert('카카오 로그인 성공')
-        alert(cookies.Token)
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
 
