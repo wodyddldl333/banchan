@@ -105,7 +105,7 @@
 ## 6. 팀원 소개
 
 | **[최동호]** | **[최재용]** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건]** |
-|:------:|:------:|:------:|:------:|:------:|:------:|
+|:---:|:------:|:------:|:------:|:------:|:------:|
 | ![최동호](exec/resources/최동호.png) | ![최재용](exec/resources/최재용.png) | ![김하휼](exec/resources/김하휼.png) | ![윤동환](exec/resources/윤동환.png) | ![정진우](exec/resources/정진우.png) | ![김동건](exec/resources/김동건.png) |
 | Backend | Backend | Frontend | Frontend | Frontend | Infra |
 
