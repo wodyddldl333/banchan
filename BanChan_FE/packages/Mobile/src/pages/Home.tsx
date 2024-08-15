@@ -60,6 +60,7 @@ const Home: React.FC = () => {
   }, [cookies.Token]);
 
   const gotoHomeInfo = () => {
+    console.log(announcements)
     navigate("/m/homeInfo");
   };
   // const hasUserApartments =
