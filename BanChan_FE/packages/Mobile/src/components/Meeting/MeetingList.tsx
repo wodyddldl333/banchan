@@ -33,7 +33,7 @@ const MeetingList: React.FC = () => {
               title: meeting.roomName,
               date: meeting.startDate,
               buttonText: "요약본 확인",
-              statusText: `회의 참여 인원: ${13}명`,
+              statusText: `회의 참여 인원: ${4}명`,
             }))
           );
         } else {
