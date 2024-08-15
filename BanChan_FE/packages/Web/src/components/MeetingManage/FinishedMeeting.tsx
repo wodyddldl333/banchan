@@ -94,16 +94,16 @@ const FinishedMeeting: React.FC = () => {
       );
 
       const summary = response.data.summary;
-      Swal.fire({
-        title: `회의명: ${roomName}`,
-        html: `
-    <div style="text-align: left; white-space: pre-wrap;">
+      const summaryHTML = `    <div style="text-align: left; white-space: pre-wrap;">
       ${summary.replace(/\n/g, "<br>")}
     </div>
     <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
       공지사항으로 작성
     </button>
-  `,
+  `;
+      Swal.fire({
+        title: `회의명: ${roomName}`,
+        html: summaryHTML,
         icon: "info",
         confirmButtonText: "확인",
         didRender: () => {
@@ -113,7 +113,7 @@ const FinishedMeeting: React.FC = () => {
               try {
                 const formData = new FormData();
                 formData.append("title", roomName);
-                formData.append("content", summary); // 여기서는 줄바꿈 문자를 그대로 서버로 전송
+                formData.append("content", summaryHTML); // 여기서는 줄바꿈 문자를 그대로 서버로 전송
 
                 // API 호출
                 const response = await axios.post(
