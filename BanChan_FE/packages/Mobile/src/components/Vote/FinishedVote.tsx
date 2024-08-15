@@ -41,7 +41,7 @@ const FinishedVote: React.FC = () => {
       <GaugeChart
         id="gauge-chart3"
         nrOfLevels={2}
-        arcsLength={[0.38, 0.62]} // 전체 아크를 하나로 설정
+        arcsLength={[voteRate / 100, 0.62]} // 전체 아크를 하나로 설정
         colors={["#0057ff", "#e9e9e9"]} // 첫 번째 색상은 게이지가 채워지는 부분, 두 번째 색상은 남은 부분
         percent={voteRate / 100} // 게이지가 38% 채워짐
         arcWidth={0.2} // 아크의 두께를 0.2로 설정
@@ -49,7 +49,7 @@ const FinishedVote: React.FC = () => {
         needleColor="#0057ff" // 바늘 색상을 파란색으로 설정
         needleBaseColor="#e9e9e9" // 바늘 중심부 색상을 회색으로 설정
         // formatTextValue={(value) => `${38} %`} // 텍스트 값을 퍼센트로 포맷팅 // value값은 바꿀거임 !!
-        formatTextValue={() => `${38} %`}
+        formatTextValue={() => `${voteRate / 100} %`}
       />
     </div>
   );
