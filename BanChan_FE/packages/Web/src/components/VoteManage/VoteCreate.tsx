@@ -80,7 +80,7 @@ const VoteCreatePage: React.FC = () => {
 
       navigate('/vote/active')
     }).catch((e) => {
-      console.log(e)
+      console.error(e)
     })
   };
 

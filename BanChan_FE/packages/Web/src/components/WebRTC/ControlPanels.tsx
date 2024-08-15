@@ -7,7 +7,6 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
   handleButtonClick,
 }) => {
   useEffect(() => {
-    console.log(activeIcons); // activeIcons 상태가 변경될 때마다 로그를 출력
   }, [activeIcons]);
   return (
     <div className="px-4 flex items-center mt-10">

@@ -95,7 +95,6 @@ const MeetingPage: React.FC = () => {
           }
         });
 
-        console.log("Publisher added to session");
       } catch (error: unknown) {
         console.error("Error connecting to session:", error);
 
@@ -103,7 +102,6 @@ const MeetingPage: React.FC = () => {
           error instanceof Error &&
           error.message.includes("Token not valid")
         ) {
-          console.log("Token expired, requesting a new token...");
           try {
             const response = await axios.get(
               `${baseUrl}/api/session/newToken/${sessionId}`,
@@ -116,7 +114,6 @@ const MeetingPage: React.FC = () => {
             );
 
             const newToken = response.data.token;
-            console.log("Received new token:", newToken);
 
             await joinSession(mySession, newToken);
           } catch (tokenError) {
@@ -215,7 +212,6 @@ const MeetingPage: React.FC = () => {
   };
 
   const handleButtonClick = (icon: IconName) => {
-    console.log("handleButtonClick triggered with icon:", icon);
     if (icon === "chat_bubble") {
       handleChatToggle();
       setActiveIcons((prevState) => ({
