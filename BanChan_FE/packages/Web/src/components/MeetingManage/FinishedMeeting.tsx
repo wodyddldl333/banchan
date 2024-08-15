@@ -52,7 +52,7 @@ const FinishedMeeting: React.FC = () => {
   const meetingSummary = async (meetingId: number) => {
     setLoading(true);
     try {
-      const response = await axios.post(
+      await axios.post(
         `${baseUrl}/api/speech/${meetingId}`,
         {},
         {

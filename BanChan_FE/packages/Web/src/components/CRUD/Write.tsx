@@ -30,7 +30,6 @@ const WriteContent = () => {
             }
           });
 
-          console.log(response);
           return response.data; // content 배열만 반환
       } else {
         const formData = new FormData();
@@ -65,9 +64,10 @@ const WriteContent = () => {
       "content" : content
     }
     
-    CreateCommunity(cookies.Token,data)
-
-
+    CreateCommunity(cookies.Token,data).then(() => {
+      alert('게시글 작성이 완료되었습니다.')
+      window.location.href = `/community/${boardType}`;
+    })
   }
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">

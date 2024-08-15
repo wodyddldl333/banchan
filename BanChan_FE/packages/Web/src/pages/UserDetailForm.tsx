@@ -18,7 +18,7 @@ const UserDetailForm: React.FC = () => {
     }
 
     try {
-      const response = await axios.put(`${import.meta.env.VITE_BACKEND_URL}/detail/${userId}`, {
+        await axios.put(`${import.meta.env.VITE_BACKEND_URL}/detail/${userId}`, {
         dong,
         ho
       }, {
