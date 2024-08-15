@@ -27,15 +27,18 @@ const MeetingList: React.FC = () => {
         );
 
         // API 응답 데이터를 가공하여 state에 저장합니다.
-        setCompletedMeetings(
-          response.data.map((meeting: Meeting) => ({
-            title: meeting.roomName,
-            date: meeting.startDate, // 완료된 회의의 날짜를 보여줍니다.
-            buttonText: "요약본 확인",
-            statusText: `회의 참여 인원: ${13}명`,
-            // id: meeting.id, // 회의 ID를 추가로 저장해 둡니다.
-          }))
-        );
+        if (Array.isArray(response.data.data)) {
+          setCompletedMeetings(
+            response.data.data.map((meeting: Meeting) => ({
+              title: meeting.roomName,
+              date: meeting.startDate,
+              buttonText: "요약본 확인",
+              statusText: `회의 참여 인원: ${13}명`,
+            }))
+          );
+        } else {
+          console.error("Expected an array but got:", response.data);
+        }
       } catch (error) {
         console.error("Failed to fetch completed meetings:", error);
       }
