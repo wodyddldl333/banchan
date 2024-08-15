@@ -1,45 +1,63 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useCookies } from "react-cookie";
 import Header from "../Header";
 import SwipeableResults from "./SwipeableResult";
-import { useLocation } from "react-router-dom";
+import { getVoteResult } from "../../mobileapi/VoteAPI";
+
+interface VoteResultData {
+  voteId: number;
+  title: string;
+  content: string;
+  questionResults: {
+    questionId: number;
+    questionText: string;
+    optionResults: {
+      optionId: number;
+      optionText: string;
+      voteCount: number;
+    }[];
+  }[];
+}
 
 const VoteResult: React.FC = () => {
-  const location = useLocation();
-  const { item } = location.state || { item: { title: "투표 결과" } }; // 기본값 설정
+  const [voteData, setVoteData] = useState<VoteResultData | null>(null);
+  const { id } = useParams<{ id: string }>();
+  const [cookies] = useCookies(['Token']);
 
-  const voteItems = [
-    {
-      question: "이번 회계 감사 받기를 동의하십니까?",
-      options: ["1. 예", "2. 아니오"],
-    },
-    {
-      question: "올해 예산안을 승인하십니까?",
-      options: [
-        "1. 예",
-        "2. 아니오",
-        "3. 기타",
-        "4. 추가 선택",
-        "5. 선택 항목",
-      ],
-    },
-    {
-      question: "올해 예산안을 승인하십니까?",
-      options: ["1. 예", "2. 아니오"],
-    },
-    {
-      question: "집안은 평안하십니까?",
-      options: ["1. 예", "2. 아니오"],
-    },
-  ];
+  useEffect(() => {
+    const fetchVoteResult = async () => {
+      if (id) {
+        try {
+          const result = await getVoteResult(cookies.Token, `api/votes/result/${id}`);
+          if (result) {
+            setVoteData(result as VoteResultData);
+            console.log(result)
+          } else {
+            console.error("No data returned from getVoteResult");
+          }
+        } catch (error) {
+          console.error("Failed to fetch vote result:", error);
+        }
+      }
+    };
+    console.log('hi')
+    fetchVoteResult();
+  }, [id, cookies.Token]);
+
+  if (!voteData) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="min-h-screen">
       <Header>투표 결과</Header>
       <div className="p-4">
         <h3 className="text-[20px] font-bold mb-4 flex justify-center mt-10">
-          {item.title}
+          {voteData.title}
         </h3>
-        <SwipeableResults items={voteItems} />
+        <p className="text-center mb-4">{voteData.content}</p>
+        <SwipeableResults items={voteData.questionResults} />
       </div>
     </div>
   );

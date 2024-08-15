@@ -15,6 +15,11 @@ import SubscriberList from "../components/WebRTC/SubscribeList";
 import { IconName, LocationState } from "../Type";
 import { useCookies } from "react-cookie";
 import ChatBox from "../components/WebRTC/ChatBox";
+import Swal from "sweetalert2";
+
+import BackButton from "../components/Buttons/BackButton";
+import MultiSelectDropdown from "../components/SendMessage";
+import { sendSMS } from "../api/SenaMassageAPI";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
@@ -50,6 +55,7 @@ const MeetingPage: React.FC = () => {
     notifications: false,
     radio_button_checked: false,
     radio_button_unchecked: false,
+    mail: false,
   });
 
   const joinSession = useCallback(
@@ -214,6 +220,12 @@ const MeetingPage: React.FC = () => {
           Authorization: `Bearer ${cookies.Token}`,
         },
       });
+      Swal.fire({
+        title: "회의 종료",
+        text: "회의가 성공적으로 종료되었습니다.",
+        icon: "success",
+        confirmButtonText: "확인",
+      });
       navigate("/meeting/reservedMeeting");
     } catch (error) {
       console.error(`Error deleting session ${sessionId}:`, error);
@@ -272,6 +284,133 @@ const MeetingPage: React.FC = () => {
     }
   };
 
+  const sendNotice = () => {
+    // const navigate = useNavigate();
+    // 제목 내용 초기설정
+
+    const Contents = () => {
+      const [contents, setContent] = useState("");
+      const [title, setTitle] = useState("");
+      const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+      const options = ["101동", "102동", "103동", "104동", "105동", "106동"];
+
+      const handleContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+        setContent(e.target.value);
+      };
+      const handleTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setTitle(e.target.value);
+      };
+
+      const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        navigate(-1);
+        e.preventDefault();
+        const phone = ["010-2098-3066"];
+        phone.map((number) => {
+          const after = number.replace(/-/gi, "");
+          const messages = [
+            {
+              to: after,
+              from: "01020983066",
+              subject: `https://i11e105.p.ssafy.io/m/joinSession/${sessionId}`,
+              text: contents,
+              autoTypeDetect: true, // 자동 타입 감지 활성화
+            },
+          ];
+          sendSMS(messages);
+        });
+      };
+      return (
+        // 백엔드로 POST 요청 보내는 로직 필요
+        //투표 생성 버튼 누를 시 투표 생성 구현 필요
+        <form onSubmit={handleSubmit}>
+          {/* 제목 */}
+          <div>
+            <h2 className="text-base m-2 text-customTextColor">제목</h2>
+            <input
+              name="title"
+              type="text"
+              className="w-full h-14 bg-customBackgroundColor text-base px-4 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
+              placeholder="제목을 입력해 주세요"
+              autoComplete="off"
+              value={title}
+              onChange={handleTitle}
+              required
+            />
+          </div>
+          {/* 내용 */}
+          <div>
+            <h2 className="text-base m-2 text-customTextColor">내용</h2>
+            <textarea
+              name="contents"
+              placeholder="제목을 입력해 주세요"
+              autoComplete="off"
+              value={contents}
+              onChange={handleContent}
+              className="w-full h-[350px]  bg-customBackgroundColor resize-none text-base px-4 py-2 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
+              required
+            />
+          </div>
+          {/* 투표버튼 및 투표 기간 */}
+          <div className="flex pt-2">
+            {/* 예약 발송 시각 설정 부분 */}
+            <div>
+              <span className="text-sm mx-4">메일 발송 시각 :</span>
+              <input
+                name="Sendtime"
+                className="w-52 h-10 p-2 rounded-full border-2 text-sm transition-transform transform"
+                type="datetime-local"
+                required
+              ></input>
+            </div>
+          </div>
+
+          {/* 동호수 선택 input */}
+          <MultiSelectDropdown
+            options={options}
+            fieldName={"baby"}
+            selectedOptions={selectedOptions}
+            setSelectedOptions={setSelectedOptions}
+          />
+          <div>
+            <input
+              name="unit"
+              type="text"
+              className="w-full h-14 text-base bg-customBackgroundColor p-3 rounded-lg shadow-md border-solid border-2 outline-none transition-transform transform"
+              placeholder="선택된 동호수가 없습니다."
+              value={selectedOptions.join(", ")}
+              readOnly
+            />
+          </div>
+
+          {/* 메세지 전송 버튼 */}
+          <div className="pt-2 flex justify-end">
+            <button
+              name="submitVote"
+              type="submit"
+              className="w-32 h-10 bg-customBlue text-white rounded-lg transition-transform transform hover:bg-customBlue hover:scale-105"
+              id="submit"
+            >
+              전송하기
+            </button>
+          </div>
+        </form>
+      );
+    };
+
+    return (
+      <div>
+        <div className="flex justify-start p-5">
+          <BackButton />
+          <h3 className="text-3xl	font-semibold"> 알람 보내기</h3>
+        </div>
+
+        <div className="min-w-full min-h-[700px] p-6 bg-white border rounded-[20px] overflow-hidden">
+          <Contents />
+        </div>
+      </div>
+    );
+  };
+
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
   };
@@ -284,6 +423,12 @@ const MeetingPage: React.FC = () => {
         ...prevState,
         [icon]: !prevState[icon],
       }));
+    } else if (icon === "mail") {
+      if (session) {
+        sendNotice();
+      } else {
+        console.error("Session is null or undefined.");
+      }
     } else if (icon === "exit_to_app") {
       if (session) {
         session.disconnect();
@@ -335,38 +480,50 @@ const MeetingPage: React.FC = () => {
   };
 
   return (
-    <div
-      className={`flex ${
-        isChatBoxVisible ? "justify-between" : "justify-center"
-      } items-center w-full h-screen bg-customTextColor`}
-    >
-      <div
-        className={`flex flex-col items-center justify-center ${
-          isChatBoxVisible ? "w-3/4" : "w-full"
-        }`}
-      >
-        {roomName && <h1 className="text-2xl mb-4">회의명: {roomName}</h1>}
-        <div className="flex flex-col items-center">
-          <div className="flex justify-center items-center mb-4">
-            {thumbnailPlayer && (
-              <ThumbnailPlayer
-                stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
-              />
-            )}
+    <div className="flex flex-col w-full h-screen">
+      <div className="bg-[#4285F4] opacity-70 absolute inset-0"></div>
+      <div className="relative flex flex-col w-full h-screen">
+        {/* 최상단에 회의명을 배치 */}
+        {roomName && (
+          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white">
+            <h1 className="text-xl">회의명: {roomName}</h1>
           </div>
-          <SubscriberList subscribers={subscribers} />
+        )}
+
+        {/* 나머지 콘텐츠 */}
+        <div
+          className={`flex ${
+            isChatBoxVisible ? "justify-between" : "justify-center"
+          } items-center w-full h-full`}
+        >
+          <div
+            className={`flex flex-col items-center justify-center ${
+              isChatBoxVisible ? "w-3/4" : "w-full"
+            }`}
+          >
+            <div className="flex flex-col items-center">
+              <div className="flex justify-center items-center mb-4">
+                {thumbnailPlayer && (
+                  <ThumbnailPlayer
+                    stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
+                  />
+                )}
+              </div>
+              <SubscriberList subscribers={subscribers} />
+            </div>
+            <ControlPanels
+              onChatToggle={handleChatToggle}
+              activeIcons={activeIcons}
+              handleButtonClick={handleButtonClick}
+            />
+          </div>
+          {isChatBoxVisible && (
+            <div className="w-[24%] h-full">
+              <ChatBox messages={messages} onSendMessage={sendMessage} />
+            </div>
+          )}
         </div>
-        <ControlPanels
-          onChatToggle={handleChatToggle}
-          activeIcons={activeIcons}
-          handleButtonClick={handleButtonClick}
-        />
       </div>
-      {isChatBoxVisible && (
-        <div className="w-1/4 h-full">
-          <ChatBox messages={messages} onSendMessage={sendMessage} />
-        </div>
-      )}
     </div>
   );
 };

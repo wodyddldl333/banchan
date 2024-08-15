@@ -10,8 +10,15 @@ const ControlPanels: React.FC<ControlPanelsProps> = ({
     console.log(activeIcons); // activeIcons 상태가 변경될 때마다 로그를 출력
   }, [activeIcons]);
   return (
-    <div className="px-4 flex items-center mt-4">
+    <div className="px-4 flex items-center mt-10">
       <div className="flex space-x-8 ml-[210px]">
+        <button
+          className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full`}
+          onClick={() => handleButtonClick("mail")}
+        >
+          <span className={`material-symbols-outlined`}>{"mail"}</span>
+          <span className="ml-2">알림 보내기</span>
+        </button>
         <button
           className={`bg-gray-800 text-white flex items-center px-4 py-2 rounded-full ${
             !activeIcons.mic ? "text-customRed" : "text-white"

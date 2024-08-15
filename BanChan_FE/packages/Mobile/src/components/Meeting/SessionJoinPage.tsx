@@ -14,19 +14,21 @@ const SessionJoinPage: React.FC = () => {
   const handleJoinSession = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = await createToken(sessionId);
+      const { token, roomName } = await createToken(sessionId); // roomName도 함께 받음
 
       console.log("Token created: ", token); // Token 확인 로그
 
-      navigate(`/meetingPage/${sessionId}`, {
-        state: { token, sessionId },
+      navigate(`/m/meetingPage/${sessionId}`, {
+        state: { token, sessionId, roomName },
       });
     } catch (error) {
       console.error("Error joining session:", error);
     }
   };
 
-  const createToken = async (sessionId: string): Promise<string> => {
+  const createToken = async (
+    sessionId: string
+  ): Promise<{ token: string; roomName: string }> => {
     const response = await axios.post(
       `${baseUrl}/api/session/${sessionId}/token`,
       {},
@@ -34,19 +36,31 @@ const SessionJoinPage: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${cookies.Token}`,
-
-          // Authorization: "Basic " + btoa("OPENVIDUAPP:YOUR_SECRET"),
         },
       }
     );
 
     const token = response.data;
 
-    return token;
+    const roomNameResponse = await axios.get(
+      `${baseUrl}/api/session/get/roomName/${sessionId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${cookies.Token}`,
+        },
+      }
+    );
+
+    const roomName = roomNameResponse.data.roomName;
+    console.log(roomName);
+
+    return { token, roomName };
   };
 
   return (
-    <div className="flex items-center justify-center h-screen">
+    // <div className="flex items-center justify-center h-screen">
+    <div className="min-h-screen">
       <div className="bg-white p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">Join a Session</h2>
         <form onSubmit={handleJoinSession}>
