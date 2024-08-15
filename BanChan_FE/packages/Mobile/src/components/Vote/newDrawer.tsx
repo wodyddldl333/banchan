@@ -45,7 +45,7 @@ interface Item {
   id: number;
   title: string;
   date: string;
-  voteRate: string;
+  voteRate: number;
   voted: boolean;
   onClick: () => void;
 }
@@ -256,7 +256,7 @@ const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-
+  console.log(items)
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -336,7 +336,7 @@ const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
                     : '결과보기'}
                 </button>
                 <button className="py-2 px-4 bg-gray-200 text-blue-500 font-semibold rounded-full">
-                  투표율 : {item.voteRate}
+                  투표율 : {item.voteRate} %
                 </button>
               </div>
             </div>

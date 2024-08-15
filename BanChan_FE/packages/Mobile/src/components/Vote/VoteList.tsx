@@ -12,13 +12,13 @@ const VoteList: React.FC = () => {
       id : 1,
       title: "LH 7월 3주차 투표",
       date: "07.15 19:00 ~ 07.21 18:00",
-      voteRate: "38%",
+      voteRate: 38,
       voted : false,
     },
     { id : 2,
       title: "LH 7월 3주차 투표",
       date: "07.15 19:00 ~ 07.21 18:00",
-      voteRate: "38%",
+      voteRate: 38,
       voted : false,
     },
   ])
@@ -28,14 +28,14 @@ const VoteList: React.FC = () => {
       id : 1,
       title: "LH 6월 3주차 투표",
       date: "06.15 19:00 ~ 06.21 18:00",
-      voteRate: "75%",
+      voteRate: 75,
       voted : false,
 
     },
     { id : 2,
       title: "LH 5월 3주차 투표",
       date: "05.15 19:00 ~ 05.21 18:00",
-      voteRate: "60%",
+      voteRate: 60,
       voted : false,
     },
   ])
@@ -46,7 +46,7 @@ const VoteList: React.FC = () => {
       const crt_data = nowVote.data.map((item) => ({
         id: item.id,
         title: item.title,
-        voteRate: ((item.finishCount / item.voteCount) * 100).toFixed(1) + '%',
+        voteRate: parseFloat(((item.finishCount / item.voteCount) * 100).toFixed(1)),
         date: `${item.startDate} ~ ${item.endDate}`,
         voted: item.voted
       }));
@@ -56,7 +56,7 @@ const VoteList: React.FC = () => {
       const end_data = endVote.data.map((item) => ({
         id: item.id,
         title: item.title,
-        voteRate: ((item.finishCount / item.voteCount) * 100).toFixed(1) + '%',
+        voteRate: parseFloat(((item.finishCount / item.voteCount) * 100).toFixed(1)),
         date: `${item.startDate} ~ ${item.endDate}`,
         voted: item.voted
       }));

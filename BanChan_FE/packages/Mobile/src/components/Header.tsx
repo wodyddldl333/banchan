@@ -1,7 +1,7 @@
-import React, { useState, ReactElement } from "react";
-import { useNavigate } from "react-router-dom";
-import { SidebarItemProps, HeaderProps } from "../Types";
+import React, { useState } from "react";
+import { HeaderProps, SidebarItemProps } from "../Types";
 import { NavLink } from "react-router-dom";
+import useCustomNavigation from "../hooks/useCustomNavigation";
 
 const SidebarItem: React.FC<SidebarItemProps> = ({
   icon,
@@ -9,12 +9,6 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
   to,
   children,
 }) => {
-  const navigate = useNavigate();
-
-  const handleChildClick = (childTo: string) => {
-    navigate(childTo);
-  };
-
   return (
     <div>
       <NavLink
@@ -34,20 +28,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
       </NavLink>
       {children && (
         <div className="ml-5 mt-6 space-y-4">
-          {React.Children.map(children, (child) => {
-            if (React.isValidElement(child)) {
-              const element = child as ReactElement<{
-                to: string;
-                onClick?: () => void;
-              }>;
-              if (element.props.to) {
-                return React.cloneElement(element, {
-                  onClick: () => handleChildClick(element.props.to),
-                });
-              }
-            }
-            return child;
-          })}
+          {children}
         </div>
       )}
     </div>
@@ -56,14 +37,14 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
 
 const Header: React.FC<HeaderProps> = ({ children }) => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const navigate = useNavigate();
+  const { goBack } = useCustomNavigation();
 
   const handleMenuToggle = () => {
     setMenuOpen(!menuOpen);
   };
 
   const handleBackButtonClick = () => {
-    navigate(-1); // 이전 페이지로 이동
+    goBack();
   };
 
   return (
@@ -116,7 +97,6 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
               text="홈"
               to="/m/home"
             />
-
 
             <div className="mt-[60px]"></div>
             <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
