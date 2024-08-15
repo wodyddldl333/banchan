@@ -19,7 +19,7 @@ const FinishedVote: React.FC = () => {
       if (voteData) {
         setVoteRate(
           parseFloat(
-            ((voteData.finishCount+1 / voteData.voteCount) * 100).toFixed(1)
+            ((((voteData.finishCount)+1) / voteData.voteCount) * 100).toFixed(1)
           )
         );
       }
