@@ -96,13 +96,13 @@ const FinishedMeeting: React.FC = () => {
       const summary = response.data.summary;
       Swal.fire({
         title: `회의명: ${roomName}`,
-        html: `<div style="text-align: left; white-space: pre-wrap;">${summary.replace(
-          /\n/g,
-          "<br>"
-        )}</div>
-  <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
-공지사항으로 작성
-</button>
+        html: `
+    <div style="text-align: left; white-space: pre-wrap;">
+      ${summary.replace(/\n/g, "<br>")}
+    </div>
+    <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
+      공지사항으로 작성
+    </button>
   `,
         icon: "info",
         confirmButtonText: "확인",
