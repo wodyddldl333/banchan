@@ -1,6 +1,5 @@
 import React, { useState , useEffect,useRef} from "react";
 import VoteForm from "./VoteForm";
-import BackButton from "../Buttons/BackButton";
 import { useCookies } from "react-cookie";
 import { getVoteDetail ,doVote,DeleteVote} from "../../api/VoteAPI";
 import { Link,useParams,useNavigate } from "react-router-dom";
@@ -176,7 +175,6 @@ const VoteDetail: React.FC = () => {
     <div className="p-8">
       <div className="">
         <div className="flex justify-start p-5">
-          <BackButton />
           <h3 className="text-3xl	font-semibold">투표 상세</h3>
         </div>
 
