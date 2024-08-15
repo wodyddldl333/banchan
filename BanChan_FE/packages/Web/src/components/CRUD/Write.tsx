@@ -9,51 +9,58 @@ const WriteContent = () => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [file, setFile] = useState<File | null>(null);
-  const {boardType} = useParams();
-  const [cookies] = useCookies()
+  const { boardType } = useParams();
+  const [cookies] = useCookies();
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       setFile(e.target.files[0]);
     }
   };
-  const CreateCommunity = async (Token:string,data:{title:string,content:string}) => {
+  const CreateCommunity = async (
+    Token: string,
+    data: { title: string; content: string }
+  ) => {
     try {
-      console.log(data)
-      if(boardType == 'ask'){
-
-        const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
+      console.log(data);
+      if (boardType == "ask") {
+        const response = await axios.post(
+          `${baseUrl}/api/${boardType}/regist`,
           {
-            ...data
-          }, {
+            ...data,
+          },
+          {
             headers: {
-              'Authorization': `Bearer ${Token}`, // Use response data here
-            }
-          });
+              Authorization: `Bearer ${Token}`, // Use response data here
+            },
+          }
+        );
 
-          console.log(response);
-          return response.data; // content 배열만 반환
+        return response.data; // content 배열만 반환
       } else {
         const formData = new FormData();
         formData.append("title", title);
         formData.append("content", content);
         if (file) {
           formData.append("files", file);
-          console.log('gi')
-          console.log(file)
+          console.log("gi");
+          console.log(file);
         }
         for (const [key, value] of formData.entries()) {
           console.log(`${key}:`, value);
         }
-        const response = await axios.post(`${baseUrl}/api/${boardType}/regist`,
-          formData, {
+        const response = await axios.post(
+          `${baseUrl}/api/${boardType}/regist`,
+          formData,
+          {
             headers: {
-              'Authorization': `Bearer ${Token}`, // Use response data here
+              Authorization: `Bearer ${Token}`, // Use response data here
               "Content-Type": "multipart/form-data",
-            }
-          });
-          console.log('hi')
-          console.log(response);
-          return response.data; // content 배열만 반환
+            },
+          }
+        );
+        console.log("hi");
+        console.log(response);
+        return response.data; // content 배열만 반환
       }
     } catch (error) {
       console.error("생성 중 오류가 발생하였습니다", error);
@@ -61,14 +68,15 @@ const WriteContent = () => {
   };
   const SubmitHandle = () => {
     const data = {
-      "title" : title,
-      "content" : content
-    }
-    
-    CreateCommunity(cookies.Token,data)
+      title: title,
+      content: content,
+    };
 
-    console.log(data)
-  }
+    CreateCommunity(cookies.Token, data).then(() => {
+      alert("게시글 작성이 완료되었습니다.");
+      window.location.href = `/community/${boardType}`;
+    });
+  };
   return (
     <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-7xl h-[750px]">
       <div className="mt-[20px]">
@@ -128,11 +136,9 @@ const WriteContent = () => {
 
 const Write = () => {
   return (
-
-        <div className="flex-1 flex items-center justify-center bg-customBackgroundColor p-4">
-          <WriteContent />
-        </div>
-
+    <div className="flex-1 flex items-center justify-center bg-customBackgroundColor p-4">
+      <WriteContent />
+    </div>
   );
 };
 

@@ -117,7 +117,6 @@ const Detail: React.FC = () => {
 
   const postDelete = () => {
     const selection = confirm('게시글을 정말 삭제하시겠습니까?')
-    console.log(selection)
     if (selection) {
       simpleDelete(cookies.Token,`api/${boardType}/delete/${id}`)
       .then( () => {
@@ -134,7 +133,6 @@ const Detail: React.FC = () => {
       title : post?.title??' ',
       content : post?.content ?? ' '
     }
-    console.log(data)
     navigate(`/community/${boardType}/edit/${id}`,{state : {data}})
   }
 
@@ -157,7 +155,6 @@ const Detail: React.FC = () => {
         );
 
         setPost(response.data);
-        console.log(response);
       } catch (error) {
         console.error("데이터를 가져오는 중 오류가 발생했습니다!", error);
       }
