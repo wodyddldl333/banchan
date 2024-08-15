@@ -112,11 +112,11 @@ const Home: React.FC = () => {
             <div className="relative w-[320px] p-4 bg-[#F0F8FF] border rounded-[10px]">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold text-lg">공지사항</span>
-                <NavLink to="/more" className="text-gray-500">
+                <NavLink to="/community/notice" className="text-gray-500">
                   더보기
                 </NavLink>
               </div>
-              {announcements.map((announcement, index) => (
+              {/* {announcements.map((announcement, index) => (
                 <div key={index} className="mb-2">
                   <div className="font-semibold text-black">
                     {announcement.title}
@@ -125,7 +125,7 @@ const Home: React.FC = () => {
                     {announcement.date}
                   </div>
                 </div>
-              ))}
+              ))} */}
             </div>
           </>
         )}
