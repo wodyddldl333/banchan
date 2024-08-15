@@ -38,11 +38,6 @@ const HomePage: React.FC = () => {
             <h2 className="text-lg font-semibold mb-4">
               아파트 당근마켓 (10월 오픈)
             </h2>
-            <img
-              src="src/assets/apartment_market.png"
-              alt="아파트 당근마켓"
-              className="rounded-lg"
-            />
           </div>
 
           {/* 공지사항 */}
