@@ -242,7 +242,7 @@ const MeetingPage: React.FC = () => {
       }
 
       // 약간의 지연 추가
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
       // 세션 삭제 요청
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
