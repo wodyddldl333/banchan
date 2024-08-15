@@ -92,12 +92,14 @@ const FinishedMeeting: React.FC = () => {
           },
         }
       );
+
       const summary = response.data.summary;
+      const htmlSummary = `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>`;
       Swal.fire({
-        title: `회의 ID: ${meetingId}`,
-        html: `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>
-      <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-right: 5px;">
-    공지사항으로 작성하기 
+        title: `회의명: ${roomName}`,
+        html: `${htmlSummary}
+      <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
+    공지사항으로 작성
   </button>
       `,
         icon: "info",
@@ -110,8 +112,6 @@ const FinishedMeeting: React.FC = () => {
                 const formData = new FormData();
                 formData.append("title", roomName);
                 formData.append("content", summary); // summary를 content로 추가
-
-
 
                 // API 호출
                 const response = await axios.post(
