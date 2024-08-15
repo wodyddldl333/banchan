@@ -8,21 +8,6 @@ import CalendarDrawer from "./CalendarDrawer";
 const MeetingList: React.FC = () => {
   const navigate = useNavigate();
 
-  //   const futureItem = [
-  //     {
-  //       title: "LH 7월 3주차 회의",
-  //       date: "07.15 19:00 ~ ",
-  //       buttonText: "회의 참여",
-  //       statusText: "회의 참여 인원: 0명",
-  //     },
-  //     {
-  //       title: "LH 7월 3주차 회의",
-  //       date: "07.15 19:00 ~ ",
-  //       buttonText: "회의 참여",
-  //       statusText: "회의 참여 인원: 0명",
-  //     },
-  //   ];
-
   const completedItems = [
     {
       title: "LH 7월 3주차 회의",
@@ -39,7 +24,7 @@ const MeetingList: React.FC = () => {
   ];
 
   const handleResultClick = (item: Items) => {
-    navigate("/m/voteResult", { state: { item } });
+    navigate("/m/community/notice/list", { state: { item } });
   };
   return (
     <div className="min-h-screen ">
