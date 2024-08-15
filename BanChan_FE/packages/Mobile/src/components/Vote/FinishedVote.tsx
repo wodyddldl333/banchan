@@ -1,24 +1,31 @@
-import React,{useEffect,useState} from "react";
+import React, { useEffect, useState } from "react";
 import GaugeChart from "react-gauge-chart";
-import { useNavigate,useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Header from "../Header";
 import { getVoteDetail } from "../../mobileapi/VoteAPI";
 import { useCookies } from "react-cookie";
 const FinishedVote: React.FC = () => {
   const navigate = useNavigate();
-  const {id} = useParams()
+  const { id } = useParams();
   const [cookies] = useCookies();
   const [voteRate, setVoteRate] = useState(0);
 
   useEffect(() => {
     const getData = async () => {
-      const voteData = await getVoteDetail(cookies.Token,`api/votes/detail/${id}`);
-      if(voteData) {
-        setVoteRate(parseFloat(((voteData.finishCount / voteData.voteCount) * 100).toFixed(1)))
-      } 
+      const voteData = await getVoteDetail(
+        cookies.Token,
+        `api/votes/detail/${id}`
+      );
+      if (voteData) {
+        setVoteRate(
+          parseFloat(
+            ((voteData.finishCount / voteData.voteCount) * 100).toFixed(1)
+          )
+        );
+      }
     };
     getData();
-    console.log(voteRate);
+    console.log("voteRate:", voteRate);
   }, [cookies.Token]);
 
   const goToVoteList = () => {
@@ -36,7 +43,7 @@ const FinishedVote: React.FC = () => {
         nrOfLevels={2}
         arcsLength={[0.38, 0.62]} // 전체 아크를 하나로 설정
         colors={["#0057ff", "#e9e9e9"]} // 첫 번째 색상은 게이지가 채워지는 부분, 두 번째 색상은 남은 부분
-        percent={voteRate/100} // 게이지가 38% 채워짐
+        percent={voteRate / 100} // 게이지가 38% 채워짐
         arcWidth={0.2} // 아크의 두께를 0.2로 설정
         textColor="#0057ff" // 텍스트 색상을 파란색으로 설정
         needleColor="#0057ff" // 바늘 색상을 파란색으로 설정
