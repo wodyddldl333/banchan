@@ -74,7 +74,7 @@ export interface newDrawerProps {
     id: number;
     title: string;
     date: string;
-    voteRate: string;
+    voteRate: number;
     voted :boolean;
     onClick: () => void;
   }>;
