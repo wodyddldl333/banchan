@@ -1,10 +1,25 @@
-import React from "react";
+import React,{useEffect,useState} from "react";
 import GaugeChart from "react-gauge-chart";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useParams } from "react-router-dom";
 import Header from "../Header";
-
+import { getVoteDetail } from "../../mobileapi/VoteAPI";
+import { useCookies } from "react-cookie";
 const FinishedVote: React.FC = () => {
   const navigate = useNavigate();
+  const {id} = useParams()
+  const [cookies] = useCookies();
+  const [voteRate, setVoteRate] = useState(0);
+
+  useEffect(() => {
+    const getData = async () => {
+      const voteData = await getVoteDetail(cookies.Token,`api/votes/detail/${id}`);
+      if(voteData) {
+        setVoteRate(parseFloat(((voteData.finishCount / voteData.voteCount) * 100).toFixed(1)))
+      } 
+    };
+    getData();
+    console.log(voteRate);
+  }, [cookies.Token]);
 
   const goToVoteList = () => {
     navigate("/m/vote/voteList");
