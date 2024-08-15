@@ -165,16 +165,16 @@ const MeetingPage: React.FC = () => {
           );
         };
 
-        const sessionClosedHandler = (event: SignalEvent) => {
-          if (event.type === "signal:session-closed") {
-            alert(event.data || "회의가 종료되었습니다.");
-            navigate("/meeting/reservedMeeting"); // 알림 후 리다이렉트
-          }
-        };
+        // const sessionClosedHandler = (event: SignalEvent) => {
+        //   if (event.type === "signal:session-closed") {
+        //     alert(event.data || "회의가 종료되었습니다.");
+        //     navigate("/meeting/reservedMeeting"); // 알림 후 리다이렉트
+        //   }
+        // };
 
         mySession.on("streamCreated", streamCreatedHandler);
         mySession.on("streamDestroyed", streamDestroyedHandler);
-        mySession.on("signal:session-closed", sessionClosedHandler); // 세션 종료 신호 처리
+        // mySession.on("signal:session-closed", sessionClosedHandler); // 세션 종료 신호 처리
 
         await joinSession(mySession, token);
         setSession(mySession);
@@ -189,7 +189,7 @@ const MeetingPage: React.FC = () => {
       if (session) {
         session.off("streamCreated");
         session.off("streamDestroyed");
-        session.off("signal:session-closed");
+        // session.off("signal:session-closed");
         session.disconnect();
         setSubscribers([]);
         subscriberStreams.current.clear();
@@ -221,28 +221,28 @@ const MeetingPage: React.FC = () => {
   const deleteSession = async (sessionId: string): Promise<void> => {
     try {
       // 신호 전송을 별도의 try-catch로 분리하여 오류가 나더라도 세션 삭제가 계속되도록 합니다.
-      if (!session || !session.connection || !session.connection.connectionId) {
-        console.error("Session is not in a valid state to send signals.");
-        return;
-      }
+      // if (!session || !session.connection || !session.connection.connectionId) {
+      //   console.error("Session is not in a valid state to send signals.");
+      //   return;
+      // }
 
-      try {
-        const connections = session.streamManagers.map(
-          (streamManager) => streamManager.stream.connection
-        );
+      // try {
+      //   // const connections = session.streamManagers.map(
+      //   //   (streamManager) => streamManager.stream.connection
+      //   // );
 
-        await session.signal({
-          type: "session-closed",
-          data: "회의가 종료되었습니다.",
-          to: connections, // 모든 사용자에게 보내기
-        });
-        console.log("Session closed signal sent successfully.");
-      } catch (signalError) {
-        console.error("Error sending session closed signal:", signalError);
-      }
+      //   await session.signal({
+      //     type: "session-closed",
+      //     data: "회의가 종료되었습니다.",
+      //     to: connections, // 모든 사용자에게 보내기
+      //   });
+      //   console.log("Session closed signal sent successfully.");
+      // } catch (signalError) {
+      //   console.error("Error sending session closed signal:", signalError);
+      // }
 
       // 약간의 지연 추가
-      await new Promise((resolve) => setTimeout(resolve, 500));
+      // await new Promise((resolve) => setTimeout(resolve, 500));
 
       // 세션 삭제 요청
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
