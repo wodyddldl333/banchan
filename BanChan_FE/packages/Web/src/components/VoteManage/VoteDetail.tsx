@@ -69,7 +69,6 @@ const VoteDetail: React.FC = () => {
         voteId: voteData.id,
         responses: voteResult,
       };
-      console.log(Data);
 
 
       const voting = async () => {

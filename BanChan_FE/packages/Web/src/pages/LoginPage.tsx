@@ -60,8 +60,6 @@ const LoginPage = () => {
   };
 
   const validate = async () => {
-    console.log(API_URL);
-    console.log("로그인 유효성 검증:", user);
     if (user.userId === "") {
       alert("아이디를 입력해주세요.");
     } else if (user.password === "") {
@@ -88,7 +86,6 @@ const LoginPage = () => {
               config
             );
 
-            console.log(user_data.data);
             alert(`${user_data.data.username}님 환영합니다!`);
             if (rememberMe) {
               setCookie("rememberUserId", user.userId, {
