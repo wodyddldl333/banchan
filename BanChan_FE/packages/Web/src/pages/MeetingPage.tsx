@@ -242,14 +242,7 @@ const MeetingPage: React.FC = () => {
       }
 
       // 약간의 지연 추가
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-
-      session.off("streamCreated");
-      session.off("streamDestroyed");
-      session.off("signal:session-closed");
-      session.disconnect();
-      setSubscribers([]);
-      subscriberStreams.current.clear();
+      await new Promise((resolve) => setTimeout(resolve, 500));
 
       // 세션 삭제 요청
       await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
