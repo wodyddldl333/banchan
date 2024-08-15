@@ -37,6 +37,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getMyInfo(){
 
         SecurityUserDto userDto = JwtAuthFilter.getUser();
+
         User user = userRepository.findByEmail(userDto.getEmail())
                 .orElseThrow(() -> new CustomException(ErrorCode.USER_NOT_FOUND));
 
