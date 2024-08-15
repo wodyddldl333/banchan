@@ -112,10 +112,20 @@ const FinishedMeeting: React.FC = () => {
                 formData.append("title", roomName);
                 formData.append("content", summary); // summary를 content로 추가
 
+                for (const pair of formData.entries()) {
+                  console.log(`${pair[0]}: ${pair[1]}`);
+                }
+
                 // API 호출
                 const response = await axios.post(
                   `${baseUrl}/api/notice/regist`,
-                  formData
+                  formData,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${cookies.Token}`, // 필요한 인증 헤더 추가
+                      "Content-Type": "application/form-data",
+                    },
+                  }
                 );
 
                 if (response.status === 200) {
