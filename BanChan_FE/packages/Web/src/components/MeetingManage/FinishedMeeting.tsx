@@ -96,11 +96,14 @@ const FinishedMeeting: React.FC = () => {
       const summary = response.data.summary;
       Swal.fire({
         title: `회의명: ${roomName}`,
-        html: `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>
-      <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
-    공지사항으로 작성
-  </button>
-      `,
+        html: `<div style="text-align: left; white-space: pre-wrap;">${summary.replace(
+          /\n/g,
+          "<br>"
+        )}</div>
+  <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
+공지사항으로 작성
+</button>
+  `,
         icon: "info",
         confirmButtonText: "확인",
         didRender: () => {
@@ -118,14 +121,13 @@ const FinishedMeeting: React.FC = () => {
                   formData,
                   {
                     headers: {
-                      Authorization: `Bearer ${cookies.Token}`, // 필요한 인증 헤더 추가
-                      "Content-Type": "application/form-data",
+                      Authorization: `Bearer ${cookies.Token}`,
+                      "Content-Type": "multipart/form-data",
                     },
                   }
                 );
 
                 if (response.status === 200) {
-                  // 성공적으로 공지사항이 등록되면 리디렉션
                   window.location.href = `${baseUrl}/community/notice`;
                 } else {
                   Swal.fire({
