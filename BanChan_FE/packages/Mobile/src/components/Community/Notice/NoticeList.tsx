@@ -11,7 +11,7 @@ const NoticeList: React.FC = () => {
   const [totalitem,setTotal] = useState(0)
   const [totalPages, setTotalPage] = useState(1)
   const [currentPage, setCurrentPage] = useState(1)
-
+  const [keywords, setKeywords] = useState('')
   const [notifications,setData] = useState([{
     id:-1,
     title:'존재하는 데이터가 없습니다.',
@@ -23,15 +23,16 @@ const NoticeList: React.FC = () => {
     sortBy:'createdAt',
     sortDirection:'desc',
     page:0,
-    size:4
+    size:5
   })
 
   useEffect(() => {
     setParams((prevParams) => ({
       ...prevParams,
       page: currentPage - 1,
+      keyword: keywords,
     }));
-  }, [currentPage]);
+  }, [currentPage,keywords]);
   
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
@@ -47,7 +48,7 @@ const NoticeList: React.FC = () => {
         id: item.id,
         title: item.title,
         writer: item.username,
-        date: item.createdAt.replace("T", " ").slice(0, -7),
+        date: item.createdAt.replace("T", " ").slice(0, 10),
         views: item.views
       }));
       setData(real_data)
@@ -59,6 +60,10 @@ const NoticeList: React.FC = () => {
   const goToDetail = (id:number) => {
     navigate(`/m/community/notice/detail/${id}`);
   };
+
+  const onInputHandler = (e:React.ChangeEvent<HTMLInputElement>) =>{
+    setKeywords(e.target.value)
+  }
   return (
     <div className="min-h-screen">
       <Header>공지사항</Header>
@@ -74,6 +79,7 @@ const NoticeList: React.FC = () => {
             type="text"
             placeholder="검색"
             className="w-full border rounded-md py-2 pl-10 pr-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            onInput={onInputHandler}
           />
           <i className="fas fa-search absolute top-3 left-3 text-gray-400"></i>
         </div>
@@ -81,7 +87,7 @@ const NoticeList: React.FC = () => {
 
         <div>
           {notifications.map((item) => (
-            <div key={item.id} className="border-b py-3">
+            <div key={item.id} className="border-b py-2">
               <div className="flex flex-col justify-between items-start">
                 <div onClick={() => goToDetail(item.id)} className="font-semibold text-lg">
                   <span className="text-blue-500">[공지] </span>
@@ -89,10 +95,14 @@ const NoticeList: React.FC = () => {
                 </div>
                 <div className="text-gray-500 text-sm">{item.date}</div>
               </div>
+              <div className="text-gray-500 text-sm flex items-center mt-1">
+                <i className="fas fa-eye mr-2"></i>
+                {item.views}
+              </div>
             </div>
           ))}
         </div>
-        <div className="flex flex-col justify-between mt-4">
+        <div className="flex flex-col justify-between mt-3">
 
 
           {/* 페이징처리 코드 알아서 넣으면 됨 !  */}

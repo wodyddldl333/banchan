@@ -11,7 +11,8 @@ export type IconName =
   | "book"
   | "group"
   | "chat_bubble"
-  | "notifications";
+  | "notifications"
+  | "mail";
 
 export interface ControlPanelsProps {
   onChatToggle: () => void;
@@ -60,6 +61,10 @@ export interface Post {
   createdAt: string;
   admin: boolean;
   writer : boolean;
+  files : {
+    id : number;
+    originalFilename : string;
+  }[]
 }
 
 export interface Meeting {
@@ -87,34 +92,34 @@ export interface VoteListType {
 }
 
 export interface VoteDetailType {
-  id : number,
-  title : string,
-  content : string,
-  imageUrl : string|null,
-  startDate : string,
-  endDate : string,
-  createdAt : string,
-  questions : voteQuestion[]
+  id: number;
+  title: string;
+  content: string;
+  imageUrl: string | null;
+  startDate: string;
+  endDate: string;
+  createdAt: string;
+  questions: voteQuestion[];
 }
 
 interface voteQuestion {
-  questionId : number,
-  questionText : string,
-  options : voteOption[]
+  questionId: number;
+  questionText: string;
+  options: voteOption[];
 }
 interface voteOption {
-  id : number,
-  optionText : string
+  id: number;
+  optionText: string;
 }
 
 export interface VoteType {
-  voteId : number,
-  responses : OptionType[]
+  voteId: number;
+  responses: OptionType[];
 }
 
 interface OptionType {
-  questionId : number
-  optionId : number
+  questionId: number;
+  optionId: number;
 }
 
 export interface CommunityGetType {
@@ -180,16 +185,15 @@ export interface VoteFormProps {
   };
 }
 interface VoteResultItems {
-    questionId: number;
-    questionText: string;
-    optionResults: VoteItemForm[];
+  questionId: number;
+  questionText: string;
+  optionResults: VoteItemForm[];
 }
 export interface VoteResultType {
-
-  voteId : number;
-  content : string;
-  title : string;
-  questionResults: VoteResultItems[]
+  voteId: number;
+  content: string;
+  title: string;
+  questionResults: VoteResultItems[];
 }
 
 export interface SidebarItemProps {
@@ -246,6 +250,6 @@ export interface ChatBoxProps {
 }
 
 export interface UpdateProps {
-  title:string
-  content : string
+  title: string;
+  content: string;
 }
