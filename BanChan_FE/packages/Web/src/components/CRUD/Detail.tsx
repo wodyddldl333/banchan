@@ -38,8 +38,7 @@ const Detail: React.FC = () => {
       window.URL.revokeObjectURL(url);
       return response
     }
-    console.log('hi')
-    console.log(download())
+    download()
   }
   const DetailContent: React.FC<{ post: Post }> = ({ post }) => {
     return (
@@ -61,24 +60,29 @@ const Detail: React.FC = () => {
               {post.content}
             </div>
           </div>
+          {boardType == 'notice' ? (
           <div className="mb-4">
             <label className="block text-gray-700 text-lg font-bold mb-2">
               첨부 파일
             </label>
             <div
               className="block w-full text-sm text-gray-500
-                      file:mr-4 file:py-2 file:px-4
-                      file:rounded-full file:border-0
-                      file:text-sm file:font-semibold
-                      file:bg-blue-50 file:text-blue-700
-                      hover:file:bg-blue-100"
-                onClick={() => downloadHandler(post.files[0]?.id)}
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-full file:border-0
+              file:text-sm file:font-semibold
+              file:bg-blue-50 file:text-blue-700
+              hover:file:bg-blue-100"
+              onClick={() => downloadHandler(post.files[0]?.id)}
               >
               <button>
                 {post.files[0]?.originalFilename}
               </button>
             </div>
           </div>
+              ) : (
+                <></>
+              )}
+
           <div className="flex justify-end mt-[40px]">
             <div className="mr-3"></div>
             {post.writer ? 
@@ -117,7 +121,6 @@ const Detail: React.FC = () => {
 
   const postDelete = () => {
     const selection = confirm('게시글을 정말 삭제하시겠습니까?')
-    console.log(selection)
     if (selection) {
       simpleDelete(cookies.Token,`api/${boardType}/delete/${id}`)
       .then( () => {
@@ -134,7 +137,6 @@ const Detail: React.FC = () => {
       title : post?.title??' ',
       content : post?.content ?? ' '
     }
-    console.log(data)
     navigate(`/community/${boardType}/edit/${id}`,{state : {data}})
   }
 
@@ -157,7 +159,6 @@ const Detail: React.FC = () => {
         );
 
         setPost(response.data);
-        console.log(response);
       } catch (error) {
         console.error("데이터를 가져오는 중 오류가 발생했습니다!", error);
       }

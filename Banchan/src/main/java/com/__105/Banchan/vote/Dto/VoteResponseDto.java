@@ -20,9 +20,11 @@ public class VoteResponseDto {
     private LocalDate startDate;
     private LocalDate endDate;
     private LocalDateTime createdAt;
+    private int voteCount;
+    private int finishCount;
     private List<QuestionResponseDto> questions;
 
-    public VoteResponseDto(Vote vote) {
+    public VoteResponseDto(Vote vote, int voteCount, int finishCount) {
         this.id = vote.getId();
         this.title = vote.getTitle();
         this.content = vote.getContent();
@@ -30,6 +32,8 @@ public class VoteResponseDto {
         this.startDate = vote.getStartDate();
         this.endDate = vote.getEndDate();
         this.createdAt = vote.getCreatedAt();
+        this.voteCount = voteCount;
+        this.finishCount = finishCount;
         this.questions = vote.getQuestions().stream()
                 .map(QuestionResponseDto::new)
                 .collect(Collectors.toList());

@@ -1,7 +1,6 @@
 // VoteCreatePage.tsx
 import React, { useState, useRef, useEffect } from "react";
 import VoteCreateForm from "./VoteCreateForm";
-import BackButton from "../Buttons/BackButton";
 import { Form,VoteCreateType } from "../../Type";
 import { CreateVote } from "../../api/VoteAPI";
 import { useCookies } from "react-cookie";
@@ -73,7 +72,6 @@ const VoteCreatePage: React.FC = () => {
       }))
         
     }
-    console.log(data);
     // 서브밋 이벤트 방지
     e.preventDefault();
     // 백엔드로 POST 요청 보내는 로직 필요(axios)
@@ -81,7 +79,7 @@ const VoteCreatePage: React.FC = () => {
 
       navigate('/vote/active')
     }).catch((e) => {
-      console.log(e)
+      console.error(e)
     })
   };
 
@@ -89,7 +87,6 @@ const VoteCreatePage: React.FC = () => {
     <div className="p-8">
       <div className="">
         <div className="flex justify-start p-5">
-          <BackButton />
 
           <h3 className="text-3xl font-semibold">투표 생성</h3>
         </div>

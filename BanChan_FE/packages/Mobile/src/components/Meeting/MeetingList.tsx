@@ -1,46 +1,73 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Drawer from "../Vote/Drawer";
 import { useNavigate } from "react-router-dom";
 import Header from "../Header";
-import { Items } from "../../Types";
+import { Items, Meeting } from "../../Types";
 import CalendarDrawer from "./CalendarDrawer";
+import { useCookies } from "react-cookie";
+import axios from "axios";
+
+const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
 const MeetingList: React.FC = () => {
   const navigate = useNavigate();
+  const [cookies] = useCookies();
+  const [completedMeetings, setCompletedMeetings] = useState<Items[]>([]);
 
-  //   const futureItem = [
-  //     {
-  //       title: "LH 7월 3주차 회의",
-  //       date: "07.15 19:00 ~ ",
-  //       buttonText: "회의 참여",
-  //       statusText: "회의 참여 인원: 0명",
-  //     },
-  //     {
-  //       title: "LH 7월 3주차 회의",
-  //       date: "07.15 19:00 ~ ",
-  //       buttonText: "회의 참여",
-  //       statusText: "회의 참여 인원: 0명",
-  //     },
-  //   ];
+  useEffect(() => {
+    const fetchCompletedMeetings = async () => {
+      try {
+        const response = await axios.get(
+          `${baseUrl}/api/session/get/roomList`,
+          {
+            headers: {
+              Authorization: `Bearer ${cookies.Token}`,
+            },
+          }
+        );
 
-  const completedItems = [
-    {
-      title: "LH 7월 3주차 회의",
-      date: "07.15 19:00 ~ ",
-      buttonText: "요약본 확인",
-      statusText: "회의 참여 인원: 30명",
-    },
-    {
-      title: "LH 5월 3주차 회의",
-      date: "05.15 19:00 ~ ",
-      buttonText: "요약본 확인",
-      statusText: "회의 참여 인원: 30명",
-    },
-  ];
+        // API 응답 데이터를 가공하여 state에 저장합니다.
+        if (Array.isArray(response.data.data)) {
+          setCompletedMeetings(
+            response.data.data.map((meeting: Meeting) => ({
+              title: meeting.roomName,
+              date: meeting.startDate,
+              buttonText: "요약본 확인",
+              statusText: `회의 참여 인원: ${4}명`,
+            }))
+          );
+        } else {
+          console.error("Expected an array but got:", response.data);
+        }
+      } catch (error) {
+        console.error("Failed to fetch completed meetings:", error);
+      }
+    };
+
+    fetchCompletedMeetings();
+  }, [cookies.Token]);
+
+  // const completedItems = [
+  //   {
+  //     title: "LH 7월 3주차 회의",
+  //     date: "07.15 19:00 ~ ",
+  //     buttonText: "요약본 확인",
+  //     statusText: "회의 참여 인원: 30명",
+  //   },
+  //   {
+  //     title: "LH 5월 3주차 회의",
+  //     date: "05.15 19:00 ~ ",
+  //     buttonText: "요약본 확인",
+  //     statusText: "회의 참여 인원: 30명",
+  //   },
+  // ];
 
   const handleResultClick = (item: Items) => {
-    navigate("/m/voteResult", { state: { item } });
+    navigate("/m/community/notice/list", { state: { item } });
   };
+  // const handleResultClick = (item: Items) => {
+  //   navigate("/m/community/notice/list", { state: { item } });
+  // };
   return (
     <div className="min-h-screen ">
       {/* 상단 네비게이션 */}
@@ -50,11 +77,11 @@ const MeetingList: React.FC = () => {
       {/* 완료된 회의 */}
       <Drawer
         title="완료된 회의"
-        items={completedItems.map((item) => ({
+        items={completedMeetings.map((item) => ({
           ...item,
           onClick: () => handleResultClick(item),
         }))}
-      />{" "}
+      />
     </div>
   );
 };

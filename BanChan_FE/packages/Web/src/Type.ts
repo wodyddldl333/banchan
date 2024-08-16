@@ -99,6 +99,8 @@ export interface VoteDetailType {
   startDate: string;
   endDate: string;
   createdAt: string;
+  voteCount:number;
+  finishCount: number;
   questions: voteQuestion[];
 }
 

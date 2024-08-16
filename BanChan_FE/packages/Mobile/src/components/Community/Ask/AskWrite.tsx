@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Header from "../../Header";
 import axios from "axios";
 import { useCookies } from "react-cookie";
+import { useNavigate } from "react-router-dom";
 const API_URL = import.meta.env.VITE_API_URL;
 
 const AskWrite: React.FC = () => {
@@ -9,7 +10,7 @@ const AskWrite: React.FC = () => {
   const [title, setTitle] = useState<string>("");
   const [content, setContent] = useState<string>("");
   const [cookies] = useCookies();
-
+  const navigate = useNavigate()
   // 제목 변경 핸들러
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
@@ -30,7 +31,7 @@ const AskWrite: React.FC = () => {
 
 
     try {
-      const response = await axios.post(`${API_URL}/api/ask/regist`, {
+      await axios.post(`${API_URL}/api/ask/regist`, {
         title,content
       }, {
         headers: {
@@ -38,9 +39,8 @@ const AskWrite: React.FC = () => {
         },
       });
 
-      console.log(response);
-
       alert("파일이 성공적으로 전송되었습니다.");
+      navigate(-1)
     } catch (error) {
       console.error("파일 전송 에러:", error);
       alert("파일 전송 중 오류가 발생했습니다.");

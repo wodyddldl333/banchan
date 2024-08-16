@@ -17,7 +17,6 @@ const CreateMeeting: React.FC = () => {
   const handleCreateMeeting = async (e: React.FormEvent) => {
     e.preventDefault();
     const token = cookies.Token;
-    console.log("Token:", token);
     try {
       await axios.post(
         `${baseUrl}/api/session/createRoom`,

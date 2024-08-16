@@ -7,7 +7,7 @@ interface SubscriberListProps {
 
 const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
   const [currentPage, setCurrentPage] = useState(0);
-  const subscribersPerPage = 3; // 한 페이지에 표시할 구독자 수
+  const subscribersPerPage = 2; // 한 페이지에 표시할 구독자 수
 
   const totalPages = Math.ceil(subscribers.length / subscribersPerPage);
 
@@ -33,7 +33,7 @@ const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
       {subscribers.length > subscribersPerPage && currentPage > 0 && (
         <button
           onClick={handlePreviousPage}
-          className="absolute left-[-25px] ml-2 bg-gray-500 text-white p-2 rounded-full"
+          className="absolute left-[-25px] bg-gray-500 text-white p-2 rounded-full"
         >
           {"<"}
         </button>
@@ -58,7 +58,7 @@ const SubscriberList: React.FC<SubscriberListProps> = ({ subscribers }) => {
         currentPage < totalPages - 1 && (
           <button
             onClick={handleNextPage}
-            className="absolute right-[-25px] mr-2 bg-gray-500 text-white p-2 rounded-full"
+            className="absolute right-[-25px] bg-gray-500 text-white p-2 rounded-full"
           >
             {">"}
           </button>

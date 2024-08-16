@@ -7,7 +7,7 @@ const MainHeader: React.FC = () => {
         <header className="flex items-center justify-end mb-6 ">
           <div className="flex items-center space-x-4 mr-6  ">
             <span className="text-gray-500 mr-6 font-semibold text-[18px]">
-              주소: 광주전남 공동혁신도시 빛가람 대방엘리움로얄카운티1차
+              주소: 부산광역시 강서구 삼정그린코아 더시티
             </span>
           </div>
         </header>

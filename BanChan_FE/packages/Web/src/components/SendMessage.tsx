@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { MultiSelectDropdownProps } from "../Type";
 import { useNavigate } from "react-router-dom";
 import { sendSMS } from "../api/SenaMassageAPI";
-import BackButton from "./Buttons/BackButton";
 
 const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   options,
@@ -166,7 +165,6 @@ const SendMessage: React.FC = () => {
   return (
     <div>
       <div className="flex justify-start p-5">
-        <BackButton />
         <h3 className="text-3xl	font-semibold"> 알람 보내기</h3>
       </div>
 
