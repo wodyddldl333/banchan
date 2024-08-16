@@ -47,7 +47,13 @@
 | Jenkins | 2.462.1 |
 
 ## 3. 주요 기능
+### 소셜 로그인 기능
 
+### 투표 기능
+
+### 화상회의 기능
+
+### 회의 요약본 기능
 
 
 ## 4. 기술 소개
@@ -121,6 +127,9 @@
 ### 시스템 아키텍쳐
 ![시스템](exec/resources/시스템.png)
 
+### ERD
+![ERD](exec/resources/ERD.png)
+
 ### 요구사항 정의서
 ![요구사항정의서](exec/resources/요구사항정의서.png)
 
@@ -130,7 +139,7 @@
 
 ## 6. 팀원 소개
 
-| **[최동호](https://carpal-butterfly-bd7.notion.site/11-_-1-_E105_-_-_-f7e17ad039c44fcd9824176ec62b8f68?pvs=4)** | **[최재용]** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건](https://fluffy-hippodraco-222.notion.site/201-105-2e4535a37b2b4672951a6e86f655d62b)** |
+| **[최동호](https://carpal-butterfly-bd7.notion.site/11-_-1-_E105_-_-_-f7e17ad039c44fcd9824176ec62b8f68?pvs=4)** | **[최재용](https://cotton-hornet-992.notion.site/SSAFY-5881a668df744a1d861cc8de0ecfe28a?pvs=4)** | **[김하휼]** | **[윤동환]** | **[정진우]** | **[김동건](https://fluffy-hippodraco-222.notion.site/201-105-2e4535a37b2b4672951a6e86f655d62b)** |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | ![최동호](exec/resources/최동호.png) | ![최재용](exec/resources/최재용.png) | ![김하휼](exec/resources/김하휼.png) | ![윤동환](exec/resources/윤동환.png) | ![정진우](exec/resources/정진우.png) | ![김동건](exec/resources/김동건.png) |
 | Backend | Backend | Frontend | Frontend | Frontend | Infra |
@@ -138,13 +147,13 @@
 
 
 **Backend**
-- 최동호 : 회원 및 인증 관련(OAuth, JWT) 유저, 관리자API / 패스키 구현 / UCC 제작 / 발표
+- 최동호 : 팀장 / 회원 및 인증 관련(OAuth, JWT) 유저, 관리자API / 패스키 구현 / UCC 제작 / 발표
 - 최재용 : ERD 설계 및 DB 구축 / 공지사항, 건의사항, 투표 관련 API / WebRTC 서버 연동 및 화상회의 관련 API / STT와 AI를 활용한 회의 요약 서비스 구현 / 서버 에러 수정
 
 **Frontend**
-- 김하휼 : 
-- 윤동환 : 
-- 정진우 : 와이어 프레임 제작/ 공지사항, 건의사항, 투표 관련 페이지 제작/ SMS 전송 시스템 구현
+- 김하휼 : 웹/앱 전체적인 UI/UX 구현 / 화상 회의 관리 API 연동 / WebRTC 기반 환경 세팅 및 STT 데이터, 실시간 통신 처리
+- 윤동환 : 프로젝트 기획 / 목업(피그마) 제작 / 시스템 아키텍쳐 등 산출물 제작 /유저 관리 및 인증(JWT, Oauth) 관련 api 연동 / 발표 자료 제작
+- 정진우 : 와이어 프레임 제작/ 공지사항, 건의사항, 투표 관련 페이지 제작/ SMS 전송 시스템 구현 / 버전관리 시스템(git) 총괄 관리
 
 **Infra**
 - 김동건 : 개발환경 구축(프론트엔드&백엔드 도커 설정) / 배포환경 구축(리버스프록시 및 openvidu서버) / CI/CD자동배포-젠킨스 / 수동배포-쉘코드 / 포팅매뉴얼 및 기타 산출물 관리
