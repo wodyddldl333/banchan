@@ -148,7 +148,7 @@
 
 ## 6. 팀원 소개
 
-| **[최동호](https://carpal-butterfly-bd7.notion.site/11-_-1-_E105_-_-_-f7e17ad039c44fcd9824176ec62b8f68?pvs=4)** | **[최재용](https://cotton-hornet-992.notion.site/SSAFY-5881a668df744a1d861cc8de0ecfe28a?pvs=4)** | **[김하휼](https://just-credit-1fe.notion.site/SSAFY-WebRTC-db8246231d0540c6a67ee1f1429f6543?pvs=4)** | **[윤동환](https://deep-earth-a1c.notion.site/d2d299d3d00e4746ab7787fa0609a15a)** | **[정진우]** | **[김동건](https://fluffy-hippodraco-222.notion.site/201-105-2e4535a37b2b4672951a6e86f655d62b)** |
+| **[최동호](https://carpal-butterfly-bd7.notion.site/11-_-1-_E105_-_-_-f7e17ad039c44fcd9824176ec62b8f68?pvs=4)** | **[최재용](https://cotton-hornet-992.notion.site/SSAFY-5881a668df744a1d861cc8de0ecfe28a?pvs=4)** | **[김하휼](https://just-credit-1fe.notion.site/SSAFY-WebRTC-db8246231d0540c6a67ee1f1429f6543?pvs=4)** | **[윤동환](https://deep-earth-a1c.notion.site/d2d299d3d00e4746ab7787fa0609a15a)** | **[정진우](https://www.notion.so/676f36ce758f48a998628825ef11ccea?pvs=4)** | **[김동건](https://fluffy-hippodraco-222.notion.site/201-105-2e4535a37b2b4672951a6e86f655d62b)** |
 |:---:|:---:|:---:|:---:|:---:|:---:|
 | ![최동호](exec/resources/최동호.png) | ![최재용](exec/resources/최재용.png) | ![김하휼](exec/resources/김하휼.png) | ![윤동환](exec/resources/윤동환.png) | ![정진우](exec/resources/정진우.png) | ![김동건](exec/resources/김동건.png) |
 | Backend | Backend | Frontend | Frontend | Frontend | Infra |
