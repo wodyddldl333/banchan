@@ -320,7 +320,7 @@ const MeetingPage: React.FC = () => {
             from: "01020983066",
             subject: "반상회 URL 주소입니다. ",
             text: `
-            안녕하세요 동대표입니다. 
+            안녕하세요 관리자입니다. 
             https://i11e105.p.ssafy.io/m/sessionJoin/${sessionId}
             위 링크를 통해 회의에 접속해주시면 감사하겠습니다. 
             `,
