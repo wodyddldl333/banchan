@@ -52,7 +52,7 @@ const FinishedMeeting: React.FC = () => {
   const meetingSummary = async (meetingId: number) => {
     setLoading(true);
     try {
-      const response = await axios.post(
+      await axios.post(
         `${baseUrl}/api/speech/${meetingId}`,
         {},
         {
@@ -62,7 +62,6 @@ const FinishedMeeting: React.FC = () => {
           },
         }
       );
-      console.log(response.data);
       Swal.fire({
         title: "AI 요약 완료",
         text: "요약본이 성공적으로 생성되었습니다.",
@@ -82,7 +81,7 @@ const FinishedMeeting: React.FC = () => {
     }
   };
 
-  const showResult = async (meetingId: number) => {
+  const showResult = async (meetingId: number, roomName: string) => {
     try {
       const response = await axios.get(
         `${baseUrl}/api/session/detail/${meetingId}`,
@@ -93,20 +92,73 @@ const FinishedMeeting: React.FC = () => {
           },
         }
       );
+
       const summary = response.data.summary;
-      console.log(summary);
       Swal.fire({
-        title: `회의 ID: ${meetingId}`,
-        html: `<pre style="text-align: left; white-space: pre-wrap;">${summary}</pre>`,
+        title: `회의명: ${roomName}`,
+        html: `
+    <div style="text-align: left; white-space: pre-wrap;">
+      ${summary
+        .split("\n")
+        .map((line: string) => `<p>${line}</p>`)
+        .join("")}
+    </div>
+    <button id="navigate-button" class="swal2-confirm swal2-styled" style="display: inline-block; margin-top: 10px; margin-right: 5px;">
+      공지사항으로 작성
+    </button>
+  `,
         icon: "info",
         confirmButtonText: "확인",
+        didRender: () => {
+          const navigateButton = document.getElementById("navigate-button");
+          if (navigateButton) {
+            navigateButton.addEventListener("click", async () => {
+              try {
+                const formData = new FormData();
+                formData.append("title", roomName);
+                formData.append("content", summary); // 줄바꿈 문자를 그대로 서버로 전송
+
+                // API 호출
+                const response = await axios.post(
+                  `${baseUrl}/api/notice/regist`,
+                  formData,
+                  {
+                    headers: {
+                      Authorization: `Bearer ${cookies.Token}`,
+                      "Content-Type": "multipart/form-data",
+                    },
+                  }
+                );
+
+                if (response.status === 200) {
+                  window.location.href = `${baseUrl}/community/notice`;
+                } else {
+                  Swal.fire({
+                    title: "오류",
+                    text: "공지사항 등록 중 문제가 발생했습니다.",
+                    icon: "error",
+                    confirmButtonText: "확인",
+                  });
+                }
+              } catch (error) {
+                Swal.fire({
+                  title: "오류",
+                  text: "공지사항 등록 중 문제가 발생했습니다.",
+                  icon: "error",
+                  confirmButtonText: "확인",
+                });
+                console.error("Error during notice registration:", error);
+              }
+            });
+          }
+        },
       });
     } catch (error) {
-      console.log("error occuer", error);
+      console.error("error occurred", error);
     }
   };
 
-  const checkResult = (meetingId: number) => {
+  const checkResult = (meetingId: number, roomName: string) => {
     return (
       <SmallButton
         title="내용 확인"
@@ -114,7 +166,7 @@ const FinishedMeeting: React.FC = () => {
         txtColor=""
         borderColor="border-customGreen"
         onClick={() => {
-          showResult(meetingId);
+          showResult(meetingId, roomName);
         }}
       />
     );
@@ -179,9 +231,9 @@ const FinishedMeeting: React.FC = () => {
       index + 1,
       meeting.roomName,
       "관리자",
-      `${meeting.id}` + "명",
+      `${4}` + "명",
       summarize(meeting.id),
-      checkResult(meeting.id),
+      checkResult(meeting.id, meeting.roomName),
       deleteMeeting(meeting.id),
     ]);
 

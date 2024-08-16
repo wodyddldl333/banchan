@@ -48,14 +48,12 @@ const NoticeDetail: React.FC = () => {
       window.URL.revokeObjectURL(url);
       return response
     }
-    console.log('hi')
-    console.log(download())
+    download()
   }
 
   useEffect(() => {
     const fetchPostDetail = async () => {
       const data = await getCommunityDetails(cookies.Token,`api/notice/detail/${id}`);
-      console.log(data);
       setPost({
         content : data.content,
         title : data.title,

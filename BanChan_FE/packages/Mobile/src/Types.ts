@@ -45,14 +45,18 @@ export interface SidebarItemProps {
 }
 
 export interface QuestionOptionItems {
-  id:number;
-  optionText:string;
+  id: number;
+  optionText: string;
 }
 export interface SwipeableContentProps {
-  items: Array<{ questionId:number; questionText: string; options: QuestionOptionItems[] }>;
+  items: Array<{
+    questionId: number;
+    questionText: string;
+    options: QuestionOptionItems[];
+  }>;
 }
 
-export interface SwipeableResultProps{
+export interface SwipeableResultProps {
   items: Array<{ question: string; options: string[] }>;
 }
 
@@ -67,15 +71,14 @@ export interface DrawerProps {
   }>;
 }
 
-
 export interface newDrawerProps {
   title: string;
   items: Array<{
     id: number;
     title: string;
     date: string;
-    voteRate: string;
-    voted :boolean;
+    voteRate: number;
+    voted: boolean;
     onClick: () => void;
   }>;
 }
@@ -101,6 +104,16 @@ export interface LargeButtonProps {
   title: string;
   to?: string;
   onClick?: () => void;
+}
+
+export interface Meeting {
+  id: number;
+  roomName: string;
+  startDate: string;
+  startTime: string;
+  session: string | null;
+  createdAt: string | null;
+  active: boolean;
 }
 
 export interface SmallButtonProps {
@@ -145,6 +158,8 @@ export interface VoteDetailType {
   startDate: string;
   endDate: string;
   createdAt: string;
+  voteCount: number;
+  finishCount: number;
   questions: voteQuestion[];
 }
 

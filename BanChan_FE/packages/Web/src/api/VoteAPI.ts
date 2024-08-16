@@ -57,7 +57,6 @@ export const CreateVote = async (Token:string,API_REST:string,data:VoteCreateTyp
 
       }
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     if (axios.isAxiosError(error)) {
@@ -73,7 +72,6 @@ export const CreateVote = async (Token:string,API_REST:string,data:VoteCreateTyp
 // 투표 진행
 export const doVote = async (Token:string,API_REST:string,data:VoteType) => {
   try {
-    console.log(data)
     const response = await axios.post(`${API_URL}/${API_REST}`,data
       , {
       headers: {
@@ -82,11 +80,9 @@ export const doVote = async (Token:string,API_REST:string,data:VoteType) => {
 
       }
     });
-    console.log(response);
     return response.data; // content 배열만 반환
   } catch (error) {
     if (axios.isAxiosError(error)) {
-      console.log(error)
       console.error('Error data:', error.response?.data);
       console.error('Error status:', error.response?.status);
       console.error('Error headers:', error.response?.headers);

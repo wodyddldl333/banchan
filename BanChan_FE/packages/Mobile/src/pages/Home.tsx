@@ -2,49 +2,70 @@
 // import bgImage from "@assets/Mobile_main.jpg";
 // import { NavLink, useNavigate } from "react-router-dom";
 // import axios from "axios";
-import React from "react";
+import React,{useEffect, useState} from "react";
 import bgImage from "@assets/Mobile_main.jpg";
+import { useCookies } from "react-cookie";
+import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
-
+import { CommunityParamsType } from "../Types";
+import { getCommunityList } from "../mobileapi/CommunityAPI";
 const items = [
   { icon: "person", text: "마이페이지", to: "/m/mypage" },
-  { icon: "forum", text: "커뮤니티", to: "" },
-  { icon: "how_to_vote", text: "투표", to: "/m/voteList" },
+  { icon: "forum", text: "커뮤니티", to: "/m/community" },
+  { icon: "how_to_vote", text: "투표", to: "/m/vote" },
   { icon: "calendar_today", text: "회의", to: "/m/meetingList" },
 ];
 
-const announcements = [
-  {
-    title: "[공지] 모라 LH 7월 3주차 투표 결과 공지",
-    date: "2024.07.17",
-  },
-  {
-    title: "[공지] 단지 내 공사 관련 공지",
-    date: "2024.06.28",
-  },
-];
 
 const Home: React.FC = () => {
   // const [userInfo, setUserInfo] = useState(null);
+  const [announcements,setNotice] = useState( [
+    {
+      id:1,
+      title: "[공지] 모라 LH 7월 3주차 투표 결과 공지",
+      createdAt: "2024.07.17",
+    },
+    {
+      id:2,
+      title: "[공지] 단지 내 공사 관련 공지",
+      createdAt: "2024.06.28",
+    },
+  ])
+  const [userAPT,setUserAPT] = useState(0)
   const navigate = useNavigate();
+  const [cookies] = useCookies();
+  const API_URL = import.meta.env.VITE_BACKEND_URL;
+  const params:CommunityParamsType = {
+    keyword:'',
+    sortBy:'createdAt',
+    sortDirection:'desc',
+    page:0,
+    size:2
+  }
 
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/user/myinfo")
-  //     .then((response) => {
-  //       setUserInfo(response.data);
-  //       console.log(response.data);
-  //     })
-  //     .catch((error) => {
-  //       console.error("Error fetching user info:", error);
-  //     });
-  // }, []);
+  useEffect(() => {
+    const fetchUserInfo = async () => {
+      try {
+        const response = await axios.get(`${API_URL}/api/user/myinfo`, {
+          headers: {
+            Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 토큰 사용
+          },
+        })
+        setUserAPT(response.data.userApartments.length)
+        const Board = await getCommunityList(cookies.Token,'api/notice/list',params);
+        console.log(Board)
+        setNotice(Board.content)
+      } catch (error) {
+        console.error("Failed to fetch user info:", error);
+      }
+    }
+    fetchUserInfo();
+  }, [cookies.Token]);
 
   const gotoHomeInfo = () => {
+    console.log(announcements)
     navigate("/m/homeInfo");
   };
-
-  const userAPT = 0;
   // const hasUserApartments =
   //   userInfo.userApartments && userInfo.userApartments.length > 0;
 
@@ -95,19 +116,22 @@ const Home: React.FC = () => {
             <div className="relative w-[320px] p-4 bg-[#F0F8FF] border rounded-[10px]">
               <div className="flex justify-between items-center mb-2">
                 <span className="font-bold text-lg">공지사항</span>
-                <NavLink to="/more" className="text-gray-500">
+                <NavLink to="/m/community/notice" className="text-gray-500">
                   더보기
                 </NavLink>
               </div>
-              {announcements.map((announcement, index) => (
-                <div key={index} className="mb-2">
+              {announcements.map((announcement) => (
+                <NavLink to={`/m/community/notice/detail/${announcement.id}`}>
+
+                <div key={announcement.id} className="mb-2">
                   <div className="font-semibold text-black">
                     {announcement.title}
                   </div>
                   <div className="text-gray-500 text-sm">
-                    {announcement.date}
+                    {announcement.createdAt}
                   </div>
                 </div>
+                </NavLink>
               ))}
             </div>
           </>

@@ -97,7 +97,7 @@ const Approval: React.FC = () => {
 
   const handleApprove = async (user: User) => {
     try {
-      const encodedUsername = encodeURIComponent(user.username);
+      const encodedUsername = user.username;
       const apiUrl = `${import.meta.env.VITE_BACKEND_URL}/api/admin/users/approval/${encodedUsername}`;
       await axios.post(apiUrl, {}, {
         headers: {

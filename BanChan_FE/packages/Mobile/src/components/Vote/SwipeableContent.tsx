@@ -47,7 +47,6 @@ const SwipeableContent: React.FC<SwipeableContentProps> = ({ items }) => {
         responses : data.filter((response): response is { questionId: number; optionId: number; } => response !== undefined)}
 
       doVote(cookies.Token,`api/votes/vote`,answer)
-      console.log(data)
     }
     navigate(`/m/vote/finishedVote/${id}`);
     }

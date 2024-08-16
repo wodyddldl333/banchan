@@ -5,21 +5,20 @@ import {
   Publisher,
   Subscriber,
   StreamEvent,
-  // SignalEvent,
+  SignalEvent,
 } from "openvidu-browser";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-
 import { IconName, LocationState } from "../../Types";
 import { useCookies } from "react-cookie";
 import ControlPanels from "./ControlPanels";
 import SubscriberList from "./SubscribeList";
 import ThumbnailPlayer from "./ThumbnailPlayer";
-// import ChatBox from "../components/WebRTC/ChatBox";
+import Chat from "./Chat";
 
 const baseUrl = import.meta.env.VITE_BASE_API_URL;
 
-const MeetingHome: React.FC = () => {
+const MeetingPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [cookies] = useCookies();
@@ -28,14 +27,11 @@ const MeetingHome: React.FC = () => {
   const [publisher, setPublisher] = useState<Publisher | null>(null);
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [isChatBoxVisible, setIsChatBoxVisible] = useState<boolean>(false);
-  console.log(sessionId);
-  // const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
+  const [messages, setMessages] = useState<{ id: number; text: string }[]>([]);
 
   const [thumbnailPlayer, setThumbnailPlayer] = useState<
     Publisher | Subscriber | null
   >(null);
-  // const [recordingId, setRecordingId] = useState<string | null>(null);
-  // const [stopRecordingRequest, setStopRecordingRequest] = useState(false);
 
   const { token, roomName } = location.state as LocationState;
 
@@ -87,20 +83,18 @@ const MeetingHome: React.FC = () => {
           mic: publisher.stream.audioActive,
         }));
 
-        // mySession.on("signal:chat", (event: SignalEvent) => {
-        //   if (event.data) {
-        //     // event.data가 undefined가 아닌지 확인
-        //     const newMessage = {
-        //       id: Date.now(),
-        //       text: event.data,
-        //     };
-        //     setMessages((prevMessages) => [...prevMessages, newMessage]);
-        //   } else {
-        //     console.error("Received an undefined message");
-        //   }
-        // });
+        mySession.on("signal:chat", (event: SignalEvent) => {
+          if (event.data) {
+            const newMessage = {
+              id: Date.now(),
+              text: event.data,
+            };
+            setMessages((prevMessages) => [...prevMessages, newMessage]);
+          } else {
+            console.error("Received an undefined message");
+          }
+        });
 
-        console.log("Publisher added to session");
       } catch (error: unknown) {
         console.error("Error connecting to session:", error);
 
@@ -108,7 +102,6 @@ const MeetingHome: React.FC = () => {
           error instanceof Error &&
           error.message.includes("Token not valid")
         ) {
-          console.log("Token expired, requesting a new token...");
           try {
             const response = await axios.get(
               `${baseUrl}/api/session/newToken/${sessionId}`,
@@ -121,7 +114,6 @@ const MeetingHome: React.FC = () => {
             );
 
             const newToken = response.data.token;
-            console.log("Received new token:", newToken);
 
             await joinSession(mySession, newToken);
           } catch (tokenError) {
@@ -188,35 +180,25 @@ const MeetingHome: React.FC = () => {
     };
   }, [sessionId, token, joinSession]);
 
-  const deleteSession = async (sessionId: string): Promise<void> => {
-    try {
-      await axios.delete(`${baseUrl}/api/session/delete/${sessionId}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${cookies.Token}`,
-        },
+
+  const sendMessage = (message: string) => {
+    if (session) {
+      session.signal({
+        data: message,
+        type: "chat",
       });
-      navigate("/meeting/reservedMeeting");
-    } catch (error) {
-      console.error(`Error deleting session ${sessionId}:`, error);
     }
   };
-
-  // const sendMessage = (message: string) => {
-  //   if (session) {
-  //     session.signal({
-  //       data: message,
-  //       type: "chat",
-  //     });
-  //   }
-  // };
 
   const handleChatToggle = () => {
     setIsChatBoxVisible((prevState) => !prevState);
   };
 
+  const handleCloseChat = () => {
+    setIsChatBoxVisible(false);
+  };
+
   const handleButtonClick = (icon: IconName) => {
-    console.log("handleButtonClick triggered with icon:", icon);
     if (icon === "chat_bubble") {
       handleChatToggle();
       setActiveIcons((prevState) => ({
@@ -226,7 +208,7 @@ const MeetingHome: React.FC = () => {
     } else if (icon === "exit_to_app") {
       if (session) {
         session.disconnect();
-        deleteSession(sessionId!);
+        navigate("/m/meetingList"); // 원하는 페이지로 리다이렉트
       } else {
         console.error("Session is null or undefined.");
       }
@@ -257,52 +239,52 @@ const MeetingHome: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full h-screen">
+    <div className="flex flex-col items-center justify-center w-full h-screen max-w-[360px] max-h-[710px] mx-auto bg-gray-100 relative">
       <div className="bg-[#4285F4] opacity-70 absolute inset-0"></div>
-      <div className="relative flex flex-col w-full h-screen">
+      <div className="relative flex flex-col items-center justify-center w-full h-full">
         {/* 최상단에 회의명을 배치 */}
         {roomName && (
-          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white">
-            <h1 className="text-xl">회의명: {roomName}</h1>
+          <div className="w-full h-10 flex items-center justify-center bg-gray-800 text-white mb-2">
+            <h1 className="text-lg">회의명: {roomName}</h1>
           </div>
         )}
 
         {/* 나머지 콘텐츠 */}
         <div
-          className={`flex ${
-            isChatBoxVisible ? "justify-between" : "justify-center"
-          } items-center w-full h-full`}
+          className={`flex flex-col items-center justify-center w-full h-full`}
         >
-          <div
-            className={`flex flex-col items-center justify-center ${
-              isChatBoxVisible ? "w-3/4" : "w-full"
-            }`}
-          >
-            <div className="flex flex-col items-center">
-              <div className="flex justify-center items-center mb-4">
-                {thumbnailPlayer && (
-                  <ThumbnailPlayer
-                    stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
-                  />
-                )}
-              </div>
-              <SubscriberList subscribers={subscribers} />
+          <div className="flex flex-col items-center justify-center">
+            <div className="flex justify-center items-center mb-4">
+              {thumbnailPlayer && (
+                <ThumbnailPlayer
+                  stream={thumbnailPlayer.stream?.getMediaStream() ?? null}
+                />
+              )}
             </div>
-            <ControlPanels
-              onChatToggle={handleChatToggle}
-              activeIcons={activeIcons}
-              handleButtonClick={handleButtonClick}
-            />
+            <SubscriberList subscribers={subscribers} />
           </div>
-          {/* {isChatBoxVisible && (
-            <div className="w-[24%] h-full">
-              <ChatBox messages={messages} onSendMessage={sendMessage} />
-            </div>
-          )} */}
+          <ControlPanels
+            onChatToggle={handleChatToggle}
+            activeIcons={activeIcons}
+            handleButtonClick={handleButtonClick}
+          />
         </div>
+
+        {/* 채팅 박스 */}
+        {isChatBoxVisible && (
+          <div className="absolute bottom-0 left-0 w-full flex justify-center p-4">
+            <div className="w-[300px] h-[200px]">
+              <Chat
+                messages={messages}
+                onSendMessage={sendMessage}
+                onClose={handleCloseChat}
+              />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default MeetingHome;
+export default MeetingPage;
