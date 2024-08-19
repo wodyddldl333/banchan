@@ -1,12 +1,11 @@
-import React from 'react';
+import React from "react";
+import { PaginationProps } from "shared/src/Type";
 
-interface PaginationProps {
-  totalPages: number;
-  currentPage: number;
-  onPageChange: (page: number) => void;
-}
-
-const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  totalPages,
+  currentPage,
+  onPageChange,
+}) => {
   const renderPageNumbers = () => {
     const pageNumbers = [];
     const maxPagesToShow = 5; // 보여줄 페이지 버튼의 최대 수
@@ -17,7 +16,9 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
         pageNumbers.push(
           <button
             key={i}
-            className={`px-4 py-2 rounded-md ${currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
             onClick={() => onPageChange(i)}
           >
             {i}
@@ -33,7 +34,9 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
         pageNumbers.push(
           <button
             key={1}
-            className={`px-4 py-2 rounded-md ${currentPage === 1 ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === 1 ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
             onClick={() => onPageChange(1)}
           >
             1
@@ -53,7 +56,9 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
         pageNumbers.push(
           <button
             key={i}
-            className={`px-4 py-2 rounded-md ${currentPage === i ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === i ? "bg-blue-500 text-white" : "bg-gray-200"
+            }`}
             onClick={() => onPageChange(i)}
           >
             {i}
@@ -72,7 +77,11 @@ const Pagination: React.FC<PaginationProps> = ({ totalPages, currentPage, onPage
         pageNumbers.push(
           <button
             key={totalPages}
-            className={`px-4 py-2 rounded-md ${currentPage === totalPages ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+            className={`px-4 py-2 rounded-md ${
+              currentPage === totalPages
+                ? "bg-blue-500 text-white"
+                : "bg-gray-200"
+            }`}
             onClick={() => onPageChange(totalPages)}
           >
             {totalPages}

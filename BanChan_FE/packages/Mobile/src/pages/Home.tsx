@@ -1,13 +1,9 @@
-// import React, { useEffect, useState } from "react";
-// import bgImage from "@assets/Mobile_main.jpg";
-// import { NavLink, useNavigate } from "react-router-dom";
-// import axios from "axios";
-import React,{useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import bgImage from "@assets/Mobile_main.jpg";
 import { useCookies } from "react-cookie";
 import axios from "axios";
 import { NavLink, useNavigate } from "react-router-dom";
-import { CommunityParamsType } from "../Types";
+import { CommunityParamsType } from "shared/src/Type";
 import { getCommunityList } from "../mobileapi/CommunityAPI";
 const items = [
   { icon: "person", text: "마이페이지", to: "/m/mypage" },
@@ -16,32 +12,31 @@ const items = [
   { icon: "calendar_today", text: "회의", to: "/m/meetingList" },
 ];
 
-
 const Home: React.FC = () => {
   // const [userInfo, setUserInfo] = useState(null);
-  const [announcements,setNotice] = useState( [
+  const [announcements, setNotice] = useState([
     {
-      id:1,
+      id: 1,
       title: "[공지] 모라 LH 7월 3주차 투표 결과 공지",
       createdAt: "2024.07.17",
     },
     {
-      id:2,
+      id: 2,
       title: "[공지] 단지 내 공사 관련 공지",
       createdAt: "2024.06.28",
     },
-  ])
-  const [userAPT,setUserAPT] = useState(0)
+  ]);
+  const [userAPT, setUserAPT] = useState(0);
   const navigate = useNavigate();
   const [cookies] = useCookies();
   const API_URL = import.meta.env.VITE_BACKEND_URL;
-  const params:CommunityParamsType = {
-    keyword:'',
-    sortBy:'createdAt',
-    sortDirection:'desc',
-    page:0,
-    size:2
-  }
+  const params: CommunityParamsType = {
+    keyword: "",
+    sortBy: "createdAt",
+    sortDirection: "desc",
+    page: 0,
+    size: 2,
+  };
 
   useEffect(() => {
     const fetchUserInfo = async () => {
@@ -50,20 +45,24 @@ const Home: React.FC = () => {
           headers: {
             Authorization: `Bearer ${cookies.Token}`, // 쿠키에서 토큰 사용
           },
-        })
-        setUserAPT(response.data.userApartments.length)
-        const Board = await getCommunityList(cookies.Token,'api/notice/list',params);
-        console.log(Board)
-        setNotice(Board.content)
+        });
+        setUserAPT(response.data.userApartments.length);
+        const Board = await getCommunityList(
+          cookies.Token,
+          "api/notice/list",
+          params
+        );
+        console.log(Board);
+        setNotice(Board.content);
       } catch (error) {
         console.error("Failed to fetch user info:", error);
       }
-    }
+    };
     fetchUserInfo();
   }, [cookies.Token]);
 
   const gotoHomeInfo = () => {
-    console.log(announcements)
+    console.log(announcements);
     navigate("/m/homeInfo");
   };
   // const hasUserApartments =
@@ -122,15 +121,14 @@ const Home: React.FC = () => {
               </div>
               {announcements.map((announcement) => (
                 <NavLink to={`/m/community/notice/detail/${announcement.id}`}>
-
-                <div key={announcement.id} className="mb-2">
-                  <div className="font-semibold text-black">
-                    {announcement.title}
+                  <div key={announcement.id} className="mb-2">
+                    <div className="font-semibold text-black">
+                      {announcement.title}
+                    </div>
+                    <div className="text-gray-500 text-sm">
+                      {announcement.createdAt}
+                    </div>
                   </div>
-                  <div className="text-gray-500 text-sm">
-                    {announcement.createdAt}
-                  </div>
-                </div>
                 </NavLink>
               ))}
             </div>

@@ -5,7 +5,11 @@ import NavItem from "../NavItem";
 import { useCookies } from "react-cookie";
 import TempTable from "../TempTable";
 import { getCommunityList } from "../../api/CommunityAPI";
-import { CommunityParamsType,CommunityListType,DataItem} from "../../Type";
+import {
+  CommunityParamsType,
+  CommunityListType,
+  DataItem,
+} from "shared/src/Type";
 const headers = ["id", "title", "writer", "createdAt", "views", "likes"];
 
 // axios 요청 함수
@@ -21,22 +25,26 @@ const NavElements = () => {
 const Ask: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
   const [cookies] = useCookies();
-  const [maxPage,setMaxPage] = useState<number>(1);
-  const [crtPage,setCrtPage] = useState<number>(1);
+  const [maxPage, setMaxPage] = useState<number>(1);
+  const [crtPage, setCrtPage] = useState<number>(1);
 
-  const [params,setParams] = useState<CommunityParamsType>({
-    keyword:'',
-    sortBy:'createdAt',
-    sortDirection:'desc',
-    page:0,
-    size:10
-  })
+  const [params, setParams] = useState<CommunityParamsType>({
+    keyword: "",
+    sortBy: "createdAt",
+    sortDirection: "desc",
+    page: 0,
+    size: 10,
+  });
 
   useEffect(() => {
     const getData = async () => {
-      const askList = await getCommunityList(cookies.Token,'api/ask/list',params);
-      setMaxPage(askList.totalPages)
-      const real_data = askList.content.map((item:CommunityListType) => ({
+      const askList = await getCommunityList(
+        cookies.Token,
+        "api/ask/list",
+        params
+      );
+      setMaxPage(askList.totalPages);
+      const real_data = askList.content.map((item: CommunityListType) => ({
         id: item.id,
         title: item.title,
         writer: item.username,
@@ -47,8 +55,7 @@ const Ask: React.FC = () => {
       setData(real_data);
     };
     getData();
-  }, [params,cookies.Token]);
-
+  }, [params, cookies.Token]);
 
   useEffect(() => {
     setParams((prevParams) => ({
@@ -56,7 +63,7 @@ const Ask: React.FC = () => {
       page: crtPage - 1,
     }));
   }, [crtPage]);
-  
+
   const handlePageChange = (page: number) => {
     setCrtPage(page);
   };
@@ -65,10 +72,13 @@ const Ask: React.FC = () => {
     <>
       <NavElements />
       <div className="container mx-auto p-4 mt-3">
-        <div className="flex justify-end items-center mb-6 mr-6">
-        </div>
+        <div className="flex justify-end items-center mb-6 mr-6"></div>
         <TempTable headerProp={headers} data={data} />
-        <Pagination maxPage={maxPage} currentPage={crtPage} onPageChange={handlePageChange} />
+        <Pagination
+          maxPage={maxPage}
+          currentPage={crtPage}
+          onPageChange={handlePageChange}
+        />
       </div>
     </>
   );

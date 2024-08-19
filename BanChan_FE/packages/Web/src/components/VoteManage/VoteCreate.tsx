@@ -1,7 +1,7 @@
 // VoteCreatePage.tsx
 import React, { useState, useRef, useEffect } from "react";
 import VoteCreateForm from "./VoteCreateForm";
-import { Form,VoteCreateType } from "../../Type";
+import { Form, VoteCreateType } from "shared/src/Type";
 import { CreateVote } from "../../api/VoteAPI";
 import { useCookies } from "react-cookie";
 import { useNavigate } from "react-router-dom";
@@ -61,33 +61,32 @@ const VoteCreatePage: React.FC = () => {
   // 투표 등록
   const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    const data:VoteCreateType = {
-      "title" : title,
-      "content" : content,
-      "startDate" :voteStart,
-      "endDate" : voteEnd,
-      "questions": forms.map((form) => ({
-        "questionText": form.questionText,
-        "options": form.options
-      }))
-        
-    }
+    const data: VoteCreateType = {
+      title: title,
+      content: content,
+      startDate: voteStart,
+      endDate: voteEnd,
+      questions: forms.map((form) => ({
+        questionText: form.questionText,
+        options: form.options,
+      })),
+    };
     // 서브밋 이벤트 방지
     e.preventDefault();
     // 백엔드로 POST 요청 보내는 로직 필요(axios)
-    CreateVote(cookies.Token,'api/votes/regist' ,data).then(() => {
-
-      navigate('/vote/active')
-    }).catch((e) => {
-      console.error(e)
-    })
+    CreateVote(cookies.Token, "api/votes/regist", data)
+      .then(() => {
+        navigate("/vote/active");
+      })
+      .catch((e) => {
+        console.error(e);
+      });
   };
 
   return (
     <div className="p-8">
       <div className="">
         <div className="flex justify-start p-5">
-
           <h3 className="text-3xl font-semibold">투표 생성</h3>
         </div>
         <div className="min-w-full min-h-[700px] p-6 bg-white border rounded-[20px] overflow-hidden">

@@ -1,13 +1,11 @@
 import React, { useEffect } from "react";
-import { ControlPanelsProps } from "../../Types";
+import { ControlPanelsProps } from "shared/src/Type";
 
 const ControlPanels: React.FC<ControlPanelsProps> = ({
   activeIcons,
   handleButtonClick,
 }) => {
-  useEffect(() => {
-    
-  }, [activeIcons]);
+  useEffect(() => {}, [activeIcons]);
 
   return (
     <div className="flex justify-center items-center bg-blue-200 rounded-full py-2 px-4 mt-10 w-[320px] mx-auto">

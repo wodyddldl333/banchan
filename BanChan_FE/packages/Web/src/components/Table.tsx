@@ -1,6 +1,6 @@
 import React from "react";
 import TableRow from "./TableRow";
-import { TableProps } from "../Type";
+import { TableProps } from "shared/src/Type";
 
 const Table: React.FC<TableProps> = ({ headers, data }) => {
   return (

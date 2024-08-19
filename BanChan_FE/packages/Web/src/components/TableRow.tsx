@@ -1,5 +1,5 @@
 import React from "react";
-import { TableRowProps } from "../Type";
+import { TableRowProps } from "shared/src/Type";
 
 const TableRow: React.FC<TableRowProps> = ({ row }) => {
   return (

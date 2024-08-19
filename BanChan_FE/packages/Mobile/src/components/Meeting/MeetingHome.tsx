@@ -9,7 +9,7 @@ import {
 } from "openvidu-browser";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { IconName, LocationState } from "../../Types";
+import { IconName, LocationState } from "shared/src/Type";
 import { useCookies } from "react-cookie";
 import ControlPanels from "./ControlPanels";
 import SubscriberList from "./SubscribeList";
@@ -94,7 +94,6 @@ const MeetingPage: React.FC = () => {
             console.error("Received an undefined message");
           }
         });
-
       } catch (error: unknown) {
         console.error("Error connecting to session:", error);
 
@@ -179,7 +178,6 @@ const MeetingPage: React.FC = () => {
       }
     };
   }, [sessionId, token, joinSession]);
-
 
   const sendMessage = (message: string) => {
     if (session) {

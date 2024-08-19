@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { HeaderProps, SidebarItemProps } from "../Types";
+import { HeaderProps, SidebarItemProps } from "shared/src/Type";
 import { NavLink } from "react-router-dom";
 import useCustomNavigation from "../hooks/useCustomNavigation";
 
@@ -26,11 +26,7 @@ const SidebarItem: React.FC<SidebarItemProps> = ({
           <span className="ml-2 text-[18px]">{text}</span>
         </div>
       </NavLink>
-      {children && (
-        <div className="ml-5 mt-6 space-y-4">
-          {children}
-        </div>
-      )}
+      {children && <div className="ml-5 mt-6 space-y-4">{children}</div>}
     </div>
   );
 };
@@ -92,21 +88,13 @@ const Header: React.FC<HeaderProps> = ({ children }) => {
                text-center h-[663px] transition-transform duration-700 transform z-50"
           >
             <div className="mt-[60px]"></div>
-            <SidebarItem
-              icon="home"
-              text="홈"
-              to="/m/home"
-            />
+            <SidebarItem icon="home" text="홈" to="/m/home" />
 
             <div className="mt-[60px]"></div>
             <SidebarItem icon="person" text="마이페이지" to="/m/mypage" />
             <div className="mt-[30px]"></div>
 
-            <SidebarItem
-              icon="forum"
-              text="커뮤니티"
-              to="/m/community/"
-            >
+            <SidebarItem icon="forum" text="커뮤니티" to="/m/community/">
               <SidebarItem
                 icon="assignment"
                 text="공지사항"

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PageProps } from "../Type";
+import { PageProps } from "shared/src/Type";
 
 const Page: React.FC<PageProps> = ({
   totalItems,
@@ -103,7 +103,11 @@ interface PaginationProps {
   currentPage: number;
   onPageChange: (page: number) => void;
 }
-const Pagination: React.FC<PaginationProps> = ({ maxPage ,  currentPage, onPageChange }) => {
+const Pagination: React.FC<PaginationProps> = ({
+  maxPage,
+  currentPage,
+  onPageChange,
+}) => {
   const totalItems = maxPage * 10;
   const itemsPerPage = 10;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import TempTableRow from "./TempTableRow";
-import { DataItem } from "../Type";
+import { DataItem } from "shared/src/Type";
 
 export interface TableProps {
   headerProp: string[];
