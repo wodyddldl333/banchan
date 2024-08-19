@@ -4,7 +4,7 @@ import Table from "../Table";
 import Nav from "../Nav";
 import NavItem from "../NavItem";
 import SmallButton from "../Buttons/SmallButton";
-import { Meeting } from "../../Type";
+import { Meeting } from "shared/src/Type";
 import { useCookies } from "react-cookie";
 import Spinner from "../Spinner";
 import Swal from "sweetalert2";

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import SmallButton from "../Buttons/SmallButton";
-import { UpdateProps } from "../../Type";
-import { useLocation,useParams,useNavigate } from "react-router-dom";
+import { UpdateProps } from "shared/src/Type";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import { updateArticle } from "../../api/CommunityAPI";
 import { useCookies } from "react-cookie";
 type Params = {
@@ -9,24 +9,24 @@ type Params = {
   id: string;
 };
 const Update = () => {
-  const location = useLocation()
-  const navigate = useNavigate()
-  const data:UpdateProps = location.state.data
-  const [cookies] = useCookies()
+  const location = useLocation();
+  const navigate = useNavigate();
+  const data: UpdateProps = location.state.data;
+  const [cookies] = useCookies();
   const UpdateContent = () => {
     const [title, setTitle] = useState(data.title);
     const { boardType, id } = useParams<Params>();
     const [content, setContent] = useState(data.content);
     const [file, setFile] = useState<File | null>(null);
     const UpdateCurrent = () => {
-      updateArticle(cookies.Token,`api/${boardType}/update/${id}`,{
-        title:title,
-        content:content
+      updateArticle(cookies.Token, `api/${boardType}/update/${id}`, {
+        title: title,
+        content: content,
       }).then(() => {
-        alert('게시글 수정이 완료되었습니다')
-        navigate(`/community/${boardType}/detail/${id}`)
-      })
-    }
+        alert("게시글 수정이 완료되었습니다");
+        navigate(`/community/${boardType}/detail/${id}`);
+      });
+    };
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       if (e.target.files) {
         setFile(e.target.files[0]);
@@ -90,11 +90,11 @@ const Update = () => {
     );
   };
   return (
-      <div className="flex-1 flex flex-col">
-        <div className="flex-1 flex items-center justify-center bg-customBackgroundColor p-4">
-          <UpdateContent />
-        </div>
+    <div className="flex-1 flex flex-col">
+      <div className="flex-1 flex items-center justify-center bg-customBackgroundColor p-4">
+        <UpdateContent />
       </div>
+    </div>
   );
 };
 

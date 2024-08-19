@@ -1,45 +1,42 @@
 import React, { useState, useEffect } from "react";
-import { newDrawerProps } from "../../Types";
+import { newDrawerProps } from "shared/src/Type";
 import axios from "axios";
 import { useCookies } from "react-cookie";
-import CryptoJS from 'crypto-js';
-
+import CryptoJS from "crypto-js";
 
 const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_MESSAGE_API_KEY
-const API_SECRET = import.meta.env.VITE_MESSAGE_API_SECRET_KEY
+const API_KEY = import.meta.env.VITE_MESSAGE_API_KEY;
+const API_SECRET = import.meta.env.VITE_MESSAGE_API_SECRET_KEY;
 
 // ISO 8601 형식의 현재 시간 생성
 const getCurrentIsoDate = (): string => {
-    return new Date().toISOString();
-  };
-  
-  // 랜덤 문자열 생성
-  const generateSalt = (): string => {
-    return Math.random().toString(36).substring(2, 15);
-  };
-  
-  // HMAC-SHA256 서명 생성
-  const generateSignature = (date: string, salt: string): string => {
-    const data = `${date}${salt}`;
-    return CryptoJS.HmacSHA256(data, API_SECRET).toString(CryptoJS.enc.Hex);
-  };
-  
-  interface Message {
-    to: string;
-    from: string;
-    text: string;
-    subject?: string;
-    autoTypeDetect: boolean;
-  }
+  return new Date().toISOString();
+};
 
-  interface CoolSMSResponse {
-    statusCode: number;
-    statusMessage: string;
-    // 추가적인 CoolSMS 응답 타입이 필요할 경우 여기에 정의
-  }
+// 랜덤 문자열 생성
+const generateSalt = (): string => {
+  return Math.random().toString(36).substring(2, 15);
+};
 
+// HMAC-SHA256 서명 생성
+const generateSignature = (date: string, salt: string): string => {
+  const data = `${date}${salt}`;
+  return CryptoJS.HmacSHA256(data, API_SECRET).toString(CryptoJS.enc.Hex);
+};
 
+interface Message {
+  to: string;
+  from: string;
+  text: string;
+  subject?: string;
+  autoTypeDetect: boolean;
+}
+
+interface CoolSMSResponse {
+  statusCode: number;
+  statusMessage: string;
+  // 추가적인 CoolSMS 응답 타입이 필요할 경우 여기에 정의
+}
 
 interface Item {
   id: number;
@@ -61,8 +58,8 @@ const OTPModal: React.FC<{
   const [resendTimer, setResendTimer] = useState(0);
   const [otpValidTimer, setOtpValidTimer] = useState(0);
   const [isOtpSent, setIsOtpSent] = useState(false);
-  const [cookies] = useCookies()
-  const Token = cookies.Token
+  const [cookies] = useCookies();
+  const Token = cookies.Token;
   useEffect(() => {
     let resendInterval: NodeJS.Timeout;
     let validInterval: NodeJS.Timeout;
@@ -87,54 +84,54 @@ const OTPModal: React.FC<{
     };
   }, [resendTimer, otpValidTimer, isOtpSent]);
 
+  const sendOTP = async (messages: Message[]): Promise<CoolSMSResponse> => {
+    const date = getCurrentIsoDate();
+    const salt = generateSalt();
+    const signature = generateSignature(date, salt);
 
+    const authorizationHeader = `HMAC-SHA256 apiKey=${API_KEY}, date=${date}, salt=${salt}, signature=${signature}`;
 
-        
-
-
-
-    const sendOTP = async (messages: Message[]): Promise<CoolSMSResponse> => {
-      const date = getCurrentIsoDate();
-      const salt = generateSalt();
-      const signature = generateSignature(date, salt);
-    
-      const authorizationHeader = `HMAC-SHA256 apiKey=${API_KEY}, date=${date}, salt=${salt}, signature=${signature}`;
-    
-      try {
-        const response = await axios.post('https://api.coolsms.co.kr/messages/v4/send-many/detail', {
-          messages
-        }, {
+    try {
+      const response = await axios.post(
+        "https://api.coolsms.co.kr/messages/v4/send-many/detail",
+        {
+          messages,
+        },
+        {
           headers: {
-            'Authorization': authorizationHeader
-          }
-        });
-        return response.data;
-      } catch (error) {
-        console.error('Failed to send SMS:', error);
-        throw error;
-      }
-    };
+            Authorization: authorizationHeader,
+          },
+        }
+      );
+      return response.data;
+    } catch (error) {
+      console.error("Failed to send SMS:", error);
+      throw error;
+    }
+  };
 
   const handleSendOTP = async () => {
     try {
-      const user = await axios.get(`${API_URL}/api/user/myinfo`,{
-        headers : {
-          Authorization: `Bearer ${Token}`
-        }
+      const user = await axios.get(`${API_URL}/api/user/myinfo`, {
+        headers: {
+          Authorization: `Bearer ${Token}`,
+        },
       });
-      if (user.data.phone.replace(/-/gi, "") != phoneNumber ) {
-        alert('내 정보에 등록된 번호와 다릅니다.')
-      }
-      else{
-        
-        const response = await axios.post(`${API_URL}/api/auth/otp/generate`, {
-          phoneNumber: phoneNumber
-        },{
-          headers : {
-            Authorization: `Bearer ${Token}`
+      if (user.data.phone.replace(/-/gi, "") != phoneNumber) {
+        alert("내 정보에 등록된 번호와 다릅니다.");
+      } else {
+        const response = await axios.post(
+          `${API_URL}/api/auth/otp/generate`,
+          {
+            phoneNumber: phoneNumber,
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${Token}`,
+            },
           }
-        });
-        
+        );
+
         if (response.data.success) {
           const messages = [
             {
@@ -142,7 +139,7 @@ const OTPModal: React.FC<{
               to: phoneNumber,
               // to:'01020983066',
               from: "01020983066",
-              subject: '반찬 투표 OTP 인증 메세지 입니다.',
+              subject: "반찬 투표 OTP 인증 메세지 입니다.",
               text: `
 반찬 앱 투표 OTP 인증입니다 유효시간은 2분입니다.
 인증번호 : ${response.data.otp}
@@ -150,7 +147,7 @@ const OTPModal: React.FC<{
               autoTypeDetect: true, // 자동 타입 감지 활성화
             },
           ];
-          sendOTP(messages)
+          sendOTP(messages);
           setIsOtpSent(true);
           setResendTimer(5); // 5초 재전송 대기 시간
           setOtpValidTimer(120); // 120초 OTP 유효 시간
@@ -167,23 +164,26 @@ const OTPModal: React.FC<{
   };
 
   const handleVerifyOTP = async () => {
-
     try {
-      const response = await axios.post(`${API_URL}/api/auth/otp/validate`, {
-        phoneNumber: phoneNumber,
-        otp : otpCode
-      },{
-        headers : {
-          Authorization: `Bearer ${Token}`
+      const response = await axios.post(
+        `${API_URL}/api/auth/otp/validate`,
+        {
+          phoneNumber: phoneNumber,
+          otp: otpCode,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${Token}`,
+          },
         }
-      });
+      );
 
       if (response.data.success) {
-        alert('OTP 인증에 성공하였습니다.')
+        alert("OTP 인증에 성공하였습니다.");
         onSuccess();
       } else {
         // 실패 시 에러 메시지 표시
-        alert('OTP 인증에 실패하였습니다.')
+        alert("OTP 인증에 실패하였습니다.");
         console.error("OTP 인증 실패");
       }
     } catch (error) {
@@ -256,7 +256,7 @@ const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-  console.log(items)
+  console.log(items);
   const toggleDrawer = () => {
     setIsOpen(!isOpen);
   };
@@ -331,9 +331,9 @@ const NewDrawer: React.FC<newDrawerProps> = ({ title, items }) => {
                 >
                   {title === "진행중인 투표"
                     ? item.voted
-                      ? '투표 완료'
-                      : '투표하기'
-                    : '결과보기'}
+                      ? "투표 완료"
+                      : "투표하기"
+                    : "결과보기"}
                 </button>
                 <button className="py-2 px-4 bg-gray-200 text-blue-500 font-semibold rounded-full">
                   투표율 : {item.voteRate} %

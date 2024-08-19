@@ -1,13 +1,12 @@
 import React, { useEffect } from "react";
-import { ControlPanelsProps } from "../../Type";
+import { ControlPanelsProps } from "shared/src/Type";
 
 const ControlPanels: React.FC<ControlPanelsProps> = ({
   // onChatToggle,
   activeIcons,
   handleButtonClick,
 }) => {
-  useEffect(() => {
-  }, [activeIcons]);
+  useEffect(() => {}, [activeIcons]);
   return (
     <div className="px-4 flex items-center mt-10">
       <div className="flex space-x-8 ml-[210px]">

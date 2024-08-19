@@ -1,5 +1,5 @@
 import React from "react";
-import { NavProps } from "../Type";
+import { NavProps } from "shared/src/Type";
 
 const Nav: React.FC<NavProps> = ({ children }) => {
   return (

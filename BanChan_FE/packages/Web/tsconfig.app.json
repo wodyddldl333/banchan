@@ -17,7 +17,8 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "banchan-mobile/*": ["../Mobile/src/*"]
+      "banchan-mobile/*": ["../Mobile/src/*"],
+      "shared/*": ["../shared/src/*"]
     },
     /* Linting */
     "strict": true,
