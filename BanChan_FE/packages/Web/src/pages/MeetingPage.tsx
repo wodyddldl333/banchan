@@ -12,7 +12,7 @@ import axios from "axios";
 import ControlPanels from "../components/WebRTC/ControlPanels";
 import ThumbnailPlayer from "../components/WebRTC/ThumbnailPlayer";
 import SubscriberList from "../components/WebRTC/SubscribeList";
-import { IconName, LocationState } from "../Type";
+import { IconName, LocationState } from "shared/src/Type";
 import { useCookies } from "react-cookie";
 import ChatBox from "../components/WebRTC/ChatBox";
 import Swal from "sweetalert2";

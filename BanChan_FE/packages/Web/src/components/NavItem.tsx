@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { NavItemProps } from "../Type";
+import { NavItemProps } from "shared/src/Type";
 
 const NavItem: React.FC<NavItemProps> = ({ to, label }) => {
   return (

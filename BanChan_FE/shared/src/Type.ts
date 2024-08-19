@@ -37,6 +37,7 @@ export interface LocationState {
   startTime: string;
   active: boolean;
 }
+
 export interface SidebarItemProps {
   icon: string;
   text: string;
@@ -134,11 +135,16 @@ export interface Post {
   createdAt: string;
   admin: boolean;
   writer: boolean;
+  files: {
+    id: number;
+    originalFilename: string;
+  }[];
 }
 
 export interface VoteGetType {
   data: VoteListType[];
 }
+
 export interface VoteListType {
   id: number;
   content: string;
@@ -202,6 +208,7 @@ export interface MultiSelectDropdownProps {
   selectedOptions: string[];
   setSelectedOptions: React.Dispatch<React.SetStateAction<string[]>>;
 }
+
 export interface VoteCreateType {
   title: string;
   content: string;
@@ -245,6 +252,7 @@ export interface VoteFormProps {
     optionResults: VoteItemForm[];
   };
 }
+
 interface VoteResultItems {
   questionId: number;
   questionText: string;
@@ -313,4 +321,10 @@ export interface ChatBoxProps {
 export interface UpdateProps {
   title: string;
   content: string;
+}
+
+export interface PaginationProps {
+  totalPages: number;
+  currentPage: number;
+  onPageChange: (page: number) => void;
 }

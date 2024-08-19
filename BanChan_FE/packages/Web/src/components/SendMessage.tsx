@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { MultiSelectDropdownProps } from "../Type";
+import { MultiSelectDropdownProps } from "shared/src/Type";
 import { useNavigate } from "react-router-dom";
 import { sendSMS } from "../api/SenaMassageAPI";
 

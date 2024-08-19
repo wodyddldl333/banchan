@@ -1,15 +1,15 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSwipeable } from "react-swipeable";
 import { useNavigate } from "react-router-dom";
-import { SwipeableContentProps } from "../../Types";
+import { SwipeableContentProps } from "shared/src/Type";
 import { useParams } from "react-router-dom";
 import { doVote } from "../../mobileapi/VoteAPI";
 import { useCookies } from "react-cookie";
 const SwipeableContent: React.FC<SwipeableContentProps> = ({ items }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const navigate = useNavigate();
-  const {id} = useParams()
-  const [cookies] = useCookies()
+  const { id } = useParams();
+  const [cookies] = useCookies();
   const [selectedOptions, setSelectedOptions] = useState<number[]>([]);
 
   const handlers = useSwipeable({
@@ -29,31 +29,33 @@ const SwipeableContent: React.FC<SwipeableContentProps> = ({ items }) => {
 
   const handleFinishVoteClick = () => {
     if (selectedOptions.includes(-1)) {
-      alert('모든 투표를 진행해주세요')
-    } else{
-      const data = items.map((item,index) => {
-        if (selectedOptions[index] !=0){
+      alert("모든 투표를 진행해주세요");
+    } else {
+      const data = items.map((item, index) => {
+        if (selectedOptions[index] != 0) {
           return {
-            questionId : Number(item.questionId),
-            optionId : Number(item.options[selectedOptions[index]].id),
-              }
-            }
-            
-          }
-        )
-        if (data) {
-      const answer = { 
-        voteId : Number(id) as unknown as number,
-        responses : data.filter((response): response is { questionId: number; optionId: number; } => response !== undefined)}
+            questionId: Number(item.questionId),
+            optionId: Number(item.options[selectedOptions[index]].id),
+          };
+        }
+      });
+      if (data) {
+        const answer = {
+          voteId: Number(id) as unknown as number,
+          responses: data.filter(
+            (response): response is { questionId: number; optionId: number } =>
+              response !== undefined
+          ),
+        };
 
-      doVote(cookies.Token,`api/votes/vote`,answer)
-    }
-    navigate(`/m/vote/finishedVote/${id}`);
+        doVote(cookies.Token, `api/votes/vote`, answer);
+      }
+      navigate(`/m/vote/finishedVote/${id}`);
     }
   };
 
   useEffect(() => {
-    setSelectedOptions(Array(items.length).fill(-1))
+    setSelectedOptions(Array(items.length).fill(-1));
   }, [items]);
   return (
     <div

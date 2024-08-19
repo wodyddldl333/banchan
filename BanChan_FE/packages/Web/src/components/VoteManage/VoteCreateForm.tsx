@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PollItem, VoteCreateFormProps } from "../../Type";
+import { PollItem, VoteCreateFormProps } from "shared/src/Type";
 
 const VoteCreateForm: React.FC<VoteCreateFormProps> = ({
   id,
@@ -102,12 +102,7 @@ const VoteCreateForm: React.FC<VoteCreateFormProps> = ({
               삭제
             </button>
           )}
-          {index < 2 && (
-            <div
-              className="ml-8 p-1 text-sm"
-            >
-            </div>
-          )}
+          {index < 2 && <div className="ml-8 p-1 text-sm"></div>}
         </div>
       ))}
       <button
