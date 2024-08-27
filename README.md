@@ -46,7 +46,7 @@
 | --- | --- |
 | Jenkins | 2.462.1 |
 
-## 3. 주요 기능
+## 3-1. 주요 기능 (관리자 Web)
 ### 소셜 로그인 기능
 ![카카오로그인](exec/resources/카카오로그인.gif)
 
@@ -64,6 +64,25 @@
 
 ### 커뮤니티
 ![커뮤니티생성,글쓰기](exec/resources/커뮤니티생성,글쓰기.gif)
+
+## 3-2. 주요 기능 (사용자 Moblile)
+### 소셜 로그인 기능
+![카카오로그인](exec/resources/login.gif)
+
+### 마이페이지
+![마이페이지](exec/resources/mypage.gif)
+
+### 커뮤니티 (공지사항, 건의사항)
+![커뮤니티](exec/resources/commnity.gif)
+
+### 투표 및 결과보기
+![투표](exec/resources/vote.gif)
+
+### 회의일정 및 요약본 공지 확인
+![회의](exec/resources/conf.gif)
+
+### 회의 입장
+![회의 입장](exec/resources/conf_enter.gif)
 
 ## 4. 기술 소개
 
