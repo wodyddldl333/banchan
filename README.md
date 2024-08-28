@@ -84,7 +84,7 @@
 ### 회의 입장
 ![회의 입장](exec/resources/conf_enter.gif)
 
-## 4. 기술 소개
+## 4. 외부 서비스
 
 1. **Google STT(Speech-to-Text) API**
     - **서비스 이름**: Google Cloud Speech-to-Text API
@@ -146,10 +146,13 @@
             - 웹 애플리케이션 내에서 화면 공유와 화상 통화 기능을 제공하여 협업 도구로 활용 가능.
 
 ## 5. 설계 문서
-### 와이어 프레임 Mobile
+### 와이어 프레임
+- Mobile
+
 ![와이어프레임](exec/resources/와이어프레임모바일.png)
 
-### 와이어 프레임 Web
+- Web
+
 ![와이어프레임](exec/resources/와이어프레임웹.png)
 
 ### 시스템 아키텍쳐
@@ -158,12 +161,19 @@
 ### ERD
 ![ERD](exec/resources/ERD.png)
 
-### 요구사항 정의서
-![요구사항정의서](exec/resources/요구사항정의서.png)
+## 6. 협업 Tool!
 
-### API명세서
-![API1](exec/resources/API1.png)
-![API2](exec/resources/API2.png)
+1. GitLab
+2. Jira
+3. Notion
+4. MatterMost
+
+## 7. 프로젝트 산출물
+
+| 기능명세서 | 요구사항 정의서 | API 연동규격서 | Swagger |
+| --- | --- | --- | --- |
+| [기능명세서 링크](https://www.notion.so/6513fe50bf9f499e90df3068ddf544a4?pvs=4) | [요구사항 정의서 링크](https://www.notion.so/a2347492832c4adfb4e59ee870f7b293?pvs=4) | [API 연동규격서 링크](https://www.notion.so/API-api-221759adce7c47c4ab06670abb0bc372?pvs=4) | [Swagger1](exec/resources/API1.png), [Swagger2](exec/resources/API2.png)
+
 
 ## 6. 팀원 소개
 
